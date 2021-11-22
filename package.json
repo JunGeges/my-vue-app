@@ -38,5 +38,17 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "description": "## Project setup ``` yarn install ```",
+  "main": "babel.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JunGeges/my-vue-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JunGeges/my-vue-app/issues"
+  },
+  "homepage": "https://github.com/JunGeges/my-vue-app#readme"
 }
