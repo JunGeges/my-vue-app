@@ -1,13 +1,18 @@
 <template>
-  <div id="app">
-  干干净净
-  </div>
+    <div id="app">
+        <nav-bar>
+          <template v-slot:left>111</template>
+        </nav-bar>
+    </div>
 </template>
 
 <script>
-
+import NavBar from './components/NavBar/NavBar'
 export default {
-  name: 'App'
+    name: 'App',
+    components: {
+        NavBar
+    }
 }
 </script>
 
