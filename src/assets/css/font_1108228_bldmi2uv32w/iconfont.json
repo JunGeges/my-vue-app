@@ -1,0 +1,30 @@
+{
+  "id": "1108228",
+  "name": "小程序",
+  "font_family": "iconfont",
+  "css_prefix_text": "my-icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "6129179",
+      "name": "137设置、系统设置、功能设置、属性-线",
+      "font_class": "settings",
+      "unicode": "e795",
+      "unicode_decimal": 59285
+    },
+    {
+      "icon_id": "7450604",
+      "name": "菜单3",
+      "font_class": "caidan",
+      "unicode": "e65e",
+      "unicode_decimal": 58974
+    },
+    {
+      "icon_id": "6682547",
+      "name": "返回",
+      "font_class": "fanhui",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    }
+  ]
+}
