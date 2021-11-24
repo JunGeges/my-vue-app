@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1526409",
+      "name": "设置",
+      "font_class": "shezhi",
+      "unicode": "e67b",
+      "unicode_decimal": 59003
+    },
+    {
       "icon_id": "6129179",
       "name": "137设置、系统设置、功能设置、属性-线",
       "font_class": "settings",
