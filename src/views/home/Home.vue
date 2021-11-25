@@ -33,7 +33,10 @@ export default {
 
   methods: {
     onClickLeft() {
-      this.$toast("返回");
+      this.$router.push({
+        name:'fundgroup',
+        params:{a:1}
+      })
     },
   },
 };

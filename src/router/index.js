@@ -3,10 +3,11 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/',
-    redirect: { name: 'home' }
+    redirect: {
+      name: 'home'
+    }
   },
   {
     path: '/home',
@@ -27,6 +28,11 @@ const routes = [
     path: '/login',
     component: () => import('views/login/Login'),
     name: 'login'
+  },
+  {
+    path: '/fundgroup',
+    component: () => import('views/fundGroup/FundGroup'),
+    name: 'fundgroup'
   }
 ]
 
