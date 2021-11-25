@@ -27,7 +27,12 @@
         placeholder="选填 成本单价"
       />
       <div style="margin: 16px">
-        <van-button round block type="info" native-type="submit"
+        <van-button
+          :color="isCanSave?'#2895fc':'#c6c6cc'"
+          :disabled="!isCanSave"
+          block
+          type="primary"
+          native-type="submit"
           >保存</van-button
         >
       </div>
@@ -36,6 +41,7 @@
 </template>
 
 <script>
+const MAXLENGTH = 6;
 export default {
   name: "MyVueAppAdd",
 
@@ -54,8 +60,7 @@ export default {
         {
           // 自定义校验规则
           validator: (value) => {
-            console.log(value.length < 6);
-            return !value.length < 6;
+            return value.length === MAXLENGTH;
           },
           message: "请输入正确的基金编码",
           trigger: "onBlur",
@@ -64,15 +69,17 @@ export default {
     };
   },
 
+  computed: {
+    isCanSave() {
+      return this.fundCode.length > 0
+    }
+  },
+
   mounted() {},
 
   methods: {
     back() {
       this.$router.go(-1);
-    },
-
-    validator(val) {
-      return val.length < 6;
     },
 
     onSubmit(values) {
@@ -85,9 +92,5 @@ export default {
 <style lang="scss" scoped>
 .add-container /deep/ .van-nav-bar .van-icon {
   color: #333333 !important;
-}
-
-.add-container /deep/ .van-form .van-field .van-button{
-  background-color: #333333 !important;
 }
 </style>

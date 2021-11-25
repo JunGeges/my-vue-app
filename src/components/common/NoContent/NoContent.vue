@@ -1,7 +1,7 @@
 <template>
   <div class="no-content-container">
     <img src="~assets/img/no.png" alt="" srcset="" />
-    <section @click="addFund">暂无数据,点击<span>添加</span>或通过<span>登录</span>恢复数据</section>
+    <section>暂无数据,点击<span @click="addFund">添加</span>或通过<span @click="goSettingPage">登录</span>恢复数据</section>
   </div>
 </template>
 
@@ -16,9 +16,14 @@ export default {
   mounted() {},
 
   methods: {
+    // 添加基金
     addFund() {
-      console.log('%c click', "font-size:40px")
       this.$router.push({ path: '/add' })
+    },
+
+    // 进入设置页面
+    goSettingPage() {
+      this.$router.push({ path: '/setting' })
     }
   },
 };
