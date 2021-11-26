@@ -33,6 +33,11 @@ const routes = [{
     path: '/fundgroup',
     component: () => import('views/fundGroup/FundGroup'),
     name: 'fundgroup'
+  },
+  {
+    path: '/updatelog',
+    component: () => import('views/updateLog/UpdateLog'),
+    name: 'updatelog'
   }
 ]
 

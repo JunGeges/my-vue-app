@@ -41,7 +41,7 @@
     </van-cell>
     <van-cell size="large" :border="false" title="显示列自定义" is-link />
     <van-cell-group>
-      <van-cell title="更新日志" :border="false" size="large" is-link />
+      <van-cell to="/updatelog" title="更新日志" :border="false" size="large" is-link />
       <van-cell
         size="large"
         :border="false"
