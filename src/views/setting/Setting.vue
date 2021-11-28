@@ -39,7 +39,7 @@
         <van-switch active-color="#2895fc" v-model="checked5" size="24" />
       </template>
     </van-cell>
-    <van-cell size="large" :border="false" title="显示列自定义" is-link />
+    <van-cell size="large" :border="false" title="显示列自定义" is-link to="/setcustomcloumn"/>
     <van-cell-group>
       <van-cell to="/updatelog" title="更新日志" :border="false" size="large" is-link />
       <van-cell
@@ -48,6 +48,7 @@
         title="关于 / 建议反馈"
         value="v1.8.3"
         is-link
+        to="/about"
       />
     </van-cell-group>
   </div>

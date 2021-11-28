@@ -1,8 +1,8 @@
 @font-face {
   font-family: "my-icon"; /* Project id 1108228 */
-  src: url('iconfont.woff2?t=1637894644448') format('woff2'),
-       url('iconfont.woff?t=1637894644448') format('woff'),
-       url('iconfont.ttf?t=1637894644448') format('truetype');
+  src: url('iconfont.woff2?t=1638094656616') format('woff2'),
+       url('iconfont.woff?t=1638094656616') format('woff'),
+       url('iconfont.ttf?t=1638094656616') format('truetype');
 }
 
 .my-icon {
@@ -11,6 +11,17 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.my-icon-yanjing:before {
+  content: "\e6d1";
+  color: #808080;
+}
+
+.my-icon-eyeyanjing:before {
+  content: "\e6da";
+  margin-left: 30px;
+  color: #808080;
 }
 
 .my-icon-delete:before {

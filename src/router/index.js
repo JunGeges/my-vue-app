@@ -38,6 +38,16 @@ const routes = [{
     path: '/updatelog',
     component: () => import('views/updateLog/UpdateLog'),
     name: 'updatelog'
+  },
+  {
+    path: '/setcustomcloumn',
+    component: () => import('views/setCustomCloumn/SetCustomCloumn'),
+    name: 'setcustomcloumn'
+  },
+  {
+    path: '/about',
+    component: () => import('views/about/About'),
+    name: 'about'
   }
 ]
 

@@ -1,11 +1,11 @@
 <template>
   <div class="update-log-container">
     <van-nav-bar title="小基助手·更新日志" left-arrow @click-left="back" />
-    <div class="log-ul" v-for="item in [1, 2, 3]">
+    <div class="log-ul" v-for="item in [1, 2, 3]" :key="item">
       <div class="log-li">
         <div class="li-title">v1.8.3_20210901</div>
         <div class="li-info">
-          <div>新开发了一款换头像的小程序</div>
+          <div>新开发了一款换头像的小程序{{ item }}</div>
           <div>已经上线了</div>
         </div>
       </div>

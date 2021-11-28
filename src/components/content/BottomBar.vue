@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-bar-container">
-    <van-icon class-prefix="my-icon" name="caidan" />
-    <van-icon class-prefix="my-icon" name="shezhi" />
+    <van-icon @click="edit" class-prefix="my-icon" name="caidan" />
+    <van-icon @click="toSetting" class-prefix="my-icon" name="shezhi" />
     <div class="right">
       <div class="income">
         <div :style="{ color: isHong }">-0.12</div>
@@ -22,13 +22,17 @@ export default {
 
   computed: {
     isHong: () => {
-      return 'green';
+      return "green";
     },
   },
 
   mounted() {},
 
-  methods: {},
+  methods: {
+    toSetting() {
+      this.$router.push('/setting')
+    }
+  },
 };
 </script>
 
