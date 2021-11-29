@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-const routes = [{
+const routes = [
+  {
     path: '/',
     redirect: {
       name: 'home'
@@ -48,6 +49,26 @@ const routes = [{
     path: '/about',
     component: () => import('views/about/About'),
     name: 'about'
+  },
+  {
+    path: '/incomedetail',
+    component: () => import('views/incomeDetail/IncomeDetail'),
+    name: 'incomedetail'
+  },
+  {
+    path: '/updatefund',
+    component: () => import('views/editFund/updateFund/UpdateFund'),
+    name: 'updatefund'
+  },
+  {
+    path: '/addfund',
+    component: () => import('views/editFund/addFund/AddFund'),
+    name: 'addfund'
+  },
+  {
+    path: '/sellfund',
+    component: () => import('views/editFund/sellFund/SellFund'),
+    name: 'sellfund'
   }
 ]
 

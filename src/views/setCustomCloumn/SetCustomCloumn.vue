@@ -1,13 +1,13 @@
 <template>
-  <div class="set-custom-cloumn-container">
+  <div class="set-custom-column-container">
     <van-nav-bar title="小基助手·列自定义" left-arrow @click-left="back" />
-    <div class="cloumn-title-box">
+    <div class="column-title-box">
       <div>列名</div>
       <div>上移</div>
       <div>下移</div>
       <div>显示</div>
     </div>
-    <div class="cloumn-content-box">
+    <div class="column-content-box">
       <div class="ccb-item" v-for="(item, index) in columns" :key="item.id">
         <span>{{ item.columnTitle }}</span>
         <van-icon
@@ -23,18 +23,18 @@
         <van-icon
           class-prefix="my-icon"
           name="eyeyanjing"
-          @click="handleCloumn(index, 'show')"
+          @click="handleColumn(index, 'show')"
         />
       </div>
     </div>
     <!-- 需要隐藏的列 -->
-    <div v-if="hideColumns.length" class="hide-cloumn-box">
+    <div v-if="hideColumns.length" class="hide-column-box">
       <div class="hcb-item" v-for="(item, index) in hideColumns" :key="item.id">
         <span>{{ item.columnTitle }}</span>
         <van-icon
           class-prefix="my-icon"
           name="yanjing"
-          @click="handleCloumn(index, 'hide')"
+          @click="handleColumn(index, 'hide')"
         />
       </div>
     </div>
@@ -47,7 +47,7 @@
 
 <script>
 export default {
-  name: "MyVueAppSetcustomcloumn",
+  name: "MyVueAppSetCustomColumn",
 
   data() {
     return {
@@ -92,16 +92,16 @@ export default {
     },
 
     // 隐藏/显示列
-    handleCloumn(index, type) {
+    handleColumn(index, type) {
       const types = {
         show: this.columns,
         hide: this.hideColumns,
       };
       // 原数组移除
-      let hideCloumnObj = types[type][index];
+      let handleColumnObj = types[type][index];
       types[type].splice(index, 1);
       // 新数组添加
-      (type === "show" ? this.hideColumns : this.columns).push(hideCloumnObj);
+      (type === "show" ? this.hideColumns : this.columns).push(handleColumnObj);
     },
 
     saveEdit() {},
@@ -110,16 +110,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.set-custom-cloumn-container {
+.set-custom-column-container {
   // padding: 0 16px;
-  box-sizing: boder-box;
+  box-sizing: border-box;
   /deep/ .van-nav-bar {
     .van-icon {
       color: #333333 !important;
     }
   }
 
-  .cloumn-title-box {
+  .column-title-box {
     display: flex;
     align-items: center;
     font-size: 15px;
@@ -136,7 +136,7 @@ export default {
     }
   }
 
-  .cloumn-content-box {
+  .column-content-box {
     padding: 0 16px 20px 16px;
     border-bottom: 1px solid #efefef;
     .ccb-item {
@@ -162,7 +162,7 @@ export default {
     }
   }
 
-  .hide-cloumn-box {
+  .hide-column-box {
     padding: 16px 16px 20px;
     .hcb-item {
       display: flex;

@@ -2,7 +2,7 @@
   <div class="bottom-bar-container">
     <van-icon @click="edit" class-prefix="my-icon" name="caidan" />
     <van-icon @click="toSetting" class-prefix="my-icon" name="shezhi" />
-    <div class="right">
+    <div class="right" @click="toIncomeDetail">
       <div class="income">
         <div :style="{ color: isHong }">-0.12</div>
         <div>当日收益</div>
@@ -31,6 +31,10 @@ export default {
   methods: {
     toSetting() {
       this.$router.push('/setting')
+    },
+
+    toIncomeDetail() {
+      this.$router.push('/incomedetail')
     }
   },
 };
