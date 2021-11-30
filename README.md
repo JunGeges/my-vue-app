@@ -1,24 +1,19 @@
-# vue-app
+### vue-provider cli插件官方文档
+[https://docs.cloudbase.net/cloudbase-vue/introduce](https://docs.cloudbase.net/cloudbase-vue/introduce)
 
-## Project setup
 ```
-yarn install
+npm install --save @cloudbase/vue-provider
 ```
-
-### Compiles and hot-reloads for development
+### cloudbase/js-sdk
 ```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
+npm install --save @cloudbase/js-sdk
 ```
 
-### Lints and fixes files
+### CloudBase cli 通过终端,用于帮助用户快速、方便的部署项目，管理云开发资源。
 ```
-yarn lint
+npm i -g @cloudbase/cli
 ```
+[https://docs.cloudbase.net/cli-v1/intro](控制台脚手架文档介绍链接)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 云开发官方网站
+[https://docs.cloudbase.net/](官方)

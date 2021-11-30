@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@cloudbase/js-sdk": "^1.7.1",
+    "@cloudbase/vue-provider": "^0.5.2",
     "core-js": "^3.6.5",
     "node-sass": "^4.0.1",
     "sass-loader": "^7.1.0",

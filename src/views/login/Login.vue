@@ -3,11 +3,12 @@
     <van-nav-bar :title="title" left-arrow @click-left="back" />
     <van-form @submit="onSubmit" validate-first>
       <van-field
-        v-model="username"
+        v-model="email"
         name="用户名"
         label="用户名"
-        placeholder="请输入用户名"
-        :rules="usernameRules"
+        placeholder="请输入邮箱"
+        type="email"
+        :rules="emailRules"
       />
       <van-field
         v-model="password"
@@ -54,18 +55,15 @@ export default {
   data() {
     return {
       isLogin: 0,
-      username: "",
-      usernameRules: [
+      email: "",
+      emailRules: [
         {
           required: true,
-          message: "用户名最少4位",
-          validator: (value) => {
-            return value.length >= 4;
-          },
+          message: "用户名不能为空",
         },
       ],
       password: "",
-      passwordRules: [{ required: true, message: "请填写密码" }],
+      passwordRules: [{ required: true, message: "密码不能为空" }],
       confirmPassword: "",
       confirmPasswordRules: [
         {
@@ -92,12 +90,38 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() {
+    console.log(this.$cloudbase.auth());
+  },
 
   methods: {
     // 表单提交
-    onSubmit(value) {
-      console.log("submit", value);
+    onSubmit() {
+      // console.log("submit", value);
+      if (this.isLogin === 1) {
+        return this.$cloudbase
+          .auth({
+            persistence: "local",
+          })
+          .signUpWithEmailAndPassword(this.email, this.password)
+          .then((loginState) => {
+            console.log(loginState);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      this.$cloudbase
+        .auth({
+          persistence: "local",
+        })
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then((loginState) => {
+          console.log(loginState);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     // 注册/登录切换

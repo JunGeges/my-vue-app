@@ -29,13 +29,15 @@ export default {
   mounted() {},
 
   methods: {
+    edit() {},
+
     toSetting() {
-      this.$router.push('/setting')
+      this.$router.push("/setting");
     },
 
     toIncomeDetail() {
-      this.$router.push('/incomedetail')
-    }
+      this.$router.push("/incomedetail");
+    },
   },
 };
 </script>
