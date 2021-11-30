@@ -49,6 +49,11 @@
 </template>
 
 <script>
+import cloudbase from "@cloudbase/js-sdk";
+//初始化SDK实例
+const app = cloudbase.init({
+  env: "jun-9gidxtgo5a18dce9"
+});
 export default {
   name: "MyVueAppLogin",
 
@@ -92,6 +97,12 @@ export default {
 
   mounted() {
     console.log(this.$cloudbase.auth());
+    // 调用云函数
+    app
+      .callFunction({
+        name: "test",
+      })
+      .then(console.log);
   },
 
   methods: {

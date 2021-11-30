@@ -10,7 +10,7 @@ import store from './store/index'
 import Cloudbase from '@cloudbase/vue-provider'
 
 Vue.use(Cloudbase, {
-  env: 'my-vue-app-3gzt852m31ab7bfe'
+  env: 'jun-9gidxtgo5a18dce9'
 })
 
 Vue.config.productionTip = false
