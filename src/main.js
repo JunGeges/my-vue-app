@@ -7,9 +7,9 @@ Vue.use(NavBar).use(Toast).use(Dialog).use(ActionSheet)
 
 import router from './router/index'
 import store from './store/index'
-import Cloudbase from '@cloudbase/vue-provider'
+import Cloudbase from '@cloudbase/js-sdk'
 
-Vue.use(Cloudbase, {
+Vue.prototype.$cloudbase = Cloudbase.init({
   env: 'jun-9gidxtgo5a18dce9'
 })
 
