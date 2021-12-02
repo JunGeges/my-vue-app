@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import './plugins/axios'
 import App from './App.vue'
 import "./assets/css/font_1108228_bldmi2uv32w/iconfont.css"
 import { Toast, Dialog, NavBar, ActionSheet, Icon, Form, Field, Button, Cell, CellGroup, Switch } from "vant"

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import * as api from "../../network/api";
+import * as api from "network/api";
 import NoContent from "components/common/NoContent/NoContent";
 import BottomBar from "components/content/BottomBar";
 
@@ -31,11 +31,29 @@ export default {
   // http://fund.eastmoney.com/pingzhongdata/001186.js?v=20160518155842
   mounted() {
     // console.log('home mounted', this.$router);
-    api.getFundDetailByTT("003017");
-    api.getFundCurrentInfoByTT("003017");
-    api.getFundDetailByJR("003017").then(console.log);
-    api.getFundBaseInfoByJR("003017").then(console.log);
-    api.getFundRankByJR().then(console.log);
+    api
+      .getFundDetailByTT("003")
+      .then((res) => {
+        console.log(`%c ${res}`, "font-size:40px;color:red");
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
+    // console.log(
+    //   api.getFundCurrentInfoByTT("00307").then(console.log).catch((err) => {
+    //     console.log(err, "铺货了吗");
+    //   })
+    // );
+    // api.getFundDetailByJR("003017").then(console.log);
+    // api.getFundBaseInfoByJR("003017").then(console.log);
+    // api.getFundRankByJR().then(console.log);
+    // api.getAllFundByJR();
+  console.log(   api
+      .getFundPositionByJR(123)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.warn(err)))
   },
 
   methods: {

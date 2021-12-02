@@ -1,4 +1,7 @@
-import { requestJR, requestTT } from "./request";
+import {
+  requestJR,
+  requestTT
+} from "./request";
 
 // 获取基金详细信息
 export function getFundDetailByTT(code) {
@@ -36,11 +39,40 @@ export function getFundBaseInfoByJR(code) {
 }
 
 /** 
- *  @desc 获取基金排行数据
- * */ 
+ *  @desc 获取基金排行数据 总共139页
+ * */
 export function getFundRankByJR() {
   return requestJR({
-    methods: 'post',
-    url: '/rank'
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url: '/rank',
+    data: {
+      "fundType": ["zs"],
+      "sort": "z",
+      "fundCompany": ["80000248"],
+      "pageIndex": 139,
+      "pageSize": 10
+    }
+  })
+}
+
+/**
+ * 
+ * @desc 获取所有的基金
+ */
+export function getAllFundByJR() {
+  return requestJR({
+    url: '/all'
+  })
+}
+
+/**
+ * @desc 获取基金持仓
+ */
+export function getFundPositionByJR(code) {
+  return requestJR({
+    url: `/position?code=${code}`
   })
 }
