@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import * as api from "../../network/api";
 import NoContent from "components/common/NoContent/NoContent";
 import BottomBar from "components/content/BottomBar";
 
@@ -24,19 +25,25 @@ export default {
     BottomBar,
   },
   created() {
-    console.log('home created', this)
+    // console.log('home created', this)
   },
 
+  // http://fund.eastmoney.com/pingzhongdata/001186.js?v=20160518155842
   mounted() {
-    console.log('home mounted', this.$router);
+    // console.log('home mounted', this.$router);
+    api.getFundDetailByTT("003017");
+    api.getFundCurrentInfoByTT("003017");
+    api.getFundDetailByJR("003017").then(console.log);
+    api.getFundBaseInfoByJR("003017").then(console.log);
+    api.getFundRankByJR().then(console.log);
   },
 
   methods: {
     onClickLeft() {
       this.$router.push({
-        name:'fundgroup',
-        params:{a:1}
-      })
+        name: "fundgroup",
+        params: { a: 1 },
+      });
     },
   },
 };
