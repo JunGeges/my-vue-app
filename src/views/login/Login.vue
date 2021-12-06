@@ -49,6 +49,8 @@
 </template>
 
 <script>
+
+import { CHANGE_LOGIN_STATE } from "store/mutations-type";
 export default {
   name: "MyVueAppLogin",
 
@@ -91,23 +93,13 @@ export default {
   },
 
   mounted() {
-    console.log(this.$cloudbase.auth().hasLoginState());
-    this.$cloudbase
-      .auth()
-      .getLoginState()
-      .then((loginState) => {
-        if (loginState) {
-          console.log(loginState);
-        } else {
-          console.log("没有登录");
-        }
-      });
+    // console.log(this.$cloudbase.auth().currentUser.uid);
     // 调用云函数
-    this.$cloudbase
-      .callFunction({
-        name: "test",
-      })
-      .then(console.log);
+    // this.$cloudbase
+    //   .callFunction({
+    //     name: "hello",
+    //   })
+    //   .then(console.log);
   },
 
   methods: {
@@ -134,6 +126,7 @@ export default {
         .signInWithEmailAndPassword(this.email, this.password)
         .then((loginState) => {
           console.log(loginState);
+          this.$store.commit(CHANGE_LOGIN_STATE, loginState);
         })
         .catch((err) => {
           console.log(err);

@@ -8,9 +8,6 @@
 export default {
   name: "App",
   components: {},
-  created() {
-    console.log(this.$router);
-  },
   methods: {},
 };
 </script>

@@ -1,7 +1,5 @@
 import axios from 'axios'
-import {
-  Toast
-} from 'vant';
+import Vue from 'vue';
 // 金融数据接口 https://www.doctorxiong.club/api/#api-Fund
 export function requestJR(config) {
   const instanceJR = axios.create({
@@ -17,14 +15,10 @@ export function requestJR(config) {
   })
 
   instanceJR.interceptors.response.use(res => {
-    console.log('res----', res)
     // 错误码
     const errCode = [400, 412, 500, 405, 202]
     if (errCode.includes(res.data.code)) {
-      console.log('进来了', errCode.find(() => errCode.includes(res.data.code)))
-      return new Promise((reslove, reject) => {
-        reject('错误')
-      })
+      return Promise.reject(res.data.message)
     }
     return res.data
   }, err => {
@@ -35,7 +29,6 @@ export function requestJR(config) {
 
 // 天天基金
 export function requestTT(config) {
-  console.log(window,'this')
   const instanceTT = axios.create({
     timeout: 2000
   })
@@ -48,8 +41,7 @@ export function requestTT(config) {
   })
 
   instanceTT.interceptors.response.use(res => {
-    console.log(res, '222oooss')
-    // 错误码
+    console.log(res, '222oooss')  
 
     return res.data
   }, err => {
@@ -57,9 +49,7 @@ export function requestTT(config) {
     if (err.response.status) {
       switch (err.response.status) {
         case 404:
-          alert('基金代码错误')
-          console.log(this)
-          Toast({
+          Vue.prototype.$toast({
             message: '基金代码错误'
           })
           break

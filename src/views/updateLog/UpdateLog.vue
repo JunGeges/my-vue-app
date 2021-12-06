@@ -1,12 +1,13 @@
 <template>
   <div class="update-log-container">
     <van-nav-bar title="小基助手·更新日志" left-arrow @click-left="back" />
-    <div class="log-ul" v-for="item in [1, 2, 3]" :key="item">
+    <div class="log-ul" v-for="(item, index) in logs" :key="index">
       <div class="log-li">
-        <div class="li-title">v1.8.3_20210901</div>
+        <div class="li-title">{{ item.versionNumber }}</div>
         <div class="li-info">
-          <div>新开发了一款换头像的小程序{{ item }}</div>
-          <div>已经上线了</div>
+          <div v-for="(item, index) in item.log" :key="index">
+            {{ item }}
+          </div>
         </div>
       </div>
     </div>
@@ -14,18 +15,30 @@
 </template>
 
 <script>
+import { getVersionLog } from "network/cloudApi";
 export default {
   name: "MyVueAppUpdateLog",
 
   data() {
-    return {};
+    return {
+      logs: [],
+    };
   },
 
-  mounted() {},
+  mounted() {
+    this.getData();
+  },
 
   methods: {
     back() {
       this.$router.go(-1);
+    },
+
+    getData() {
+      getVersionLog.call(this).then((res) => {
+        this.logs = res.data;
+        // console.log('res----', res.data);
+      });
     },
   },
 };
@@ -59,6 +72,9 @@ export default {
         line-height: 30px;
         font-size: 16px;
         div {
+          display: flex;
+          align-items: center;
+          // justify-content: space-between;
           &::before {
             content: "";
             width: 5px;
@@ -66,8 +82,7 @@ export default {
             background: #8a8a8a;
             margin-right: 10px;
             border-radius: 50%;
-            display: inline-block;
-            vertical-align: middle;
+            flex-shrink: 0;
           }
         }
       }

@@ -10,7 +10,26 @@
       to="/login"
       center
       is-link
-      arrow
+      v-if="!hasLoginState"
+    />
+    <van-cell
+      v-else
+      :border="false"
+      size="large"
+      :title="hasLoginState.LoginState"
+      label="注册时间:2021-12-06 15:19"
+      label-class="label-css"
+      title-class="title-css"
+      center
+      is-link
+      @click="loginOut"
+    />
+    <van-action-sheet
+      :actions="actions"
+      v-model="showSingOut"
+      cancel-text="取消"
+      close-on-click-action
+      @select="select"
     />
     <van-cell-group>
       <van-cell size="large" title="简洁模式" :border="false">
@@ -39,9 +58,21 @@
         <van-switch active-color="#2895fc" v-model="checked5" size="24" />
       </template>
     </van-cell>
-    <van-cell size="large" :border="false" title="显示列自定义" is-link to="/setcustomcloumn"/>
+    <van-cell
+      size="large"
+      :border="false"
+      title="显示列自定义"
+      is-link
+      to="/setcustomcloumn"
+    />
     <van-cell-group>
-      <van-cell to="/updatelog" title="更新日志" :border="false" size="large" is-link />
+      <van-cell
+        to="/updatelog"
+        title="更新日志"
+        :border="false"
+        size="large"
+        is-link
+      />
       <van-cell
         size="large"
         :border="false"
@@ -55,6 +86,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "MyVueAppSetting",
 
@@ -65,14 +97,38 @@ export default {
       checked3: false,
       checked4: false,
       checked5: false,
+      showSingOut: false,
+      actions: [{ name: "退出登录", color: "#ff605c" }],
     };
   },
 
-  mounted() {},
+  mounted() {
+    console.log(
+      "1",
+      this.hasLoginState,
+      this.$cloudbase.auth().hasLoginState()
+    );
+  },
+
+  computed: {
+    ...mapState({
+      hasLoginState: "hasLoginState", // 值为字符串等同于 state => state.hasLoginState  也可以写成  state => state.hasLoginState
+    }),
+  },
 
   methods: {
     back() {
       this.$router.go(-1);
+    },
+
+    // 显示退出action sheet
+    loginOut() {
+      this.showSingOut = !this.showSingOut;
+    },
+
+    // 退出登录
+    select(item, index) {
+      console.log(item, index);
     },
   },
 };
@@ -99,6 +155,12 @@ export default {
   .label-css {
     color: #808080;
     font-size: 12px;
+    font-weight: normal;
+  }
+
+  .title-css {
+    font-weight: 600;
+    color: #343434;
   }
 
   .value-css {
