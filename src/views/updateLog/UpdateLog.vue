@@ -35,10 +35,15 @@ export default {
     },
 
     getData() {
-      getVersionLog.call(this).then((res) => {
-        this.logs = res.data;
-        // console.log('res----', res.data);
-      });
+      getVersionLog
+        .call(this)
+        .then((res) => {
+          this.logs = res.data;
+          // console.log('res----', res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
