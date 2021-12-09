@@ -95,11 +95,11 @@ export default {
   mounted() {
     // console.log(this.$cloudbase.auth().currentUser.uid);
     // 调用云函数
-    // this.$cloudbase
-    //   .callFunction({
-    //     name: "hello",
-    //   })
-    //   .then(console.log);
+    this.$cloudbase
+      .callFunction({
+        name: "user",
+      })
+      .then(console.log);
   },
 
   methods: {

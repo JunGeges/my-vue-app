@@ -54,6 +54,14 @@ export default {
     //       console.log(res);
     //     })
     //     .catch((err) => console.warn(err)))
+    // this.$cloudbase.callFuncton({
+    //   name: "user",
+    // });
+    this.$cloudbase
+      .callFunction({
+        name: "user",
+      })
+      .then(console.log);
   },
 
   methods: {

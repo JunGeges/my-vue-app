@@ -1,4 +1,5 @@
 const cloud = require("@cloudbase/node-sdk");
+const insertUser = require('./insertUser/index')
 
 exports.main = async (event, context) => {
   const app = cloud.init({
@@ -8,7 +9,5 @@ exports.main = async (event, context) => {
 
   // todo
   // your code here
-  return {
-    event,
-  };
+  return insertUser.main(event, context)
 };

@@ -8,7 +8,5 @@ exports.main = async (event, context) => {
 
   // todo
   // your code here
-  return {
-    event,
-  };
+  return {a:1}
 };
