@@ -49,8 +49,7 @@
 </template>
 
 <script>
-
-import { CHANGE_LOGIN_STATE } from "store/mutations-type";
+import { singInOrUp } from "network/cloudApi";
 export default {
   name: "MyVueAppLogin",
 
@@ -93,44 +92,13 @@ export default {
   },
 
   mounted() {
-    // console.log(this.$cloudbase.auth().currentUser.uid);
-    // 调用云函数
-    this.$cloudbase
-      .callFunction({
-        name: "user",
-      })
-      .then(console.log);
+
   },
 
   methods: {
     // 表单提交
     onSubmit() {
-      // console.log("submit", value);
-      if (this.isLogin === 1) {
-        return this.$cloudbase
-          .auth({
-            persistence: "local",
-          })
-          .signUpWithEmailAndPassword(this.email, this.password)
-          .then((loginState) => {
-            console.log(loginState);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-      this.$cloudbase
-        .auth({
-          persistence: "local",
-        })
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then((loginState) => {
-          console.log(loginState);
-          this.$store.commit(CHANGE_LOGIN_STATE, loginState);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      singInOrUp.call(this, this.email, this.password, this.isLogin);
     },
 
     // 注册/登录切换

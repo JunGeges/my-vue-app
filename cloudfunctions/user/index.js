@@ -2,12 +2,15 @@ const cloud = require("@cloudbase/node-sdk");
 const insertUser = require('./insertUser/index')
 
 exports.main = async (event, context) => {
-  const app = cloud.init({
+  const { funName } = event
+  cloud.init({
     env: cloud.SYMBOL_CURRENT_ENV,
   });
 
+  const funs = {
+    insertUser
+  }
 
-  // todo
-  // your code here
-  return insertUser.main(event, context)
+  // 入口
+  return funs[funName].main(event, context)
 };

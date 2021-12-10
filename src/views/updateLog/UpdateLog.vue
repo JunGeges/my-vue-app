@@ -38,8 +38,7 @@ export default {
       getVersionLog
         .call(this)
         .then((res) => {
-          this.logs = res.data;
-          // console.log('res----', res.data);
+          this.logs = res.result.data;
         })
         .catch((err) => {
           console.log(err);

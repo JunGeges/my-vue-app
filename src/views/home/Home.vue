@@ -57,11 +57,6 @@ export default {
     // this.$cloudbase.callFuncton({
     //   name: "user",
     // });
-    this.$cloudbase
-      .callFunction({
-        name: "user",
-      })
-      .then(console.log);
   },
 
   methods: {
