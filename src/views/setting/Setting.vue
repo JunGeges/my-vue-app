@@ -87,6 +87,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { singOut } from "network/cloudApi";
 export default {
   name: "MyVueAppSetting",
 
@@ -103,17 +104,16 @@ export default {
   },
 
   mounted() {
-    console.log(
-      "1",
-      this.hasLoginState,
-      this.$cloudbase.auth().hasLoginState()
-    );
+    console.dir(this.hasLoginState);
   },
 
   computed: {
-    ...mapState({
-      hasLoginState: "hasLoginState", // 值为字符串等同于 state => state.hasLoginState  也可以写成  state => state.hasLoginState
-    }),
+    // ...mapState({
+    //   hasLoginState: "hasLoginState", // 值为字符串等同于 state => state.hasLoginState  也可以写成  state => state.hasLoginState
+    // }),
+    hasLoginState: function () {
+      return this.$cloudbase.auth().hasLoginState();
+    },
   },
 
   methods: {
@@ -129,6 +129,16 @@ export default {
     // 退出登录
     select(item, index) {
       console.log(item, index);
+      singOut
+        .call(this)
+        .then(() => {
+          // 成功退出登录 todo
+          this.$toast("退出登录~");
+          this.hasLoginState = null;
+        })
+        .catch(() => {
+          this.$toast("退出失败!");
+        });
     },
   },
 };

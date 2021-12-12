@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import * as api from "network/api";
+// import * as api from "network/api";
 import NoContent from "components/common/NoContent/NoContent";
 import BottomBar from "components/content/BottomBar";
 

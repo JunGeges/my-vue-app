@@ -5,21 +5,19 @@ exports.main = async (event, context) => {
     env: cloud.SYMBOL_CURRENT_ENV,
   });
 
-  const { uuid } = event
+  const { uid } = event
 
   const db = app.database()
-
-  const data = {
-    
-  }
+  delete event.funName
+  const data = event
 
   const isExistUser = await db.collection('fund_user')
     .where({
-      uuid
+      uid
     })
     .get()
   // 如果存在用户
-  if (isExistUser.data.length === 0) return
+  if (isExistUser.data.length !== 0) return
   // 如果不存在用户 插入user表
   return await db.collection('fund_user').add(data)
     .then(res => {
@@ -30,3 +28,5 @@ exports.main = async (event, context) => {
       return '注册失败~'
     })
 };
+
+// 生成一个默认的基金分组

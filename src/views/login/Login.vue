@@ -60,11 +60,18 @@ export default {
       emailRules: [
         {
           required: true,
-          message: "用户名不能为空",
+          message: "请输入正确的邮箱地址",
+          pattern: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
         },
       ],
       password: "",
-      passwordRules: [{ required: true, message: "密码不能为空" }],
+      passwordRules: [
+        {
+          required: true,
+          message: "密码包含字母数字且长度不小于8",
+          pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z| \\.]{8,32}$/,
+        },
+      ],
       confirmPassword: "",
       confirmPasswordRules: [
         {
@@ -91,14 +98,16 @@ export default {
     },
   },
 
-  mounted() {
-
-  },
+  mounted() {},
 
   methods: {
     // 表单提交
     onSubmit() {
-      singInOrUp.call(this, this.email, this.password, this.isLogin);
+      singInOrUp
+        .call(this, this.email, this.password, this.isLogin)
+        .then(() => {
+          if (this.isLogin === 1) this.isLogin = 0;
+        });
     },
 
     // 注册/登录切换

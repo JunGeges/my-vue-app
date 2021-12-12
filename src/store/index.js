@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 import mutations from './mutations'
 import actions from './actions'
@@ -10,25 +11,21 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     hasLoginState: null,
-    fundGroup: [
-      {
-        id: 0,
-        groupTitle: "默认分组",
-        groupCount: 1,
-      },
-      {
-        id: 1,
-        groupTitle: "新分组",
-        groupCount: 0,
-      },
-    ],
+    fundGroup: [{
+      id: 0,
+      groupTitle: "默认分组",
+      groupCount: 1,
+    }],
   },
   mutations,
   actions,
-  modules: {
+  getters,
+  // plugins: [
+  //   createPersistedState({
+  //     key: 'myStorge'
+  //   })
+  // ]
 
-  },
-  getters
 })
 
 export default store
