@@ -130,14 +130,15 @@ export default {
     },
 
     addGroupItem() {
-      this.isEditing = 1;
       if (this.tempFundGroup.length >= 5)
         return this.$toast("最多添加5个分组~");
+      this.isEditing = 1;
       this.tempFundGroup.push({
         id: this.tempFundGroup[this.tempFundGroup.length - 1].id + 1,
         groupTitle: "新分组",
         groupCount: 0,
       });
+      //
     },
 
     back() {

@@ -5,7 +5,7 @@
       <van-field
         v-model="fundCode"
         validate-first
-        name="持仓编码"
+        name="fundCode"
         label="持仓编码"
         placeholder="必填 点击输入"
         maxlength="6"
@@ -15,20 +15,20 @@
       <van-field
         v-model="fundCount"
         type="number"
-        name="持有份额"
+        name="positionAmount"
         label="持有份额"
         placeholder="选填 持有份额"
       />
       <van-field
         v-model="fundPrice"
         type="number"
-        name="成本单价"
+        name="costUnitPrice"
         label="成本单价"
         placeholder="选填 成本单价"
       />
       <div style="margin: 16px">
         <van-button
-          :color="isCanSave?'#2895fc':'#c6c6cc'"
+          :color="isCanSave ? '#2895fc' : '#c6c6cc'"
           :disabled="!isCanSave"
           block
           type="primary"
@@ -42,6 +42,8 @@
 
 <script>
 const MAXLENGTH = 6;
+import { addFundToGroup } from "network/cloudApi";
+import { getFundDetailByTT } from "network/api";
 export default {
   name: "MyVueAppAdd",
 
@@ -71,8 +73,8 @@ export default {
 
   computed: {
     isCanSave() {
-      return this.fundCode.length > 0
-    }
+      return this.fundCode.length > 0;
+    },
   },
 
   mounted() {},
@@ -84,6 +86,19 @@ export default {
 
     onSubmit(values) {
       console.log("submit", values);
+      // todo 可以封装成函数 异步操作同步化 这样写不优雅 -----------------
+      const uid = "cc0c3074fe394600b922e2a8fca1f60c";
+      const groupId = "b1482569";
+      // 先查出来是否有该基金
+      getFundDetailByTT(values.fundCode)
+        .then(() => {
+          // 有该基金
+          addFundToGroup(uid, groupId, values).then(console.log);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // 插入分组中 需要参数 分组id
     },
   },
 };

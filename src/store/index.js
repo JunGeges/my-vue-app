@@ -22,7 +22,7 @@ const store = new Vuex.Store({
   getters,
   // plugins: [
   //   createPersistedState({
-  //     key: 'myStorge'
+  //     storage: window.sessionStorage
   //   })
   // ]
 

@@ -41,8 +41,8 @@ export function requestTT(config) {
   })
 
   instanceTT.interceptors.response.use(res => {
-    console.log(res, '222oooss')  
-
+    console.log(res, '222oooss')
+  
     return res.data
   }, err => {
     console.log('err.response.status', err.response.status)

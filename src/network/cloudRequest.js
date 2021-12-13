@@ -3,7 +3,7 @@ import Vue from "vue"
 /**
  * 封装callFunction
  * @param {String} fun 云函数名
- * @param {Object} args 云函数参数 可选
+ * @param {{}} args 云函数参数 可选
  * @returns Promise 
  */
 // Vue.prototype 直接用原型上的方法,不用传vue实例进来

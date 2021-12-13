@@ -16,7 +16,7 @@
       v-else
       :border="false"
       size="large"
-      :title="hasLoginState.LoginState"
+      :title="hasLoginState.user.email"
       label="注册时间:2021-12-06 15:19"
       label-class="label-css"
       title-class="title-css"
@@ -100,20 +100,19 @@ export default {
       checked5: false,
       showSingOut: false,
       actions: [{ name: "退出登录", color: "#ff605c" }],
+      hasLoginState: null,
     };
   },
 
   mounted() {
     console.dir(this.hasLoginState);
+    this.hasLoginState = this.$cloudbase.auth().hasLoginState();
   },
 
   computed: {
     // ...mapState({
     //   hasLoginState: "hasLoginState", // 值为字符串等同于 state => state.hasLoginState  也可以写成  state => state.hasLoginState
     // }),
-    hasLoginState: function () {
-      return this.$cloudbase.auth().hasLoginState();
-    },
   },
 
   methods: {

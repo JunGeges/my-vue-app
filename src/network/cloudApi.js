@@ -1,11 +1,11 @@
 import cloudRequest from "./cloudRequest";
 import {
-  User,
-  getUserInfoByStorage
+  User
 } from '../common/utils'
 import {
   CHANGE_LOGIN_STATE
 } from 'store/mutations-type'
+import Vue from "vue";
 /**
  * @desc 获取版本日志
  * @returns 版本记录
@@ -38,15 +38,10 @@ export async function singInOrUp(email, password, isLogin) {
         // 存数据库
         const {
           email,
-          password,
           createTime,
           uid
         } = loginState.user
         console.log('click', email, password, createTime, uid)
-        console.log('user==', {
-          ...new User(email, password, uid, createTime),
-          funName: 'insertUser'
-        })
         cloudRequest('user', {
           ...new User(email, password, uid, createTime),
           funName: 'insertUser'
@@ -91,7 +86,32 @@ function isLogin() {
   return true
 }
 
-// TODO 11
-export async function insertUser() {
+/**
+ * @desc 新增分组
+ * @param {String} uid uid用户id
+ * @param {Array | {}} funds 可以是基金数组和基金对象
+ * @returns 
+ */
+export async function addFundGroup(uid, funds) {
+  return await cloudRequest('fundGroup', {
+    funName: 'addFundGroup',
+    uid,
+    funds
+  })
+}
 
+/**
+ * 添加基金到分组
+ * @param {string} uid 用户id
+ * @param {string} groupId 分组id 
+ * @param {{}} fund 添加的基金对象信息 
+ */
+export async function addFundToGroup(uid, groupId, fund) {
+  if (!fund) return Promise.reject('参数错误~')
+  return await cloudRequest('fundGroup', {
+    funName: 'addFundToGroup',
+    uid,
+    groupId,
+    ...(fund && fund)
+  })
 }

@@ -28,5 +28,3 @@ exports.main = async (event, context) => {
       return '注册失败~'
     })
 };
-
-// 生成一个默认的基金分组

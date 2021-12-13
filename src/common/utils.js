@@ -14,6 +14,7 @@ export class User {
     this.switchScreen = 0
     // 无障碍模式
     this.accessibilityMode = 0
+
     // 估算净值
     this.estimatedNetWorth = 1
     // 估算标签
@@ -30,6 +31,18 @@ export class User {
     this.positionAmount = 1
     // 持仓占比
     this.positionAmountRate = 1
+
+    // 分组
+    this.fundGroups = {
+      [Math.random().toString(16).slice(2, 10)]: {
+        groupTitle: '默认分组',
+        index: 0,
+        fundCount: 0,
+        fundInfo: [
+
+        ]
+      }
+    }
   }
 }
 
