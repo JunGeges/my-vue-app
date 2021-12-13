@@ -84,21 +84,29 @@ export default {
       this.$router.go(-1);
     },
 
-    onSubmit(values) {
+    async onSubmit(values) {
       console.log("submit", values);
-      // todo 可以封装成函数 异步操作同步化 这样写不优雅 -----------------
-      const uid = "cc0c3074fe394600b922e2a8fca1f60c";
-      const groupId = "b1482569";
-      // 先查出来是否有该基金
-      getFundDetailByTT(values.fundCode)
-        .then(() => {
-          // 有该基金
-          addFundToGroup(uid, groupId, values).then(console.log);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      // 插入分组中 需要参数 分组id
+      try {
+        const uid = "cc0c3074fe394600b922e2a8fca1f60c";
+        const groupId = "b1482569";
+        // 先查出来是否有该基金
+        await getFundDetailByTT(values.fundCode);
+        // 插入分组中 需要参数 分组id
+        let result = await addFundToGroup(uid, groupId, values);
+        console.log(result);
+        if (result.result?.updated === 1) {
+          return this.$toast({
+            message: "添加成功~",
+            onClose: () => {
+              this.$router.go(-1);
+            },
+          });
+        }
+        // 已经存在
+        this.$toast(result.result);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
