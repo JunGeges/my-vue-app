@@ -1,0 +1,137 @@
+<template>
+  <div class="title-bar-container">
+    <div class="left">
+      <div>基金名称</div>
+      <div>基金编码</div>
+    </div>
+    <div class="right">
+      <div class="item">
+        <div>估算净值</div>
+        <div>12-15</div>
+      </div>
+      <div class="item">
+        <div>当日收益</div>
+        <div></div>
+      </div>
+      <div class="item">
+        <div>持有收益</div>
+        <div></div>
+      </div>
+      <div class="item">
+        <div>净值</div>
+        <div>12-14</div>
+      </div>
+      <div class="item">
+        <div>持有收益率</div>
+        <div></div>
+      </div>
+      <div class="item">
+        <div>持仓金额</div>
+        <div>持仓成本</div>
+      </div>
+      <div class="item">
+        <div>持仓占比</div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "MyVueAppHomeContentTitleBar",
+
+  data() {
+    return {};
+  },
+
+  mounted() {},
+
+  methods: {},
+};
+</script>
+
+<style lang="scss" scoped>
+.title-bar-container {
+  display: flex;
+  width: 100vw;
+  padding: 6px 0 6px 16px;
+  box-sizing: border-box;
+  color: #000000;
+  border-bottom: 1px solid #efefef;
+  .left {
+    width: 30%;
+    box-shadow: 2px 0 0 rgba($color: #efefef, $alpha: 0.5);
+    font-size: 14px;
+    font-weight: 600;
+    & :last-child {
+      color: #b3b3b3;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  }
+  .right {
+    width: 70%;
+    display: flex;
+    flex: 1;
+    overflow: scroll;
+    flex-wrap: nowrap;
+    font-size: 14px;
+    font-weight: 600;
+    .item {
+      // width: 100px;
+      text-align: left;
+      // flex flex-grow flex-shrink flex-basis
+      // flex:0 0 72px;
+      margin-right: 25px;
+      flex-shrink: 0;
+      position: relative;
+      & :last-child {
+        color: #b3b3b3;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+      &:last-child {
+        margin-right: 20px;
+      }
+
+      &::after,
+      &::before {
+        content: "";
+        width: 0;
+        height: 0;
+        // border: solid;
+        border-style: solid;
+        border-width: 0 4px 6px 4px;
+        border-color: transparent transparent #cccccc;
+        // background-color: #b3b3b3;
+        display: block;
+        position: absolute;
+        right: -10px;
+        // top: 50%;
+      }
+
+      &::before {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      &::after {
+        //  border-width: 6px 4px 0 4px;
+        top: 65%;
+        transform: rotate(180deg);
+      }
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}
+</style>

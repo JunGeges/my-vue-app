@@ -8,7 +8,8 @@
         </div>
       </template>
     </van-nav-bar>
-    <no-content></no-content>
+    <home-content></home-content>
+    <!-- <no-content></no-content> -->
     <bottom-bar></bottom-bar>
   </div>
 </template>
@@ -17,12 +18,14 @@
 // import * as api from "network/api";
 import NoContent from "components/common/NoContent/NoContent";
 import BottomBar from "components/content/BottomBar";
+import HomeContent from './childComponents/HomeContent'
 
 export default {
   name: "home",
   components: {
     NoContent,
     BottomBar,
+    HomeContent
   },
   created() {
     // console.log('home created', this)
