@@ -8,8 +8,8 @@
         </div>
       </template>
     </van-nav-bar>
-    <home-content></home-content>
-    <!-- <no-content></no-content> -->
+    <home-content v-if="funds.length"></home-content>
+    <no-content v-else></no-content>
     <bottom-bar></bottom-bar>
   </div>
 </template>
@@ -18,14 +18,23 @@
 // import * as api from "network/api";
 import NoContent from "components/common/NoContent/NoContent";
 import BottomBar from "components/content/BottomBar";
-import HomeContent from './childComponents/HomeContent'
+import HomeContent from "./childComponents/HomeContent";
+
+import { getFundGroup } from "network/cloudApi";
+import { getFundBaseInfoByJR } from "network/api";
+import { formatDate } from "common/utils";
 
 export default {
   name: "home",
+  data() {
+    return {
+      funds: [],
+    };
+  },
   components: {
     NoContent,
     BottomBar,
-    HomeContent
+    HomeContent,
   },
   created() {
     // console.log('home created', this)
@@ -60,6 +69,20 @@ export default {
     // this.$cloudbase.callFuncton({
     //   name: "user",
     // });
+    this.getFundGroup()
+      .then((res) => {
+        this.funds = res.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // 获取前一天日期
+    console.log(
+      formatDate(
+        new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
+        "yyyy-MM-dd"
+      )
+    );
   },
 
   methods: {
@@ -68,6 +91,34 @@ export default {
         name: "fundgroup",
         params: { a: 1 },
       });
+    },
+
+    // 获取基金分组
+    async getFundGroup() {
+      try {
+        const uid = "cc0c3074fe394600b922e2a8fca1f60c";
+        const groupId = "b1482569";
+        const funds = await getFundGroup(uid, groupId);
+        const fundCodes = await this.getFundCodes(funds.result);
+        return await getFundBaseInfoByJR(
+          fundCodes,
+          formatDate(
+            new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
+            "yyyy-MM-dd"
+          )
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getFundCodes(funds) {
+      let result = funds.reduce((accumulator, cur) => {
+        console.log(accumulator);
+        return accumulator + cur.fundCode + ",";
+      }, "");
+      // 去掉最后一个,
+      return result.slice(0, -1);
     },
   },
 };

@@ -20,11 +20,11 @@ const store = new Vuex.Store({
   mutations,
   actions,
   getters,
-  // plugins: [
-  //   createPersistedState({
-  //     storage: window.sessionStorage
-  //   })
-  // ]
+  plugins: [
+    createPersistedState({
+      storage: window.sessionStorage
+    })
+  ]
 
 })
 

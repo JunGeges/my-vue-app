@@ -10,16 +10,16 @@
         <div>12-15</div>
       </div>
       <div class="item">
+        <div>净值</div>
+        <div>12-14</div>
+      </div>
+      <div class="item">
         <div>当日收益</div>
         <div></div>
       </div>
       <div class="item">
         <div>持有收益</div>
         <div></div>
-      </div>
-      <div class="item">
-        <div>净值</div>
-        <div>12-14</div>
       </div>
       <div class="item">
         <div>持有收益率</div>
@@ -54,16 +54,23 @@ export default {
 <style lang="scss" scoped>
 .title-bar-container {
   display: flex;
-  width: 100vw;
-  padding: 6px 0 6px 16px;
+  // width: 100vw;
+  padding: 6px 0;
   box-sizing: border-box;
   color: #000000;
-  border-bottom: 1px solid #efefef;
+  // border-bottom: 1px solid #efefef;
+  // position: relative;
+
   .left {
     width: 30%;
-    box-shadow: 2px 0 0 rgba($color: #efefef, $alpha: 0.5);
+    position: fixed;
+    background: #fff;
+    z-index: 1;
+    // left: ;
+    // box-shadow: 2px 0 0 rgba($color: #efefef, $alpha: 0.5);
     font-size: 14px;
     font-weight: 600;
+    margin-right: 10px;
     & :last-child {
       color: #b3b3b3;
       font-size: 12px;
@@ -73,8 +80,9 @@ export default {
   .right {
     width: 70%;
     display: flex;
-    flex: 1;
-    overflow: scroll;
+    padding-left: 35%;
+    // flex: 1;
+    // overflow: scroll;
     flex-wrap: nowrap;
     font-size: 14px;
     font-weight: 600;
@@ -89,10 +97,10 @@ export default {
       & :last-child {
         color: #b3b3b3;
         font-size: 12px;
-        margin-top: 5px;
+        margin-top: 2px;
       }
       &:last-child {
-        margin-right: 20px;
+        margin-right: 10px;
       }
 
       &::after,
@@ -127,11 +135,5 @@ export default {
       }
     }
   }
-}
-
-::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  background-color: transparent;
 }
 </style>

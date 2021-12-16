@@ -115,3 +115,16 @@ export async function addFundToGroup(uid, groupId, fund) {
     ...(fund && fund)
   })
 }
+
+/**
+ * 通过uid groupId获取分组基金
+ * @param {*} uid 用户id
+ * @param {*} groupId 分组id
+ */
+export async function getFundGroup(uid, groupId) {
+  return await cloudRequest('fundGroup', {
+    funName: 'getFundGroup',
+    uid,
+    groupId
+  })
+}

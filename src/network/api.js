@@ -30,11 +30,13 @@ export async function getFundDetailByJR(code) {
 // 获取基金基础信息 支持批量查询
 /**
  * @desc ?code=xx,xx,xx 批量查询
- * @param {any} code 基金代码
+ * @param {string} code 基金代码
+ * @param {Date} startDate 开始日期
+ * @param {Date} endDate 结束日期 可选
  */
-export async function getFundBaseInfoByJR(code) {
+export async function getFundBaseInfoByJR(code, startDate, endDate) {
   return await requestJR({
-    url: `?code=${code}`
+    url: `/detail/list?code=${code}&${startDate}&${endDate}`
   })
 }
 

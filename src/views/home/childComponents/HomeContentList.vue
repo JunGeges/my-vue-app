@@ -3,8 +3,6 @@
     <home-content-item />
     <home-content-item />
     <home-content-item />
-    <home-content-item />
-    <home-content-item />
   </div>
 </template>
 
@@ -15,6 +13,15 @@ export default {
 
   data() {
     return {};
+  },
+
+  props: {
+    funds: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
   },
 
   components: {
