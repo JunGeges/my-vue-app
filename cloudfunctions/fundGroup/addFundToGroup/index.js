@@ -7,7 +7,7 @@ exports.main = async (event, context) => {
   const db = app.database()
   const _ = db.command
   const $ = db.command.aggregate
-  const { uid, groupId, costUnitPrice, fundCode, positionAmount } = event
+  const { uid, groupId, costUnitPrice, fundCode, positionShare } = event
 
   // 先判断是否是重复的基金
   const getResult = await db.collection('fund_user')
@@ -27,6 +27,6 @@ exports.main = async (event, context) => {
     .where({
       uid: _.eq(uid)
     }).update({
-      [`fundGroups.${groupId}.fundInfo`]: _.push({ costUnitPrice, fundCode, positionAmount })
+      [`fundGroups.${groupId}.fundInfo`]: _.push({ costUnitPrice, fundCode, positionShare })
     })
 };
