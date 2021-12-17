@@ -5,7 +5,7 @@ import {
 import {
   CHANGE_LOGIN_STATE
 } from 'store/mutations-type'
-import Vue from "vue";
+
 /**
  * @desc 获取版本日志
  * @returns 版本记录

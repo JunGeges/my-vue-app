@@ -11,6 +11,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     hasLoginState: null,
+    totalPositionAmount: 0,
     fundGroup: [{
       id: 0,
       groupTitle: "默认分组",
@@ -20,11 +21,11 @@ const store = new Vuex.Store({
   mutations,
   actions,
   getters,
-  plugins: [
-    createPersistedState({
-      storage: window.sessionStorage
-    })
-  ]
+  // plugins: [
+  //   createPersistedState({
+  //     storage: window.sessionStorage
+  //   })
+  // ]
 
 })
 

@@ -27,8 +27,8 @@ export class User {
     this.netWorth = 1
     // 持有收益率
     this.holdIncomeRate = 1
-    // 持仓金额
-    this.positionAmount = 1
+    // 持仓份额
+    this.positionShare = 1
     // 持仓占比
     this.positionAmountRate = 1
 

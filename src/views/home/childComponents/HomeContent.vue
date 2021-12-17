@@ -1,7 +1,7 @@
 <template>
   <div class="content-container">
     <home-content-title-bar />
-    <home-content-list />
+    <home-content-list :funds="funds" />
   </div>
 </template>
 
@@ -15,12 +15,23 @@ export default {
     return {};
   },
 
+  props: {
+    funds: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+  },
+
   components: {
     HomeContentTitleBar,
     HomeContentList,
   },
 
-  mounted() {},
+  mounted() {
+    console.log(this.funds);
+  },
 
   methods: {},
 };

@@ -1,8 +1,6 @@
 <template>
   <div>
-    <home-content-item />
-    <home-content-item />
-    <home-content-item />
+    <home-content-item v-for="(item, index) in funds" :key="index" :fund="item"/>
   </div>
 </template>
 

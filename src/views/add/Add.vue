@@ -15,7 +15,7 @@
       <van-field
         v-model="fundCount"
         type="number"
-        name="positionAmount"
+        name="positionShare"
         label="持有份额"
         placeholder="选填 持有份额"
       />

@@ -2,36 +2,36 @@
   <div class="title-bar-container">
     <div class="left">
       <div>基金名称</div>
-      <div>基金编码</div>
+      <!-- <div class="left-last">基金编码</div> -->
     </div>
     <div class="right">
       <div class="item">
         <div>估算净值</div>
-        <div>12-15</div>
+        <!-- <div class="item-last">12-15</div> -->
       </div>
       <div class="item">
         <div>净值</div>
-        <div>12-14</div>
+        <!-- <div class="item-last">12-14</div> -->
       </div>
       <div class="item">
         <div>当日收益</div>
-        <div></div>
+        <!-- <div class="item-last"></div> -->
       </div>
       <div class="item">
         <div>持有收益</div>
-        <div></div>
+        <!-- <div class="item-last"></div> -->
       </div>
       <div class="item">
         <div>持有收益率</div>
-        <div></div>
+        <!-- <div class="item-last"></div> -->
       </div>
       <div class="item">
         <div>持仓金额</div>
-        <div>持仓成本</div>
+        <!-- <div class="item-last">持仓成本</div> -->
       </div>
       <div class="item">
         <div>持仓占比</div>
-        <div></div>
+        <!-- <div class="item-last"></div> -->
       </div>
     </div>
   </div>
@@ -71,7 +71,7 @@ export default {
     font-size: 14px;
     font-weight: 600;
     margin-right: 10px;
-    & :last-child {
+    .left-last {
       color: #b3b3b3;
       font-size: 12px;
       margin-top: 5px;
@@ -94,7 +94,7 @@ export default {
       margin-right: 25px;
       flex-shrink: 0;
       position: relative;
-      & :last-child {
+      .item-last {
         color: #b3b3b3;
         font-size: 12px;
         margin-top: 2px;
