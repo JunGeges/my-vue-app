@@ -2,36 +2,36 @@
   <div class="content-item-container">
     <div class="left">
       <div class="left-first">{{ fund.name }}</div>
-      <!-- <div class="left-last">估算 {{ fund.code }}</div> -->
+      <div class="left-last">估算 {{ fund.code }}</div>
     </div>
     <div class="right">
       <div class="item">
         <div class="item-first">{{ fund.expectGrowth | format }}%</div>
-        <!-- <div class="item-last">{{ fund.expectWorth }}</div> -->
+        <div class="item-last">{{ fund.expectWorth }}</div>
       </div>
       <div class="item">
         <div class="item-first">{{ fund.dayGrowth | format }}%</div>
-        <!-- <div class="item-last">{{ fund.netWorth }}</div> -->
+        <div class="item-last">{{ fund.netWorth }}</div>
       </div>
       <div class="item">
         <div class="item-first">{{ dailyIncome | format }}</div>
-        <!-- <div class="item-last"></div> -->
+        <div class="item-last"></div>
       </div>
       <div class="item">
         <div class="item-first">{{ holdIncome | format }}</div>
-        <!-- <div class="item-last"></div> -->
+        <div class="item-last"></div>
       </div>
       <div class="item">
         <div class="item-first">{{ holdIncomeRate | format }}%</div>
-        <!-- <div class="item-last"></div> -->
+        <div class="item-last"></div>
       </div>
       <div class="item">
         <div class="item-first">{{ positionAmount }}</div>
-        <!-- <div class="item-last">{{ fund.costUnitPrice }}</div> -->
+        <div class="item-last">{{ fund.costUnitPrice }}</div>
       </div>
       <div class="item">
         <div class="item-first">2%</div>
-        <!-- <div class="item-last"></div> -->
+        <div class="item-last"></div>
       </div>
     </div>
   </div>
@@ -58,36 +58,40 @@ export default {
   computed: {
     // 当日收益
     dailyIncome() {
-      let dailyIncome =
-        (this.fund.expectWorth - this.fund.netWorth) * this.fund.positionShare;
+      const fund = this.fund;
+      if (!fund.costUnitPrice || !fund.positionShare) return "--";
+      let dailyIncome = (fund.expectWorth - fund.netWorth) * fund.positionShare;
       dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;
     },
 
     // 持有收益
     holdIncome() {
+      const fund = this.fund;
+      if (!fund.costUnitPrice || !fund.positionShare) return "--";
       let holdIncome = (
-        (this.fund.netWorth - this.fund.costUnitPrice) *
-        this.fund.positionShare
+        (fund.netWorth - fund.costUnitPrice) *
+        fund.positionShare
       ).toFixed(2);
       return holdIncome;
     },
 
     // 持有收益率
     holdIncomeRate() {
+      const fund = this.fund;
+      if (!fund.costUnitPrice || !fund.positionShare) return "--";
       let holdIncomeRate =
-        (this.holdIncome /
-          (this.fund.costUnitPrice * this.fund.positionShare)) *
-        100;
+        (this.holdIncome / (fund.costUnitPrice * fund.positionShare)) * 100;
       holdIncomeRate = holdIncomeRate.toFixed(2);
       return holdIncomeRate;
     },
 
     // 持仓金额
     positionAmount() {
+      const fund = this.fund;
+      if (!fund.costUnitPrice || !fund.positionShare) return "--";
       let positionAmount =
-        this.fund.costUnitPrice * this.fund.positionShare +
-        parseFloat(this.holdIncome);
+        fund.costUnitPrice * fund.positionShare + parseFloat(this.holdIncome);
       positionAmount = positionAmount.toFixed(2);
       return positionAmount;
     },
@@ -100,6 +104,9 @@ export default {
   },
 
   mounted() {
+    if (this.dailyIncome.indexOf("--") === -1) {
+      this.$emit("mid", parseFloat(this.dailyIncome));
+    }
     // console.log(this.positionAmount);
     // this.$store.commit({
     //   type: CALC_POSITION_AMOUNT,
@@ -119,6 +126,7 @@ export default {
   padding: 6px 0;
   box-sizing: border-box;
   color: #000000;
+  margin-bottom: 3px;
   // border-bottom: 1px solid #efefef;
   .left {
     width: 30%;

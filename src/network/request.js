@@ -4,7 +4,7 @@ import Vue from 'vue';
 export function requestJR(config) {
   const instanceJR = axios.create({
     baseURL: 'https://api.doctorxiong.club/v1/fund',
-    timeout: 2000,
+    timeout: 5000,
   })
 
   //请求拦截

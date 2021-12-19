@@ -1,6 +1,11 @@
 <template>
   <div>
-    <home-content-item v-for="(item, index) in funds" :key="index" :fund="item"/>
+    <home-content-item
+      v-for="(item, index) in funds"
+      :key="index"
+      :fund="item"
+      @mid="getData"
+    />
   </div>
 </template>
 
@@ -10,7 +15,9 @@ export default {
   name: "MyVueAppHomeContentList",
 
   data() {
-    return {};
+    return {
+      allAmounts: 0,
+    };
   },
 
   props: {
@@ -28,7 +35,13 @@ export default {
 
   mounted() {},
 
-  methods: {},
+  methods: {
+    getData(e) {
+      // if(Number(e) === NaN) return
+      this.allAmounts += e;
+      console.log(this.allAmounts);
+    },
+  },
 };
 </script>
 

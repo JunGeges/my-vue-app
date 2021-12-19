@@ -2,36 +2,36 @@
   <div class="title-bar-container">
     <div class="left">
       <div>基金名称</div>
-      <!-- <div class="left-last">基金编码</div> -->
+      <div class="left-last">基金编码</div>
     </div>
     <div class="right">
       <div class="item">
         <div>估算净值</div>
-        <!-- <div class="item-last">12-15</div> -->
+        <div class="item-last">12-15</div>
       </div>
       <div class="item">
         <div>净值</div>
-        <!-- <div class="item-last">12-14</div> -->
+        <div class="item-last">12-14</div>
       </div>
       <div class="item">
         <div>当日收益</div>
-        <!-- <div class="item-last"></div> -->
+        <div class="item-last"></div>
       </div>
       <div class="item">
         <div>持有收益</div>
-        <!-- <div class="item-last"></div> -->
+        <div class="item-last"></div>
       </div>
       <div class="item">
         <div>持有收益率</div>
-        <!-- <div class="item-last"></div> -->
+        <div class="item-last"></div>
       </div>
       <div class="item">
         <div>持仓金额</div>
-        <!-- <div class="item-last">持仓成本</div> -->
+        <div class="item-last">持仓成本</div>
       </div>
       <div class="item">
         <div>持仓占比</div>
-        <!-- <div class="item-last"></div> -->
+        <div class="item-last"></div>
       </div>
     </div>
   </div>

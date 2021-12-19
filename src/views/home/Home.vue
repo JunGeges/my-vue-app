@@ -45,7 +45,7 @@ export default {
     this.getFundGroup()
       .then((res) => {
         this.funds = res;
-        console.log({res})
+        console.log({ res });
       })
       .catch((error) => {
         console.log(error);
@@ -65,6 +65,7 @@ export default {
       try {
         const uid = "cc0c3074fe394600b922e2a8fca1f60c";
         const groupId = "b1482569";
+        // 排除周末 往上推日期
         const startDate = formatDate(
           new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
           "yyyy-MM-dd"
@@ -80,15 +81,20 @@ export default {
           startDate,
           endDate
         );
+        console.log(queryFundsInfo)
         return this.handle(queryFundsInfo.data, selfFunds.result);
       } catch (error) {
         console.log(error);
       }
     },
 
+    // 把数据库存的信息拼到接口获取的基金对象中
     handle(fundsInfoArr, source) {
       delete source.fundCode;
       return fundsInfoArr.map((item, index) => {
+        if (this.isWeekend()) {
+          item.expectWorth = item.netWorthData[item.netWorthData.length-2][1]
+        }
         return Object.assign(item, source[index]);
       });
     },
@@ -101,6 +107,12 @@ export default {
       }, "");
       // 去掉最后一个,
       return result.slice(0, -1);
+    },
+
+    // 获取所有基金的总金额
+    // 是否是周末
+    isWeekend() {
+      return [0, 6].includes(new Date().getDay());
     },
   },
 };
