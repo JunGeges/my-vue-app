@@ -29,3 +29,135 @@ npm i -g @cloudbase/cli
 
 `持仓占比 = 持仓金额/持仓总金额`
 
+<!-- 批量获取基金 -->
+https://fundmobapi.eastmoney.com/FundMNewApi/FundMNFInfo?pageIndex=1&pageSize=50&plat=Android&appType=ttjj&product=EFund&Version=1&deviceid=Wap&Fcodes=011103%2C011102%2C161032
+
+<!-- 获取近20天净值 -->
+https://fundmobapi.eastmoney.com/FundMApi/FundNetDiagram.ashx?FCODE=011103&RANGE="y"&deviceid=Wap&plat=Wap&product=EFund&version=2.0.0&_=1640078754203
+
+```
+{
+    "status": 0,
+    "data": {
+        "_id": "61bfee5c81337a0001d9fe19",
+        "userId": "61bfee0e0d111e0001bf19dd",
+        "config": {
+            "config": {
+                "v": "1.8.3",
+                "showBase": true,
+                "showTag": true,
+                "showHP": true,
+                "upIsRed": false,
+                "downIsSafe": false,
+                "simpleMode": false,
+                "weappColumnOrder": [
+                    "jz",
+                    "gz",
+                    "sy",
+                    "syAll",
+                    "syAllL",
+                    "moneyAfter"
+                ]
+            },
+            "baseCode": "",
+            "fundGroup": [
+                {
+                    "name": "默认分组",
+                    "fundCode": [
+                        "011103",
+                        "011102",
+                        "161032",
+                        "161723"
+                    ],
+                    "fundAmount": {
+                        "161032": 1000,
+                        "202236": 1000,
+                        "205302": 1,
+                        "001110": 51712.69,
+                        "011103": 1560,
+                        "011102": 600,
+                        "032025": 1000
+                    },
+                    "fundCost": {
+                        "161032": 1.2,
+                        "202236": 1.23,
+                        "205302": 1,
+                        "001110": 2.0275,
+                        "011103": 3.2,
+                        "011102": 3.2,
+                        "032025": 1.2
+                    }
+                },
+                {
+                    "name": "新分组223",
+                    "fundCode": [
+                        "011103",
+                        "161031",
+                        "519674"
+                    ],
+                    "fundAmount": {
+                        "161031": 388,
+                        "519674": 989,
+                        "011103": 100,
+                        "032021": 100
+                    },
+                    "fundCost": {
+                        "161031": 0.78,
+                        "519674": 7.898,
+                        "011103": 1.5
+                    }
+                },
+                {
+                    "name": "新分组112",
+                    "fundCode": [],
+                    "fundAmount": {},
+                    "fundCost": {}
+                },
+                {
+                    "name": "新分组·",
+                    "fundCode": [
+                        "011103"
+                    ],
+                    "fundAmount": {
+                        "011103": 1741.09
+                    },
+                    "fundCost": {
+                        "011103": 1.6639
+                    }
+                },
+                {
+                    "name": "新分组",
+                    "fundCode": [],
+                    "fundAmount": {},
+                    "fundCost": {}
+                }
+            ],
+            "fundCode": [
+                "011103",
+                "011102",
+                "161032",
+                "161723"
+            ],
+            "fundAmount": {
+                "161032": 1000,
+                "202236": 1000,
+                "205302": 1,
+                "001110": 51712.69,
+                "011103": 1560,
+                "011102": 600,
+                "032025": 1000
+            },
+            "fundCost": {
+                "161032": 1.2,
+                "202236": 1.23,
+                "205302": 1,
+                "001110": 2.0275,
+                "011103": 3.2,
+                "011102": 3.2,
+                "032025": 1.2
+            }
+        },
+        "createTime": 1640078338979
+    }
+}
+```

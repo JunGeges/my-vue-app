@@ -42,14 +42,14 @@ export default {
 
   // http://fund.eastmoney.com/pingzhongdata/001186.js?v=20160518155842
   mounted() {
-    this.getFundGroup()
-      .then((res) => {
-        this.funds = res;
-        console.log({ res });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // this.getFundGroup()
+    //   .then((res) => {
+    //     this.funds = res;
+    //     console.log({ res });
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   },
 
   methods: {
@@ -81,7 +81,7 @@ export default {
           startDate,
           endDate
         );
-        console.log(queryFundsInfo)
+        console.log(queryFundsInfo);
         return this.handle(queryFundsInfo.data, selfFunds.result);
       } catch (error) {
         console.log(error);
@@ -93,7 +93,7 @@ export default {
       delete source.fundCode;
       return fundsInfoArr.map((item, index) => {
         if (this.isWeekend()) {
-          item.expectWorth = item.netWorthData[item.netWorthData.length-2][1]
+          item.expectWorth = item.netWorthData[item.netWorthData.length - 2][1];
         }
         return Object.assign(item, source[index]);
       });

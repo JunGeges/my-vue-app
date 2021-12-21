@@ -32,6 +32,16 @@ export class User {
     // 持仓占比
     this.positionAmountRate = 1
 
+    this.columnOrder = [
+      "gz",
+      "sy",
+      "syAll",
+      "jz",
+      "syAllL",
+      "moneyAfter",
+      "percentage"
+    ]
+
     // 分组
     this.fundGroups = {
       [Math.random().toString(16).slice(2, 10)]: {
