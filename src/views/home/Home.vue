@@ -42,14 +42,14 @@ export default {
 
   // http://fund.eastmoney.com/pingzhongdata/001186.js?v=20160518155842
   mounted() {
-    // this.getFundGroup()
-    //   .then((res) => {
-    //     this.funds = res;
-    //     console.log({ res });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    this.getFundGroup()
+      .then((res) => {
+        this.funds = res;
+        console.log({ res });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
 
   methods: {
@@ -102,7 +102,6 @@ export default {
     async getFundCodes(funds) {
       console.log({ funds });
       let result = funds.reduce((accumulator, cur) => {
-        console.log(accumulator);
         return accumulator + cur.fundCode + ",";
       }, "");
       // 去掉最后一个,

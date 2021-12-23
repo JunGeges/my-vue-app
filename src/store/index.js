@@ -12,11 +12,7 @@ const store = new Vuex.Store({
   state: {
     hasLoginState: null,
     totalPositionAmount: 0,
-    fundGroup: [{
-      id: 0,
-      groupTitle: "默认分组",
-      groupCount: 1,
-    }],
+    groupIndex: 0
   },
   mutations,
   actions,

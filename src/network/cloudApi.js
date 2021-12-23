@@ -38,12 +38,11 @@ export async function singInOrUp(email, password, isLogin) {
         // 存数据库
         const {
           email,
-          createTime,
           uid
         } = loginState.user
-        console.log('click', email, password, createTime, uid)
+        // console.log('click', email, password, uid)
         cloudRequest('user', {
-          ...new User(email, password, uid, createTime),
+          ...new User(email, password, uid),
           funName: 'insertUser'
         })
       } else {
