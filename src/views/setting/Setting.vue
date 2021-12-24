@@ -16,8 +16,8 @@
       v-else
       :border="false"
       size="large"
-      :title="hasLoginState.user.email"
-      label="注册时间:2021-12-06 15:19"
+      :title="userInfo.email"
+      :label="'注册时间:' + userInfo.crateTime"
       label-class="label-css"
       title-class="title-css"
       center
@@ -34,28 +34,28 @@
     <van-cell-group>
       <van-cell size="large" title="简洁模式" :border="false">
         <template #right-icon>
-          <van-switch active-color="#2895fc" v-model="checked1" size="24" />
+          <van-switch active-color="#2895fc" v-model="simpleMode" size="24" />
         </template>
       </van-cell>
       <van-cell size="large" title="绿涨红跌" :border="false">
         <template #right-icon>
-          <van-switch active-color="#2895fc" v-model="checked2" size="24" />
+          <van-switch active-color="#2895fc" v-model="upIsRed" size="24" />
         </template>
       </van-cell>
       <van-cell size="large" title="无障碍模式" :border="false">
         <template #right-icon>
-          <van-switch active-color="#2895fc" v-model="checked3" size="24" />
+          <van-switch active-color="#2895fc" v-model="downIsSafe" size="24" />
         </template>
       </van-cell>
     </van-cell-group>
     <van-cell size="large" title="显示估算标签" :border="false">
       <template #right-icon>
-        <van-switch active-color="#2895fc" v-model="checked4" size="24" />
+        <van-switch active-color="#2895fc" v-model="showTag" size="24" />
       </template>
     </van-cell>
     <van-cell size="large" title="显示横屏切换按钮" :border="false">
       <template #right-icon>
-        <van-switch active-color="#2895fc" v-model="checked5" size="24" />
+        <van-switch active-color="#2895fc" v-model="showHP" size="24" />
       </template>
     </van-cell>
     <van-cell
@@ -87,32 +87,45 @@
 
 <script>
 import { mapState } from "vuex";
-import { singOut } from "network/cloudApi";
+import { singOut, getUserInfo } from "network/cloudApi";
 export default {
   name: "MyVueAppSetting",
 
   data() {
     return {
-      checked1: false,
-      checked2: false,
-      checked3: false,
-      checked4: false,
-      checked5: false,
+      simpleMode: false,
+      upIsRed: false,
+      downIsSafe: false,
+      showTag: false,
+      showHP: false,
       showSingOut: false,
       actions: [{ name: "退出登录", color: "#ff605c" }],
       hasLoginState: null,
+      userInfo: null,
     };
   },
 
   mounted() {
-    console.dir(this.hasLoginState);
     this.hasLoginState = this.$cloudbase.auth().hasLoginState();
+    // 获取userInfo
+    getUserInfo(this.uid).then((res) => {
+      this.userInfo = res.result;
+      console.log(this.userInfo);
+      const { simpleMode, upIsRed, downIsSafe, showTag, showHP } =
+        this.userInfo.config;
+      this.simpleMode = simpleMode;
+      this.upIsRed = upIsRed;
+      this.downIsSafe = downIsSafe;
+      this.showTag = showTag;
+      this.showHP = showHP;
+    });
   },
 
   computed: {
     // ...mapState({
     //   hasLoginState: "hasLoginState", // 值为字符串等同于 state => state.hasLoginState  也可以写成  state => state.hasLoginState
     // }),
+    ...mapState(["uid"]),
   },
 
   methods: {

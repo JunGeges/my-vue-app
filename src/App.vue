@@ -27,7 +27,6 @@ export default {
     } catch (err) {
       console.log(err);
     }
-    // localStorage.removeItem("list");
   },
 
   methods: {},

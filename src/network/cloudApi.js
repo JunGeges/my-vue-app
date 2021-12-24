@@ -20,7 +20,7 @@ export async function getVersionLog() {
 // 登录/注册
 export async function singInOrUp(email, password, isLogin) {
   const API = isLogin === 0 ? 'signInWithEmailAndPassword' : 'signUpWithEmailAndPassword'
-  this.$cloudbase
+  return this.$cloudbase
     .auth({
       persistence: "local",
     })[API](email, password)
@@ -33,18 +33,17 @@ export async function singInOrUp(email, password, isLogin) {
           type: CHANGE_LOGIN_STATE,
           hasLoginState: loginState
         });
-
-        console.log('loginState-----', loginState.user.email)
         // 存数据库
         const {
           email,
           uid
         } = loginState.user
-        // console.log('click', email, password, uid)
+        // console.log(uid)
         cloudRequest('user', {
           ...new User(email, password, uid),
           funName: 'insertUser'
         })
+        return uid
       } else {
         // 发送邮件成功 需要登录邮箱点链接 激活账号
         this.$toast({
@@ -125,5 +124,25 @@ export async function getFundGroup(uid, groupId) {
     funName: 'getFundGroup',
     uid,
     groupId
+  })
+}
+
+export async function getUserInfo(uid) {
+  return await cloudRequest('user', {
+    funName: 'getUserInfo',
+    uid
+  })
+}
+
+/**
+ * 
+ * @param {*} uid 
+ * @param {*} config 自定义列
+ */
+export async function upColumnConfig(uid, config) {
+  return await cloudRequest('user', {
+    funName: 'upColumnConfig',
+    uid,
+    config
   })
 }

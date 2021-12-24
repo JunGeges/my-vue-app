@@ -1,5 +1,5 @@
 export class User {
-  constructor(email, password, uid, crateTime) {
+  constructor(email, password, uid) {
     this.email = email
     this.password = password
     // uuid

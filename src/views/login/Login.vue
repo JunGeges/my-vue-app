@@ -50,6 +50,7 @@
 
 <script>
 import { singInOrUp } from "network/cloudApi";
+import { SET_UID } from "store/mutations-type";
 export default {
   name: "MyVueAppLogin",
 
@@ -105,8 +106,13 @@ export default {
     onSubmit() {
       singInOrUp
         .call(this, this.email, this.password, this.isLogin)
-        .then(() => {
+        .then((res) => {
           if (this.isLogin === 1) this.isLogin = 0;
+          if (res)
+            this.$store.commit({
+              type: SET_UID,
+              uid: res,
+            });
         });
     },
 

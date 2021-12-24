@@ -8,8 +8,12 @@
       <div>显示</div>
     </div>
     <div class="column-content-box">
-      <div class="ccb-item" v-for="(item, index) in columns" :key="item.id">
-        <span>{{ item.columnTitle }}</span>
+      <div
+        class="ccb-item"
+        v-for="(item, index) in Object.values(columns)"
+        :key="index"
+      >
+        <span>{{ item | format }}</span>
         <van-icon
           name="down"
           :color="index === 0 ? '#f5f5f5' : ''"
@@ -29,8 +33,12 @@
     </div>
     <!-- 需要隐藏的列 -->
     <div v-if="hideColumns.length" class="hide-column-box">
-      <div class="hcb-item" v-for="(item, index) in hideColumns" :key="item.id">
-        <span>{{ item.columnTitle }}</span>
+      <div
+        class="hcb-item"
+        v-for="(item, index) in Object.values(hideColumns)"
+        :key="index"
+      >
+        <span>{{ item | format }}</span>
         <van-icon
           class-prefix="my-icon"
           name="yanjing"
@@ -46,25 +54,47 @@
 </template>
 
 <script>
+import { getUserInfo, upColumnConfig } from "network/cloudApi";
 export default {
   name: "MyVueAppSetCustomColumn",
 
   data() {
     return {
-      columns: [
-        { id: "jz", columnTitle: "净值" },
-        { id: "gsjz", columnTitle: "估算净值" },
-        { id: "drsy", columnTitle: "当日收益" },
-        { id: "cysy", columnTitle: "持有收益" },
-        { id: "cysyl", columnTitle: "持有收益率" },
-        { id: "ccje", columnTitle: "持仓金额" },
-        { id: "cczb", columnTitle: "持仓占比" },
-      ],
+      columns: [],
       hideColumns: [],
     };
   },
 
-  mounted() {},
+  filters: {
+    format(value) {
+      return Object.values(value)[0];
+    },
+  },
+
+  mounted() {
+    let configObj = {
+      jz: "净值",
+      gz: "估算净值",
+      sy: "当日收益",
+      syAll: "持有收益",
+      syAllL: "持有收益率",
+      moneyAfter: "持仓金额",
+      percentage: "持仓占比",
+    };
+    getUserInfo(this.$store.state.uid).then((res) => {
+      this.columns = res.result.config.columnOrder.map((item) => {
+        return { [item]: configObj[item] };
+      });
+      if (this.columns.length) {
+        console.log(this.columns);
+        console.log(
+          Object.keys(configObj).filter(
+            (x) => !new Set(Object.keys(this.columns)).has(x)
+          )
+        );
+      }
+    });
+  },
 
   methods: {
     back() {
@@ -78,10 +108,8 @@ export default {
 
     // splice 会更新数组 不用返回
     frontMove: (arr, index) => {
-      if (index < 1) return arr;
       console.log("0", arr[index]);
       arr[index] = arr.splice(index - 1, 1, arr[index])[0];
-      console.log("1", arr[index]);
       return arr;
     },
 
@@ -104,7 +132,13 @@ export default {
       (type === "show" ? this.hideColumns : this.columns).push(handleColumnObj);
     },
 
-    saveEdit() {},
+    saveEdit() {
+      const upConfig = this.columns.map((item) => {
+        return Object.keys(item)[0];
+      });
+      upColumnConfig(this.$store.state.uid, upConfig);
+      console.log(upConfig);
+    },
   },
 };
 </script>

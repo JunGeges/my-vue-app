@@ -10,6 +10,8 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    uid: '',
+    userInfo: null,
     hasLoginState: null,
     totalPositionAmount: 0,
     groupIndex: 0
