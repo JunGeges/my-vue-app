@@ -86,63 +86,73 @@ function isLogin() {
 
 /**
  * @desc 新增分组
- * @param {String} uid uid用户id
- * @param {Array | {}} funds 可以是基金数组和基金对象
+ * @param {Array} fundGroup 可以是基金数组和基金对象
  * @returns 
  */
-export async function addFundGroup(uid, funds) {
+export async function addFundGroup(fundGroup) {
   return await cloudRequest('fundGroup', {
     funName: 'addFundGroup',
-    uid,
-    funds
+    fundGroup
   })
 }
 
 /**
  * 添加基金到分组
- * @param {string} uid 用户id
- * @param {string} groupId 分组id 
+ * @param {string} groupIndex 分组索引
  * @param {{}} fund 添加的基金对象信息 
  */
-export async function addFundToGroup(uid, groupId, fund) {
+export async function addFundToGroup(groupIndex, fund) {
   if (!fund) return Promise.reject('参数错误~')
+  console.log({
+    groupIndex
+  })
   return await cloudRequest('fundGroup', {
     funName: 'addFundToGroup',
-    uid,
-    groupId,
+    groupIndex,
     ...(fund && fund)
   })
 }
 
 /**
- * 通过uid groupId获取分组基金
- * @param {*} uid 用户id
+ * 通过groupId获取分组基金
  * @param {*} groupId 分组id
  */
-export async function getFundGroup(uid, groupId) {
+export async function getFundGroup(groupId) {
   return await cloudRequest('fundGroup', {
     funName: 'getFundGroup',
-    uid,
     groupId
   })
 }
 
-export async function getUserInfo(uid) {
-  return await cloudRequest('user', {
-    funName: 'getUserInfo',
-    uid
+/**
+ * 根据索引删除分组
+ * @param {Number} deleteIndex 
+ * @returns 
+ */
+export async function deleteFundGroup(deleteIndex) {
+  return await cloudRequest('fundGroup', {
+    funName: 'deleteFundGroup',
+    deleteIndex
   })
 }
 
 /**
- * 
- * @param {*} uid 
- * @param {*} config 自定义列
+ * 查询用户信息
+ * @returns 
  */
-export async function upColumnConfig(uid, config) {
+export async function getUserInfo() {
+  return await cloudRequest('user', {
+    funName: 'getUserInfo'
+  })
+}
+
+/**
+ * 配置自定义列
+ * @param {Array} config 自定义列
+ */
+export async function upColumnConfig(config) {
   return await cloudRequest('user', {
     funName: 'upColumnConfig',
-    uid,
     config
   })
 }

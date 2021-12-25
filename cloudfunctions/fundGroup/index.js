@@ -3,6 +3,7 @@ const getFundGroup = require('./getFundGroup/index')
 const addFundGroup = require('./addFundGroup/index')
 const addFundToGroup = require('./addFundToGroup/index')
 
+
 exports.main = async (event, context) => {
   const { funName } = event
   cloud.init({
@@ -10,9 +11,9 @@ exports.main = async (event, context) => {
   });
 
   const funs = {
-    getFundGroup, // 获取基金分组
+    getFundGroup, // 查基金分组
     addFundGroup, //添加基金分组
-    addFundToGroup //添加基金到分组
+    addFundToGroup, //添加基金到分组
   }
 
   // 入口

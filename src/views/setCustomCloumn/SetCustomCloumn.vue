@@ -81,17 +81,16 @@ export default {
       moneyAfter: "持仓金额",
       percentage: "持仓占比",
     };
-    getUserInfo(this.$store.state.uid).then((res) => {
+
+    getUserInfo().then((res) => {
       this.columns = res.result.config.columnOrder.map((item) => {
         return { [item]: configObj[item] };
       });
       if (this.columns.length) {
-        console.log(this.columns);
-        console.log(
-          Object.keys(configObj).filter(
-            (x) => !new Set(Object.keys(this.columns)).has(x)
-          )
-        );
+        Object.keys(configObj).filter((item, index) => {
+          const cloumnsObj = Object.values(this.columns)[index];
+          if (!cloumnsObj) this.hideColumns.push({ [item]: configObj[item] });
+        });
       }
     });
   },
@@ -136,7 +135,7 @@ export default {
       const upConfig = this.columns.map((item) => {
         return Object.keys(item)[0];
       });
-      upColumnConfig(this.$store.state.uid, upConfig);
+      upColumnConfig(upConfig);
       console.log(upConfig);
     },
   },

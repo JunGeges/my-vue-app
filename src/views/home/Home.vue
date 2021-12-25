@@ -21,7 +21,11 @@ import BottomBar from "components/content/BottomBar";
 import HomeContent from "./childComponents/HomeContent";
 
 import { getFundGroup, getUserInfo } from "network/cloudApi";
-import { getFundBaseInfoByJR } from "network/api";
+import {
+  getFundBaseInfoByJR,
+  getFundDetail,
+  getFundDetailByTT,
+} from "network/api";
 import { formatDate } from "common/utils";
 
 export default {
@@ -42,13 +46,17 @@ export default {
 
   // http://fund.eastmoney.com/pingzhongdata/001186.js?v=20160518155842
   mounted() {
-    getUserInfo(this.$store.state.uid)
-      .then((res) => {
-        console.log(res.result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // getUserInfo()
+    //   .then((res) => {
+    //     console.log(res.result);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    getFundDetail("011103,011102");
+    // this.timeout = setInterval(() => {
+    //   getFundDetail("011103,011102");
+    // }, 5000);
     // this.getFundGroup()
     //   .then((res) => {
     //     this.funds = res;
@@ -57,6 +65,11 @@ export default {
     //   .catch((error) => {
     //     console.log(error);
     //   });
+  },
+
+  beforeDestroy() {
+    console.log("beforeDestroy");
+    clearInterval(this.timeout);
   },
 
   methods: {

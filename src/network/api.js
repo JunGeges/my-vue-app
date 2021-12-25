@@ -2,6 +2,23 @@ import {
   requestJR,
   requestTT
 } from "./request";
+import axios from 'axios'
+
+export async function getFundDetail(Fcodes) {
+  return await axios({
+    url: 'https://fundmobapi.eastmoney.com/FundMNewApi/FundMNFInfo',
+    params: {
+      pageIndex: 1,
+      pageSize: 50,
+      plat: 'Android',
+      appType: 'ttjj',
+      product: 'EFund',
+      Version: 1,
+      deviceid: 'Wap',
+      Fcodes
+    }
+  })
+}
 
 // 获取基金详细信息
 export async function getFundDetailByTT(code) {

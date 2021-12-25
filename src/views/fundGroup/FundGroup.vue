@@ -5,14 +5,14 @@
       <!-- item -->
       <div
         class="group-item"
-        :class="{ 'active-border': activeIndex === index }"
         v-for="(item, index) in tempFundGroup"
+        :class="{ 'active-border': activeIndex === index }"
         :key="index"
         @click="selectGroupItem(index)"
       >
-        <div class="left">{{ item.groupTitle }}</div>
+        <div class="left">{{ item.name }}</div>
         <div class="right">
-          包含基金<span>{{ item.groupCount }}{{ item.id }}</span
+          包含基金<span>{{ item.fundCode.length }}{{ item.id }}</span
           >支
         </div>
       </div>
@@ -25,15 +25,23 @@
         :key="index"
       >
         <van-field
-          :value="item.groupTitle"
-          v-model="item.groupTitle"
-          :style="{ opacity: index === 0 ? 0.6 : 1 }"
+          :value="item.name"
+          v-model="item.name"
+          :style="{ opacity: index === 0 ? 0.4 : 1 }"
           :readonly="index === 0"
         >
           <template #right-icon>
             <div class="icons">
-              <van-icon name="down" color="#979797" @click="downGroup(index)" />
-              <van-icon name="down" color="#979797" @click="upGroup(index)" />
+              <van-icon
+                name="down"
+                color="#979797"
+                @click="move(index, 'down')"
+              />
+              <van-icon
+                name="down"
+                color="#979797"
+                @click="move(index, 'up')"
+              />
               <van-icon
                 class-prefix="my-icon"
                 name="delete"
@@ -51,7 +59,7 @@
     <div class="save-edit-box">
       <div
         class="btn"
-        :class="{ 'save-btn': isEditing === 1, 'edit-btn': isEditing === 0 }"
+        :class="[isEditing === 1 ? 'save-btn' : 'edit-btn']"
         @click="handleEditGroup"
       >
         {{ isEditing === 0 ? "分组管理" : "保存" }}
@@ -62,6 +70,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { getUserInfo, addFundGroup } from "network/cloudApi";
 export default {
   name: "MyVueAppFundGroup",
 
@@ -75,17 +84,14 @@ export default {
   },
 
   computed: {
-    ...mapState,
+    ...mapState(["groupIndex"]),
   },
 
   mounted() {
-    console.log(
-      `%c ${this.$store.state.fundGroup}`,
-      "font-size:40px;color:red"
-    );
-    // 临时存储fundGroup
-    this.tempFundGroup = this.fundGroup = this.$store.state.fundGroup;
-    console.log(this.$route);
+    this.activeIndex = this.groupIndex;
+    getUserInfo().then((res) => {
+      this.tempFundGroup = this.fundGroup = res.result.fundGroups;
+    });
   },
 
   methods: {
@@ -101,7 +107,6 @@ export default {
 
     // 删除分组
     deleteGroup(index) {
-      console.log("deleteGroup");
       if (index === 0) return;
       this.$dialog
         .confirm({
@@ -110,7 +115,7 @@ export default {
           message: "删除分组将删除分组内基金,确认删除?",
         })
         .then(() => {
-          console.log("confirm");
+          this.tempFundGroup.splice(index, 1);
         })
         .catch(() => {
           console.log("cancel");
@@ -119,8 +124,11 @@ export default {
 
     handleEditGroup() {
       this.isEditing = this.isEditing === 0 ? 1 : 0;
-      // 编辑还是保存
-      // if(this.isEditing)
+      console.log(this.isEditing);
+      // 保存分组
+      if (this.isEditing === 0) {
+        addFundGroup(this.tempFundGroup).then(console.log);
+      }
     },
 
     // 选中某个组
@@ -134,11 +142,39 @@ export default {
         return this.$toast("最多添加5个分组~");
       this.isEditing = 1;
       this.tempFundGroup.push({
-        id: this.tempFundGroup[this.tempFundGroup.length - 1].id + 1,
-        groupTitle: "新分组",
-        groupCount: 0,
+        name: "新分组",
+        fundCode: [],
+        fundAmount: {},
+        fundCost: {},
       });
       //
+      console.log(this.tempFundGroup);
+    },
+
+    move(index, flag) {
+      // 默认分组不编辑 最后一个不能往下移动
+      const fundGroup = this.tempFundGroup;
+      if (
+        index === 0 ||
+        (index === fundGroup.length - 1 && flag === "down") ||
+        (index === 1 && flag === "up")
+      )
+        return;
+      console.log("move");
+      if (flag === "up") return this.frontMove(fundGroup, index);
+      this.backMove(fundGroup, index);
+    },
+
+    // splice 会更新数组 不用返回
+    frontMove: (arr, index) => {
+      arr[index] = arr.splice(index - 1, 1, arr[index])[0];
+      return arr;
+    },
+
+    backMove: (arr, index) => {
+      if (index >= arr.length - 1) return arr;
+      arr[index] = arr.splice(index + 1, 1, arr[index])[0];
+      return arr;
     },
 
     back() {

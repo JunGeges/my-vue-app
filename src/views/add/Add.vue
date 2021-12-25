@@ -44,6 +44,7 @@
 const MAXLENGTH = 6;
 import { addFundToGroup } from "network/cloudApi";
 import { getFundDetailByTT } from "network/api";
+import { mapState } from "vuex";
 export default {
   name: "MyVueAppAdd",
 
@@ -75,6 +76,8 @@ export default {
     isCanSave() {
       return this.fundCode.length > 0;
     },
+
+    ...mapState(["groupIndex"]),
   },
 
   mounted() {},
@@ -87,13 +90,12 @@ export default {
     async onSubmit(values) {
       console.log("submit", values);
       try {
-        const uid = "cc0c3074fe394600b922e2a8fca1f60c";
-        const groupId = "b1482569";
+        const groupIndex = this.groupIndex;
         // 先查出来是否有该基金
         await getFundDetailByTT(values.fundCode);
         // 插入分组中 需要参数 分组id
-        let result = await addFundToGroup(uid, groupId, values);
-        console.log(result);
+        let result = await addFundToGroup(groupIndex, values);
+        console.log("++++++++++", result);
         if (result.result?.updated === 1) {
           return this.$toast({
             message: "添加成功~",

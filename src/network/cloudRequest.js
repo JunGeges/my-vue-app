@@ -1,4 +1,5 @@
 import Vue from "vue"
+import store from 'store'
 
 /**
  * 封装callFunction
@@ -14,7 +15,9 @@ export default async function cloudRequest(fun, args) {
     name: fun,
     // args 存在就解构args
     ...(args && {
-      data: args
+      data: Object.assign(args, {
+        uid: store.state.uid
+      })
     })
   })
 }

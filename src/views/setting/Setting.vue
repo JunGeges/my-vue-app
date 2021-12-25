@@ -101,14 +101,17 @@ export default {
       showSingOut: false,
       actions: [{ name: "退出登录", color: "#ff605c" }],
       hasLoginState: null,
-      userInfo: null,
+      userInfo: {
+        email: "",
+        crateTime: "",
+      },
     };
   },
 
   mounted() {
     this.hasLoginState = this.$cloudbase.auth().hasLoginState();
     // 获取userInfo
-    getUserInfo(this.uid).then((res) => {
+    getUserInfo().then((res) => {
       this.userInfo = res.result;
       console.log(this.userInfo);
       const { simpleMode, upIsRed, downIsSafe, showTag, showHP } =
@@ -125,7 +128,6 @@ export default {
     // ...mapState({
     //   hasLoginState: "hasLoginState", // 值为字符串等同于 state => state.hasLoginState  也可以写成  state => state.hasLoginState
     // }),
-    ...mapState(["uid"]),
   },
 
   methods: {

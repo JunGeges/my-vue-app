@@ -7,26 +7,31 @@ exports.main = async (event, context) => {
   const db = app.database()
   const _ = db.command
   const $ = db.command.aggregate
-  const { uid, groupId, costUnitPrice, fundCode, positionShare } = event
+  const { uid, costUnitPrice, fundCode, positionShare,groupIndex } = event
 
   // 先判断是否是重复的基金
-  const getResult = await db.collection('fund_user')
+  const res = await db.collection('fund_user')
     .where({
       uid:_.eq(uid)
     })
     .field({
       _id: false,
-      [`fundGroups.${groupId}.fundInfo`]: true
+      fundGroups: true
     })
     .get()
-  const isExist = getResult.data[0].fundGroups[groupId].fundInfo.find(item => item.fundCode === fundCode)
-
+  const targetGroup = res.data[0].fundGroups[groupIndex]
+  const isExist = targetGroup.fundCode.find(item => item === fundCode)
+  
+  // return { [`fundGroups[${groupIndex}].fundCode`]:1}
   if(isExist) return '分组内已存在该基金~'
     
   return await db.collection('fund_user')
     .where({
       uid: _.eq(uid)
-    }).update({
-      [`fundGroups.${groupId}.fundInfo`]: _.push({ costUnitPrice, fundCode, positionShare })
+    })
+    .update({
+      [`fundGroups.${groupIndex}.fundCode`]: _.push(fundCode),
+      [`fundGroups.${groupIndex}.fundCost.${fundCode}`]: costUnitPrice,
+      [`fundGroups.${groupIndex}.fundAmount.${fundCode}`]: positionShare
     })
 };

@@ -6,13 +6,13 @@ exports.main = async (event, context) => {
   });
   const db = app.database()
   const _ = db.command
-  const { uid, funds } = event
+  const { uid, fundGroup } = event
 
   const res = await db.collection('fund_user')
     .where({
       uid: _.eq(uid)
     }).update({
-      fundGroups: _.push(funds)
+      fundGroups: fundGroup
     })
   return res
 };
