@@ -70,6 +70,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { SET_GROUP_INDEX } from "store/mutations-type";
 import { getUserInfo, addFundGroup } from "network/cloudApi";
 export default {
   name: "MyVueAppFundGroup",
@@ -95,16 +96,6 @@ export default {
   },
 
   methods: {
-    // 向下移动分组
-    downGroup() {
-      console.log("downGroup");
-    },
-
-    // 向上移动分组
-    upGroup() {
-      console.log("upGroup");
-    },
-
     // 删除分组
     deleteGroup(index) {
       if (index === 0) return;
@@ -122,9 +113,9 @@ export default {
         });
     },
 
+    // 切换
     handleEditGroup() {
       this.isEditing = this.isEditing === 0 ? 1 : 0;
-      console.log(this.isEditing);
       // 保存分组
       if (this.isEditing === 0) {
         addFundGroup(this.tempFundGroup).then(console.log);
@@ -134,7 +125,12 @@ export default {
     // 选中某个组
     selectGroupItem(index) {
       this.activeIndex = index;
-      console.log(index);
+      // TODO 修改vuex groupIndex
+      this.$store.commit({
+        type: SET_GROUP_INDEX,
+        groupIndex: index,
+      });
+      this.back()
     },
 
     addGroupItem() {
@@ -152,7 +148,7 @@ export default {
     },
 
     move(index, flag) {
-      // 默认分组不编辑 最后一个不能往下移动
+      // 默认分组不编辑 最后一个不能往下移动 第一个不能向上移动
       const fundGroup = this.tempFundGroup;
       if (
         index === 0 ||

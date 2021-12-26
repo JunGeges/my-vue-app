@@ -2,8 +2,8 @@
   <div id="app">
     <van-nav-bar title="小基助手" left-arrow @click-left="onClickLeft">
       <template #left>
-        <div class="left-box">
-          默认分组
+        <div class="left-box" v-if="userInfo">
+          {{ userInfo.fundGroups[groupIndex].name }}
           <van-icon name="sort" class="custom-css" />
         </div>
       </template>
@@ -20,19 +20,17 @@ import NoContent from "components/common/NoContent/NoContent";
 import BottomBar from "components/content/BottomBar";
 import HomeContent from "./childComponents/HomeContent";
 
-import { getFundGroup, getUserInfo } from "network/cloudApi";
-import {
-  getFundBaseInfoByJR,
-  getFundDetail,
-  getFundDetailByTT,
-} from "network/api";
-import { formatDate } from "common/utils";
+import { getUserInfo } from "network/cloudApi";
+import { getFundDetail } from "network/api";
+import { mapState } from "vuex";
+import { SET_USER_INFO } from "store/mutations-type";
 
 export default {
   name: "home",
   data() {
     return {
       funds: [],
+      userInfo: null
     };
   },
   components: {
@@ -40,99 +38,76 @@ export default {
     BottomBar,
     HomeContent,
   },
-  created() {
-    // console.log('home created', this)
+  created() {},
+
+  computed: {
+    ...mapState(["groupIndex"]),
   },
 
-  // http://fund.eastmoney.com/pingzhongdata/001186.js?v=20160518155842
   mounted() {
-    // getUserInfo()
-    //   .then((res) => {
-    //     console.log(res.result);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    getFundDetail("011103,011102");
+    this.getFundDetail().then((res) => {
+      if (res === "err") return this.$toast("该组内无基金~");
+      this.funds = this.getFunds(res);
+    });
     // this.timeout = setInterval(() => {
     //   getFundDetail("011103,011102");
     // }, 5000);
-    // this.getFundGroup()
-    //   .then((res) => {
-    //     this.funds = res;
-    //     console.log({ res });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   },
 
   beforeDestroy() {
-    console.log("beforeDestroy");
-    clearInterval(this.timeout);
+    this.timeout && clearInterval(this.timeout);
   },
 
   methods: {
     onClickLeft() {
       this.$router.push({
         name: "fundgroup",
-        params: { a: 1 },
       });
     },
 
     // 获取基金分组
-    async getFundGroup() {
+    async getFundDetail() {
       try {
-        const uid = "cc0c3074fe394600b922e2a8fca1f60c";
-        const groupId = "b1482569";
-        // 排除周末 往上推日期
-        const startDate = formatDate(
-          new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
-          "yyyy-MM-dd"
-        );
-        const endDate = formatDate(new Date(), "yyyy-MM-dd");
-        // 查询数据库存的基金
-        const selfFunds = await getFundGroup(uid, groupId);
-        // 拼接基金的code去请求详细信息
-        const fundCodes = await this.getFundCodes(selfFunds.result);
-        // 获取基金的详细信息
-        const queryFundsInfo = await getFundBaseInfoByJR(
-          fundCodes,
-          startDate,
-          endDate
-        );
-        console.log(queryFundsInfo);
-        return this.handle(queryFundsInfo.data, selfFunds.result);
+        const Fcode = await this.getUserInfo();
+        const res = await getFundDetail(Fcode);
+        return res.data;
       } catch (error) {
-        console.log(error);
+        return error;
       }
     },
 
-    // 把数据库存的信息拼到接口获取的基金对象中
-    handle(fundsInfoArr, source) {
-      delete source.fundCode;
-      return fundsInfoArr.map((item, index) => {
-        if (this.isWeekend()) {
-          item.expectWorth = item.netWorthData[item.netWorthData.length - 2][1];
-        }
-        return Object.assign(item, source[index]);
+    /**
+     * @returns 基金code拼接
+     */
+    async getUserInfo() {
+      return await getUserInfo().then((res) => {
+        this.userInfo = res.result;
+        // config存vuex
+        this.$store.commit({
+          type: SET_USER_INFO,
+          userInfo: this.userInfo,
+        });
+        let Fcode = this.userInfo.fundGroups[this.groupIndex].fundCode;
+        if (!Fcode.length) return Promise.reject("err");
+        return this.userInfo.fundGroups[this.groupIndex].fundCode.join(",");
       });
     },
 
-    async getFundCodes(funds) {
-      console.log({ funds });
-      let result = funds.reduce((accumulator, cur) => {
-        return accumulator + cur.fundCode + ",";
-      }, "");
-      // 去掉最后一个,
-      return result.slice(0, -1);
+    // 基金对象组装
+    getFunds(req) {
+      const reqFcode = req.Datas;
+      const { fundAmount, fundCost } =
+        this.userInfo.fundGroups[this.groupIndex];
+      return reqFcode.map((item) => {
+        return Object.assign(item, {
+          fundAmount: fundAmount[item.FCODE],
+          fundCost: fundCost[item.FCODE],
+          Expansion: req.Expansion,
+        });
+      });
     },
 
     // 获取所有基金的总金额
-    // 是否是周末
-    isWeekend() {
-      return [0, 6].includes(new Date().getDay());
-    },
   },
 };
 </script>

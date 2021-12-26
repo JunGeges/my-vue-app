@@ -6,7 +6,7 @@
       <div>v1.8.3_20201128</div>
       <div>Design & Code by Gao.</div>
       <div>Email: g_aojun_01@163.com</div>
-      <div>Data from 金融数据接口.</div>
+      <div>Data from 天天基金.</div>
     </div>
   </div>
 </template>

@@ -34,28 +34,53 @@
     <van-cell-group>
       <van-cell size="large" title="简洁模式" :border="false">
         <template #right-icon>
-          <van-switch active-color="#2895fc" v-model="simpleMode" size="24" />
+          <van-switch
+            active-color="#2895fc"
+            v-model="simpleMode"
+            size="26"
+            @change="switchChange({ simpleMode })"
+          />
         </template>
       </van-cell>
       <van-cell size="large" title="绿涨红跌" :border="false">
         <template #right-icon>
-          <van-switch active-color="#2895fc" v-model="upIsRed" size="24" />
+          <van-switch
+            active-color="#2895fc"
+            v-model="upIsRed"
+            size="26"
+            @change="switchChange({ upIsRed })"
+          />
         </template>
       </van-cell>
       <van-cell size="large" title="无障碍模式" :border="false">
         <template #right-icon>
-          <van-switch active-color="#2895fc" v-model="downIsSafe" size="24" />
+          <van-switch
+            active-color="#2895fc"
+            v-model="downIsSafe"
+            size="26"
+            @change="switchChange({ downIsSafe })"
+          />
         </template>
       </van-cell>
     </van-cell-group>
     <van-cell size="large" title="显示估算标签" :border="false">
       <template #right-icon>
-        <van-switch active-color="#2895fc" v-model="showTag" size="24" />
+        <van-switch
+          active-color="#2895fc"
+          v-model="showTag"
+          size="26"
+          @change="switchChange({ showTag })"
+        />
       </template>
     </van-cell>
     <van-cell size="large" title="显示横屏切换按钮" :border="false">
       <template #right-icon>
-        <van-switch active-color="#2895fc" v-model="showHP" size="24" />
+        <van-switch
+          active-color="#2895fc"
+          v-model="showHP"
+          size="26"
+          @change="switchChange({ showHP })"
+        />
       </template>
     </van-cell>
     <van-cell
@@ -87,7 +112,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { singOut, getUserInfo } from "network/cloudApi";
+import { singOut, getUserInfo, upBaseConfig } from "network/cloudApi";
 export default {
   name: "MyVueAppSetting",
 
@@ -131,6 +156,9 @@ export default {
   },
 
   methods: {
+    switchChange(e) {
+      upBaseConfig(Object.keys(e)[0], Object.values(e)[0])
+    },
     back() {
       this.$router.go(-1);
     },

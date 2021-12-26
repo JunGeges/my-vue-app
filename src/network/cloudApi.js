@@ -156,3 +156,15 @@ export async function upColumnConfig(config) {
     config
   })
 }
+/**
+ * 设置
+ * @param {String} configName 配置名
+ * @param {Boolean} bool 布尔值
+ */
+export async function upBaseConfig(configName, bool) {
+  return await cloudRequest('user', {
+    funName: 'upBaseConfig',
+    configName,
+    bool
+  })
+}

@@ -1,44 +1,44 @@
 <template>
   <div class="content-item-container">
     <div class="left">
-      <div class="left-first">{{ fund.name }}</div>
-      <div class="left-last">估算 {{ fund.code }}</div>
+      <div class="left-first">{{ fund.SHORTNAME }}</div>
+      <div class="left-last" v-if="!simpleMode">估算 {{ fund.FCODE }}</div>
     </div>
     <div class="right">
       <div class="item">
-        <div class="item-first">{{ fund.expectGrowth | format }}%</div>
-        <div class="item-last">{{ fund.expectWorth }}</div>
+        <div class="item-first">{{ fund.GSZZL | format }}%</div>
+        <div class="item-last" v-if="!simpleMode">{{ fund.GSZ }}</div>
       </div>
       <div class="item">
-        <div class="item-first">{{ fund.dayGrowth | format }}%</div>
-        <div class="item-last">{{ fund.netWorth }}</div>
+        <div class="item-first">{{ fund.NAVCHGRT | format }}%</div>
+        <div class="item-last" v-if="!simpleMode">{{ fund.NAV }}</div>
       </div>
       <div class="item">
         <div class="item-first">{{ dailyIncome | format }}</div>
-        <div class="item-last"></div>
+        <div class="item-last" v-if="!simpleMode"></div>
       </div>
       <div class="item">
         <div class="item-first">{{ holdIncome | format }}</div>
-        <div class="item-last"></div>
+        <div class="item-last" v-if="!simpleMode"></div>
       </div>
       <div class="item">
         <div class="item-first">{{ holdIncomeRate | format }}%</div>
-        <div class="item-last"></div>
+        <div class="item-last" v-if="!simpleMode"></div>
       </div>
       <div class="item">
         <div class="item-first">{{ positionAmount }}</div>
-        <div class="item-last">{{ fund.costUnitPrice }}</div>
+        <div class="item-last" v-if="!simpleMode">{{ fund.fundCost }}</div>
       </div>
       <div class="item">
         <div class="item-first">2%</div>
-        <div class="item-last"></div>
+        <div class="item-last" v-if="!simpleMode"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import { CALC_POSITION_AMOUNT } from "store/mutations-type";
+import { mapState } from "vuex";
 export default {
   name: "MyVueAppHomeContentItem",
 
@@ -59,8 +59,8 @@ export default {
     // 当日收益
     dailyIncome() {
       const fund = this.fund;
-      if (!fund.costUnitPrice || !fund.positionShare) return "--";
-      let dailyIncome = (fund.expectWorth - fund.netWorth) * fund.positionShare;
+      if (!fund.fundCost || !fund.fundAmount) return "--";
+      let dailyIncome = (fund.NAVCHGRT * this.positionAmount) / 100;
       dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;
     },
@@ -68,20 +68,19 @@ export default {
     // 持有收益
     holdIncome() {
       const fund = this.fund;
-      if (!fund.costUnitPrice || !fund.positionShare) return "--";
-      let holdIncome = (
-        (fund.netWorth - fund.costUnitPrice) *
-        fund.positionShare
-      ).toFixed(2);
+      if (!fund.fundCost || !fund.fundAmount) return "--";
+      let holdIncome = ((fund.NAV - fund.fundCost) * fund.fundAmount).toFixed(
+        2
+      );
       return holdIncome;
     },
 
     // 持有收益率
     holdIncomeRate() {
       const fund = this.fund;
-      if (!fund.costUnitPrice || !fund.positionShare) return "--";
+      if (!fund.fundCost || !fund.fundAmount) return "--";
       let holdIncomeRate =
-        (this.holdIncome / (fund.costUnitPrice * fund.positionShare)) * 100;
+        (this.holdIncome / (fund.fundCost * fund.fundAmount)) * 100;
       holdIncomeRate = holdIncomeRate.toFixed(2);
       return holdIncomeRate;
     },
@@ -89,12 +88,16 @@ export default {
     // 持仓金额
     positionAmount() {
       const fund = this.fund;
-      if (!fund.costUnitPrice || !fund.positionShare) return "--";
+      if (!fund.fundCost || !fund.fundAmount) return "--";
       let positionAmount =
-        fund.costUnitPrice * fund.positionShare + parseFloat(this.holdIncome);
+        fund.fundCost * fund.fundAmount + parseFloat(this.holdIncome);
       positionAmount = positionAmount.toFixed(2);
       return positionAmount;
     },
+
+    ...mapState({
+      simpleMode: (state) => state.userInfo.config.simpleMode,
+    }),
   },
 
   filters: {
@@ -104,9 +107,6 @@ export default {
   },
 
   mounted() {
-    if (this.dailyIncome.indexOf("--") === -1) {
-      this.$emit("mid", parseFloat(this.dailyIncome));
-    }
     // console.log(this.positionAmount);
     // this.$store.commit({
     //   type: CALC_POSITION_AMOUNT,
@@ -166,7 +166,7 @@ export default {
       margin-right: 12px;
       flex-shrink: 0;
       position: relative;
-      color: #2bd36c;
+      color: #008000;
       .item-last {
         color: #696970;
         font-size: 12px;

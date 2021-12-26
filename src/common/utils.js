@@ -14,25 +14,23 @@ export class User {
       upIsRed: true, // 绿涨红跌
       downIsSafe: true, // 无障碍模式
       columnOrder: [
-        "gz",// 估算净值
-        "sy",// 当日收益
-        "syAll",// 持有收益
-        "jz",// 净值
-        "syAllL",// 持有收益率
+        "gz", // 估算净值
+        "sy", // 当日收益
+        "syAll", // 持有收益
+        "jz", // 净值
+        "syAllL", // 持有收益率
         "moneyAfter", // 持仓份额
         "percentage" // 持仓占比
       ]
     }
 
     // 分组
-    this.fundGroups = [
-      {
-        name: '默认分组',
-        fundCode: [],
-        fundAmount: {},
-        fundCost: {}
-      }
-    ]
+    this.fundGroups = [{
+      name: '默认分组',
+      fundCode: [],
+      fundAmount: {},
+      fundCost: {}
+    }]
   }
 }
 
@@ -53,4 +51,15 @@ export function formatDate(date, fmt) {
     if (new RegExp("(" + k + ")").test(fmt))
       fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
   return fmt;
+}
+
+export function updateStorage(v) {
+  try {
+    var vuexStorage = JSON.parse(localStorage.getItem('vuex'))
+    if (!vuexStorage) return
+    vuexStorage[v] = v
+    localStorage.setItem('vuex', JSON.stringify(vuexStorage))
+  } catch (error) {
+    console.log(error)
+  }
 }

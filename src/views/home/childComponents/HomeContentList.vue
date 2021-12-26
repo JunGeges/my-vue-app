@@ -4,7 +4,6 @@
       v-for="(item, index) in funds"
       :key="index"
       :fund="item"
-      @mid="getData"
     />
   </div>
 </template>
@@ -36,11 +35,6 @@ export default {
   mounted() {},
 
   methods: {
-    getData(e) {
-      // if(Number(e) === NaN) return
-      this.allAmounts += e;
-      console.log(this.allAmounts);
-    },
   },
 };
 </script>
