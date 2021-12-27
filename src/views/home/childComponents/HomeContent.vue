@@ -1,6 +1,6 @@
 <template>
   <div class="content-container">
-    <home-content-title-bar />
+    <home-content-title-bar :funds="funds" />
     <home-content-list :funds="funds" />
   </div>
 </template>
@@ -41,6 +41,7 @@ export default {
 .content-container {
   overflow: scroll;
   margin-left: 16px;
+  margin-top: 10px;
   height: calc(100vh - 96px);
 }
 

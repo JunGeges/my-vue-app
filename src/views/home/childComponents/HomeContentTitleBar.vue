@@ -46,13 +46,25 @@ export default {
     return {};
   },
 
+  props: {
+    funds: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+  },
+
   computed: {
     ...mapState({
       simpleMode: (state) => state.userInfo.config.simpleMode,
+      userInfo: "userInfo",
     }),
   },
 
-  mounted() {},
+  mounted() {
+    console.log(this.funds, "11");
+  },
 
   methods: {},
 };
@@ -82,6 +94,7 @@ export default {
       color: #b3b3b3;
       font-size: 12px;
       margin-top: 5px;
+      font-weight: normal;
     }
   }
   .right {
@@ -105,6 +118,7 @@ export default {
         color: #b3b3b3;
         font-size: 12px;
         margin-top: 2px;
+        font-weight: normal;
       }
       &:last-child {
         margin-right: 10px;

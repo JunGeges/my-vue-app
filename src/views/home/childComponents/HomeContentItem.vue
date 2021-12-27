@@ -2,7 +2,13 @@
   <div class="content-item-container">
     <div class="left">
       <div class="left-first">{{ fund.SHORTNAME }}</div>
-      <div class="left-last" v-if="!simpleMode">估算 {{ fund.FCODE }}</div>
+      <div class="left-last" v-if="!simpleMode">
+        <span
+          style="color: #2895fc; border: 1px solid #2895fc; border-radius: 3px"
+          >{{ isUpdated ? "已更新" : "估算" }}</span
+        >
+        {{ fund.FCODE }}
+      </div>
     </div>
     <div class="right">
       <div class="item">
@@ -64,11 +70,21 @@ export default {
   },
 
   computed: {
+    // 基金已更新
+    isUpdated() {
+      return (
+        this.fund.PDATE.substr(5, 5) === this.fund.Expansion.GZTIME.substr(5, 5)
+      );
+    },
+
     // 当日收益
     dailyIncome() {
       const fund = this.fund;
       if (!fund.fundCost || !fund.fundAmount) return "--";
-      let dailyIncome = (fund.GSZZL * this.positionAmount) / 100;
+      let dailyIncome =
+        ((this.isUpdated ? fund.NAVCHGRT : fund.GSZZL) * this.positionAmount) /
+        100;
+      console.log(dailyIncome);
       dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;
     },
@@ -138,7 +154,7 @@ export default {
   padding: 6px 0;
   box-sizing: border-box;
   color: #000000;
-  margin-bottom: 3px;
+  margin-bottom: 10px;
   // border-bottom: 1px solid #efefef;
   .left {
     width: 30%;

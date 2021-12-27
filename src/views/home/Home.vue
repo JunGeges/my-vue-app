@@ -66,7 +66,7 @@ export default {
     //   getFundDetail("011103,011102");
     // }, 5000);
     console.log(echarts);
-    this.initChart();
+    // this.initChart();
   },
 
   beforeDestroy() {
@@ -107,6 +107,7 @@ export default {
       };
       myChart.setOption(options);
     },
+
     onClickLeft() {
       this.$router.push({
         name: "fundgroup",
@@ -175,6 +176,10 @@ export default {
         totalDailyIncome && totalDailyIncome.toFixed(3).slice(0, -1);
       return totalDailyIncome;
     },
+    // 是否更新了收益
+    isUpdated(fund) {
+      return fund.PDATE.substr(5, 5) === fund.Expansion.GZTIME.substr(5, 5);
+    },
     // 计算持仓总持仓
     calcTotalAmount(funds) {
       console.log({ funds });
@@ -191,7 +196,10 @@ export default {
     // 当日收益
     dailyIncome(fund) {
       if (!fund.fundCost || !fund.fundAmount) return 0;
-      let dailyIncome = (fund.GSZZL * this.positionAmount(fund)) / 100;
+      let dailyIncome =
+        ((this.isUpdated(fund) ? fund.NAVCHGRT : fund.GSZZL) *
+          this.positionAmount(fund)) /
+        100;
       // dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;
     },
