@@ -4,7 +4,9 @@
     <van-icon @click="toSetting" class-prefix="my-icon" name="shezhi" />
     <div class="right" @click="toIncomeDetail">
       <div class="income">
-        <div :style="{ color: isHong }">-0.12</div>
+        <div :style="{ color: isHong }">
+          {{ dailyIncome > 0 ? "+" + dailyIncome : dailyIncome }}
+        </div>
         <div>当日收益</div>
       </div>
       <div><van-icon name="arrow" color="#808080" /></div>
@@ -20,13 +22,27 @@ export default {
     return {};
   },
 
-  computed: {
-    isHong: () => {
-      return "green";
+  props: {
+    dailyIncome: {
+      type: [String, Number],
+      default: 0,
     },
   },
 
-  mounted() {},
+  computed: {
+    isHong() {
+      const dailyIncome = this.dailyIncome;
+      return dailyIncome > 0
+        ? "#ff0000"
+        : dailyIncome == 0
+        ? "#424453"
+        : "#008800";
+    },
+  },
+
+  mounted() {
+    console.log(this.dailyIncome);
+  },
 
   methods: {
     edit() {},

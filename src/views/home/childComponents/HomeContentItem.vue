@@ -6,31 +6,39 @@
     </div>
     <div class="right">
       <div class="item">
-        <div class="item-first">{{ fund.GSZZL | format }}%</div>
+        <div :class="isUp(fund.GSZZL)">{{ fund.GSZZL | format }}%</div>
         <div class="item-last" v-if="!simpleMode">{{ fund.GSZ }}</div>
       </div>
       <div class="item">
-        <div class="item-first">{{ fund.NAVCHGRT | format }}%</div>
+        <div :class="isUp(fund.NAVCHGRT)">{{ fund.NAVCHGRT | format }}%</div>
         <div class="item-last" v-if="!simpleMode">{{ fund.NAV }}</div>
       </div>
       <div class="item">
-        <div class="item-first">{{ dailyIncome | format }}</div>
+        <div :class="isUp(dailyIncome)">{{ dailyIncome | format }}</div>
         <div class="item-last" v-if="!simpleMode"></div>
       </div>
       <div class="item">
-        <div class="item-first">{{ holdIncome | format }}</div>
+        <div :class="isUp(holdIncome)">{{ holdIncome | format }}</div>
         <div class="item-last" v-if="!simpleMode"></div>
       </div>
       <div class="item">
-        <div class="item-first">{{ holdIncomeRate | format }}%</div>
+        <div :class="isUp(holdIncomeRate)">{{ holdIncomeRate | format }}%</div>
         <div class="item-last" v-if="!simpleMode"></div>
       </div>
       <div class="item">
-        <div class="item-first">{{ positionAmount }}</div>
+        <div class="item-first">
+          {{ positionAmount > 0 ? positionAmount : 0 }}
+        </div>
         <div class="item-last" v-if="!simpleMode">{{ fund.fundCost }}</div>
       </div>
       <div class="item">
-        <div class="item-first">2%</div>
+        <div class="item-first">
+          {{
+            positionAmount > 0
+              ? ((positionAmount / fund.totalAmount) * 100).toFixed(1)
+              : 0
+          }}%
+        </div>
         <div class="item-last" v-if="!simpleMode"></div>
       </div>
     </div>
@@ -60,7 +68,7 @@ export default {
     dailyIncome() {
       const fund = this.fund;
       if (!fund.fundCost || !fund.fundAmount) return "--";
-      let dailyIncome = (fund.NAVCHGRT * this.positionAmount) / 100;
+      let dailyIncome = (fund.GSZZL * this.positionAmount) / 100;
       dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;
     },
@@ -115,7 +123,11 @@ export default {
     // console.log((this.positionAmount/this.$store.state.totalPositionAmount).toFixed(2))
   },
 
-  methods: {},
+  methods: {
+    isUp(key) {
+      return [key > 0 ? "item-first-up" : "item-first-down"];
+    },
+  },
 };
 </script>
 
@@ -159,14 +171,20 @@ export default {
     font-size: 14px;
     font-weight: 600;
     .item {
-      width: 60px;
-      text-align: right;
+      width: 70px;
+      text-align: center;
       // flex flex-grow flex-shrink flex-basis
       // flex:0 0 72px;
-      margin-right: 12px;
+      // margin-right: 12px;
       flex-shrink: 0;
       position: relative;
-      color: #008000;
+      color: #000000;
+      .item-first-up {
+        color: #ff0000;
+      }
+      .item-first-down {
+        color: #008800;
+      }
       .item-last {
         color: #696970;
         font-size: 12px;

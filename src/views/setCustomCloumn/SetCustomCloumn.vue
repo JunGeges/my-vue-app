@@ -88,8 +88,8 @@ export default {
       });
       if (this.columns.length) {
         Object.keys(configObj).filter((item, index) => {
-          const cloumnsObj = Object.values(this.columns)[index];
-          if (!cloumnsObj) this.hideColumns.push({ [item]: configObj[item] });
+          const columnsObj = Object.values(this.columns)[index];
+          if (!columnsObj) this.hideColumns.push({ [item]: configObj[item] });
         });
       }
     });
