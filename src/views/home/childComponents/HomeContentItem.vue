@@ -3,10 +3,9 @@
     <div class="left">
       <div class="left-first">{{ fund.SHORTNAME }}</div>
       <div class="left-last" v-if="!simpleMode">
-        <span
-          style="color: #2895fc; border: 1px solid #2895fc; border-radius: 3px"
-          >{{ isUpdated ? "已更新" : "估算" }}</span
-        >
+        <span :style="[isUpdated ? updated : '']">{{
+          isUpdated ? "已更新" : "估算"
+        }}</span>
         {{ fund.FCODE }}
       </div>
     </div>
@@ -57,7 +56,9 @@ export default {
   name: "MyVueAppHomeContentItem",
 
   data() {
-    return {};
+    return {
+
+    };
   },
 
   props: {
@@ -175,6 +176,11 @@ export default {
       color: #b3b3b3;
       font-size: 12px;
       margin-top: 5px;
+      .updated {
+        color: "#2895fc";
+        border: 1px solid #2895fc;
+        border-radius: 3px;
+      }
     }
   }
   .right {

@@ -2,25 +2,29 @@
   <div class="income-detail-container">
     <van-nav-bar title="小基助手·盈亏详情" left-arrow @click-left="back" />
     <van-cell
-      title="默认分组"
+      :title="userInfo.fundGroups[curIndex].name"
       center
-      title-class="title-css"
-      @click="show = true"
+      :border="false"
+      style="background: #f4faff"
+      title-class="sel-title-css"
+      @click="showActionSheet = true"
     >
       <template #right-icon>
         <span>点击切换分组</span>
         <van-icon name="exchange" color="#808080" />
       </template>
     </van-cell>
-    <van-action-sheet v-model="show">
+    <van-action-sheet v-model="showActionSheet">
       <van-cell
-        v-for="item in [1, 2]"
-        :key="item"
-        title="默认分组"
+        v-for="(item, index) in userInfo.fundGroups"
+        :key="index"
+        :title="item.name"
         center
-        title-class="title-css"
-        value="包含基金1只"
-        @click="show = true"
+        :border="false"
+        :style="{ background: curIndex === index ? '#f4faff' : '' }"
+        :title-class="[curIndex === index ? 'sel-title-css' : 'title-css']"
+        :value="'包含基金' + item.fundCode.length + '只'"
+        @click="selectGroup(index)"
       >
       </van-cell>
     </van-action-sheet>
@@ -66,20 +70,38 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "MyVueAppIncomeDetail",
 
   data() {
     return {
-      show: false,
+      showActionSheet: false,
+      curIndex: 0,
     };
   },
 
-  mounted() {},
+  computed: {
+    ...mapState(["userInfo", "groupIndex"]),
+  },
+
+  mounted() {
+    this.curIndex = this.groupIndex;
+    console.log({ income: this.$route.params });
+  },
 
   methods: {
     back() {
       this.$router.go(-1);
+    },
+
+    selectGroup(index) {
+      console.log({ index });
+      this.showActionSheet = false;
+      // return
+      this.curIndex = index;
+      console.log(this.userInfo.fundGroups[index], index);
+      // this.
     },
 
     shareIncome() {},
@@ -100,16 +122,20 @@ export default {
   }
 
   .van-cell {
-    background: #f4faff;
+    // background: #f4faff;
     color: #d6dade;
     margin: 16px;
     border-radius: 6px;
     width: calc(100vw - 32px);
   }
 
-  .title-css {
+  .sel-title-css {
     color: #2895fc;
     font-size: 15px;
+  }
+
+  .title-css {
+    color: #000000;
   }
 
   .income-detail-box {

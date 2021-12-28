@@ -10,7 +10,7 @@
     </van-nav-bar>
     <home-content v-if="funds.length" :funds="funds"></home-content>
     <no-content v-else></no-content>
-    <bottom-bar :daily-income="totalDailyIncome"></bottom-bar>
+    <bottom-bar :daily-income="totalDailyIncome" :funds="funds"></bottom-bar>
     <van-icon
       class="add-btn"
       class-prefix="my-icon"
@@ -61,6 +61,20 @@ export default {
       if (res === "err") return this.$toast("该组内无基金~");
       this.funds = this.getFunds(res);
       this.funds && this.calcTotalDailyIncome(this.funds);
+      console.log(
+        "总持仓",
+        this.calcTotalAmount(this.funds),
+        "当日收益",
+        this.calcTotalDailyIncome(this.funds),
+        "当日收益率",
+        this.calcTotalDailyIncomeRate(this.funds),
+        "持有收益",
+        this.calcTotalHoldIncome(this.funds),
+        "持有收益率",
+        this.calcTotalHoldIncomeRate(this.funds),
+        "待更新收益/已更新收益",
+        this.isUpdatedIncome(this.funds)
+      );
     });
     // this.timeout = setInterval(() => {
     //   getFundDetail("011103,011102");
@@ -167,7 +181,20 @@ export default {
       });
     },
 
-    // 计算当日收益
+    // 是否更新了收益
+    isUpdated(fund) {
+      return fund.PDATE.substr(5, 5) === fund.Expansion.GZTIME.substr(5, 5);
+    },
+
+    // 计算分组持仓总持仓 = 每个基金的当前持仓之和
+    calcTotalAmount(funds) {
+      const totalAmount = funds.reduce((acc, cur) => {
+        return acc + this.positionAmount(cur);
+      }, 0);
+      return totalAmount.toFixed(2);
+    },
+
+    // 计算分组当日收益
     calcTotalDailyIncome(funds) {
       const totalDailyIncome = funds.reduce((acc, cur) => {
         return acc + this.dailyIncome(cur);
@@ -176,23 +203,44 @@ export default {
         totalDailyIncome && totalDailyIncome.toFixed(3).slice(0, -1);
       return totalDailyIncome;
     },
-    // 是否更新了收益
-    isUpdated(fund) {
-      return fund.PDATE.substr(5, 5) === fund.Expansion.GZTIME.substr(5, 5);
+
+    // 计算分组当日收益率 = 分组当日收益/ 当前持仓金额
+    calcTotalDailyIncomeRate(funds) {
+      return (
+        (this.calcTotalDailyIncome(funds) / this.calcTotalAmount(funds)) *
+        (100).toFixed(2)
+      );
     },
-    // 计算持仓总持仓
-    calcTotalAmount(funds) {
-      console.log({ funds });
-      const totalAmount = funds.reduce((acc, cur) => {
-        return acc + this.positionAmount(cur);
+
+    // 计算分组持有收益 = 每个基金的持有收益之和
+    calcTotalHoldIncome(funds) {
+      const totalHoldIncome = funds.reduce((acc, cur) => {
+        return acc + this.holdIncome(cur);
       }, 0);
-      return totalAmount.toFixed(2);
+      return totalHoldIncome.toFixed(2);
     },
-    // 计算当日收益率
-    // 计算持有收益
-    // 计算持有收益率
-    // 待更新收益
-    // 已更新收益
+
+    // 计算分组持有收益率 = 分组持有收益 / 分组初始持仓总金额
+    calcTotalHoldIncomeRate(funds) {
+      return (
+        (this.calcTotalHoldIncome(funds) / this.positionCost(funds)) *
+        (100).toFixed(2)
+      );
+    },
+
+    //  已更新收益 /待更新收益
+    isUpdatedIncome(funds) {
+      let x = 0;
+      let y = 0;
+      funds.forEach((i) => {
+        if (this.isUpdated(i)) {
+          x += this.dailyIncome(i);
+        } else y += this.dailyIncome(i);
+      });
+      return [x, y];
+    },
+
+    //  单个基金的收益情况
     // 当日收益
     dailyIncome(fund) {
       if (!fund.fundCost || !fund.fundAmount) return 0;
@@ -207,9 +255,7 @@ export default {
     // 持有收益
     holdIncome(fund) {
       if (!fund.fundCost || !fund.fundAmount) return 0;
-      let holdIncome = ((fund.NAV - fund.fundCost) * fund.fundAmount).toFixed(
-        2
-      );
+      let holdIncome = (fund.NAV - fund.fundCost) * fund.fundAmount;
       return holdIncome;
     },
 
@@ -222,13 +268,22 @@ export default {
       return holdIncomeRate;
     },
 
-    // 持仓金额
+    // 当前持仓金额
     positionAmount(fund) {
       if (!fund.fundCost || !fund.fundAmount) return 0;
       let positionAmount =
         fund.fundCost * fund.fundAmount + parseFloat(this.holdIncome(fund));
       // positionAmount = positionAmount.toFixed(2);
       return positionAmount;
+    },
+
+    // 持仓初始金额
+    positionCost(funds) {
+      const positionCost = funds.reduce((acc, cur) => {
+        if (!cur.fundCost || !cur.fundAmount) return acc;
+        return acc + cur.fundCost * cur.fundAmount;
+      }, 0);
+      return positionCost;
     },
   },
 };

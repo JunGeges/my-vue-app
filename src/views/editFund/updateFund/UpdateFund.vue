@@ -1,18 +1,18 @@
 <template>
   <div class="update-fund-container">
     <van-nav-bar title="小基助手·修改" left-arrow @click-left="back" />
-    <div class="fund-box">
+    <div class="fund-box" v-if="fund">
       <van-cell
-        title="招商中正白酒指数基金"
-        value="020152"
+        :title="fund.SHORTNAME"
+        :value="fund.FCODE"
         value-class="value-css"
       />
     </div>
     <van-cell-group title="持有份额" :border="false">
-      <van-field v-model="cyfe" type="number" />
+      <van-field v-model="fundAmount" type="number" />
     </van-cell-group>
     <van-cell-group title="成本单价" :border="false">
-      <van-field v-model="cbdj" type="number" />
+      <van-field v-model="fundCost" type="number" />
     </van-cell-group>
     <van-button block color="#2895fc">保存</van-button>
   </div>
@@ -24,12 +24,18 @@ export default {
 
   data() {
     return {
-      cyfe: "",
-      cbdj: "",
+      fund: null,
+      fundAmount: 0,
+      fundCost: 0,
     };
   },
 
-  mounted() {},
+  mounted() {
+    console.log(this.$route.params, "--------");
+    this.fund = this.$route.params;
+    this.fundAmount = this.fund.fundAmount;
+    this.fundCost = this.fund.fundCost;
+  },
 
   methods: {
     back() {

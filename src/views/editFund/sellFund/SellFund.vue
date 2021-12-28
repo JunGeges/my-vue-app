@@ -1,15 +1,19 @@
 <template>
   <div class="sell-fund-container">
     <van-nav-bar title="小基助手·减仓" left-arrow @click-left="back" />
-    <div class="fund-box">
+    <div class="fund-box" v-if="fund">
       <van-cell
-        title="招商中正白酒指数基金"
-        value="020152"
+        :title="fund.SHORTNAME"
+        :value="fund.FCODE"
         value-class="value-css"
       />
     </div>
-    <van-cell-group title="卖出份额" :border="false">
-      <van-field v-model="mcfe" type="number" placeholder="最多卖出10029.5份" />
+    <van-cell-group title="卖出份额" :border="false" v-if="fund">
+      <van-field
+        v-model="mcfe"
+        type="number"
+        :placeholder="'最多卖出' + fund.fundAmount + '份'"
+      />
     </van-cell-group>
     <!-- 卖出份数选择 -->
     <div class="sell-count-box">
@@ -34,15 +38,19 @@ export default {
   data() {
     return {
       mcfe: "",
+      fund: null,
     };
   },
 
-  mounted() {},
+  mounted() {
+    console.log(this.$route.params,this.$store.state.groupIndex);
+    this.fund = this.$route.params;
+  },
 
   methods: {
     back() {
-      this.$router.go(-1)
-    }
+      this.$router.go(-1);
+    },
   },
 };
 </script>

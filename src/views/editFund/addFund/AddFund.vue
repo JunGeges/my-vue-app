@@ -9,13 +9,13 @@
       />
     </div>
     <van-cell-group title="加仓金额" :border="false">
-      <van-field v-model="jcje" type="number" placeholder="点击输入金额"/>
+      <van-field v-model="jcje" type="number" placeholder="点击输入金额" />
     </van-cell-group>
     <van-cell-group title="手续费/%" :border="false">
-      <van-field v-model="sxf" type="number" placeholder="点击输入"/>
+      <van-field v-model="sxf" type="number" placeholder="点击输入" />
     </van-cell-group>
     <van-cell-group title="加仓日期" :border="false">
-      <van-field v-model="jcrq" disabled/>
+      <van-field v-model="jcrq" disabled />
     </van-cell-group>
     <van-button block color="#2895fc">保存</van-button>
   </div>
@@ -27,15 +27,15 @@ export default {
 
   data() {
     return {
-      jcje: 0,
+      jcje: '',
       sxf: 0.15,
-      jcrq:'2021-11-25 15:00前'
+      jcrq: "2021-11-25 15:00前",
     };
   },
 
   mounted() {
-
-},
+    console.log(this.$route.params);
+  },
 
   methods: {
     back() {
