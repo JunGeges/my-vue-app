@@ -27,12 +27,6 @@ export default {
       type: [String, Number],
       default: 0,
     },
-    funds: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
   },
 
   computed: {
@@ -60,7 +54,6 @@ export default {
     toIncomeDetail() {
       this.$router.push({
         name: "incomedetail",
-        params: this.funds,
       });
     },
   },

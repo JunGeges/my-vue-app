@@ -3,7 +3,7 @@
     <div class="left">
       <div class="left-first">{{ fund.SHORTNAME }}</div>
       <div class="left-last" v-if="!simpleMode">
-        <span :style="[isUpdated ? updated : '']">{{
+        <span :class="[isUpdated ? 'updated' : '']">{{
           isUpdated ? "已更新" : "估算"
         }}</span>
         {{ fund.FCODE }}
@@ -177,7 +177,7 @@ export default {
       font-size: 12px;
       margin-top: 5px;
       .updated {
-        color: "#2895fc";
+        color: #2895fc;
         border: 1px solid #2895fc;
         border-radius: 3px;
       }

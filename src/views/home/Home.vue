@@ -10,7 +10,7 @@
     </van-nav-bar>
     <home-content v-if="funds.length" :funds="funds"></home-content>
     <no-content v-else></no-content>
-    <bottom-bar :daily-income="totalDailyIncome" :funds="funds"></bottom-bar>
+    <bottom-bar :daily-income="totalDailyIncome"></bottom-bar>
     <van-icon
       class="add-btn"
       class-prefix="my-icon"
@@ -72,7 +72,7 @@ export default {
         this.calcTotalHoldIncome(this.funds),
         "持有收益率",
         this.calcTotalHoldIncomeRate(this.funds),
-        "待更新收益/已更新收益",
+        "已更新收益/待更新收益",
         this.isUpdatedIncome(this.funds)
       );
     });
