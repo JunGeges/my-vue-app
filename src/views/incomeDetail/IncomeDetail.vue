@@ -117,6 +117,7 @@ export default {
       this.getFundDetail().then((res) => {
         if (res === "err") return this.$toast("该组内无基金~");
         this.funds = this.getFunds(res);
+        console.log("11222", this.calcTotalHoldIncomeRate(this.funds));
         // "总持仓",
         this.totalAmount = this.calcTotalAmount(this.funds);
         // "当日收益",
@@ -188,6 +189,7 @@ export default {
     // 计算分组持仓总持仓 = 每个基金的当前持仓之和
     calcTotalAmount(funds) {
       const totalAmount = funds.reduce((acc, cur) => {
+        if (!cur.fundCost || !cur.fundAmount) return acc;
         return acc + this.positionAmount(cur);
       }, 0);
       return totalAmount.toFixed(2);
@@ -196,6 +198,7 @@ export default {
     // 计算分组当日收益
     calcTotalDailyIncome(funds) {
       const totalDailyIncome = funds.reduce((acc, cur) => {
+        if (!cur.fundCost || !cur.fundAmount) return acc;
         return acc + parseFloat(this.dailyIncome(cur));
       }, 0);
       this.totalDailyIncome =
@@ -206,13 +209,14 @@ export default {
     // 计算分组当日收益率 = 分组当日收益/ 当前持仓金额
     calcTotalDailyIncomeRate(funds) {
       return (
-        (this.calcTotalDailyIncome(funds) / this.calcTotalAmount(funds)) * 100
+        (this.calcTotalDailyIncome(funds) / this.calcTotalAmount(funds)) * 100 || 0
       );
     },
 
     // 计算分组持有收益 = 每个基金的持有收益之和
     calcTotalHoldIncome(funds) {
       const totalHoldIncome = funds.reduce((acc, cur) => {
+        if (!cur.fundCost || !cur.fundAmount) return acc;
         return acc + this.holdIncome(cur);
       }, 0);
       return totalHoldIncome.toFixed(2);
@@ -220,7 +224,8 @@ export default {
 
     // 计算分组持有收益率 = 分组持有收益 / 分组初始持仓总金额
     calcTotalHoldIncomeRate(funds) {
-      return (this.calcTotalHoldIncome(funds) / this.positionCost(funds)) * 100;
+      // 0 /0
+      return (this.calcTotalHoldIncome(funds) / this.positionCost(funds)) * 100 || 0;
     },
 
     //  已更新收益 /待更新收益
