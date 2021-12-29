@@ -61,7 +61,8 @@ export default {
         case 1: //修改持仓
         case 2: //加仓
         case 3: //减仓
-          if (!this.clickFund.fundAmount) return this.$toast("您未持有该基金");
+          if (!this.clickFund.fundAmount && index === 3)
+            return this.$toast("您未持有该基金");
           this.$router.push({
             name: `${path[index]}`,
             params: this.clickFund,

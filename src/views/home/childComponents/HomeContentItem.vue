@@ -1,5 +1,10 @@
 <template>
   <div class="content-item-container">
+    <div
+      v-if="simpleMode"
+      class="updated-tip"
+      :class="[isUpdated ? 'updated-sel' : '']"
+    ></div>
     <div class="left">
       <div class="left-first">{{ fund.SHORTNAME }}</div>
       <div class="left-last" v-if="!simpleMode">
@@ -56,9 +61,7 @@ export default {
   name: "MyVueAppHomeContentItem",
 
   data() {
-    return {
-
-    };
+    return {};
   },
 
   props: {
@@ -156,7 +159,22 @@ export default {
   box-sizing: border-box;
   color: #000000;
   margin-bottom: 10px;
-  // border-bottom: 1px solid #efefef;
+  position: relative;
+  .updated-tip {
+    position: fixed;
+    left: 8px;
+    // top: 0;
+    width: 3px;
+    height: 3px;
+    transform: translateY(130%);
+    border: 1px solid #b9b9b9;
+    border-radius: 50%;
+  }
+
+  .updated-sel {
+    background: #2895fc;
+  }
+
   .left {
     width: 30%;
     // box-shadow: 2px 0 0 rgba($color: #efefef, $alpha: 0.5);

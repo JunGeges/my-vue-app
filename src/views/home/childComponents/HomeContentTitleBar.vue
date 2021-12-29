@@ -5,11 +5,11 @@
       <div class="left-last" v-if="!simpleMode">基金编码</div>
     </div>
     <div class="right">
-      <div class="item">
-        <div>估算净值</div>
-        <div class="item-last" v-if="!simpleMode">12-15</div>
+      <div class="item" v-for="item in titles" :key="item.key1">
+        <div>{{ item.title1 }}</div>
+        <div class="item-last" v-if="!simpleMode">{{ item.title2 }}</div>
       </div>
-      <div class="item">
+      <!-- <div class="item">
         <div>净值</div>
         <div class="item-last" v-if="!simpleMode">12-14</div>
       </div>
@@ -32,7 +32,7 @@
       <div class="item">
         <div>持仓占比</div>
         <div class="item-last" v-if="!simpleMode"></div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -43,7 +43,47 @@ export default {
   name: "MyVueAppHomeContentTitleBar",
 
   data() {
-    return {};
+    return {
+      sample: {
+        jz: {
+          key1: "jzL",
+          title1: "净值",
+          key2: "jz",
+          title2: "12-28",
+          keyTip: "jzDate",
+        },
+        gz: {
+          key1: "gzL",
+          title1: "估算净值",
+          key2: "gz",
+          title2: "12-29",
+          keyTip: "gzDate",
+        },
+        sy: {
+          key1: "sy",
+          title1: "当日收益",
+        },
+        syAll: {
+          key1: "syAll",
+          title1: "持有收益",
+        },
+        syAllL: {
+          key1: "syAllL",
+          title1: "持有收益率",
+        },
+        moneyAfter: {
+          key1: "moneyAfter",
+          title1: "持仓金额",
+          key2: "cost",
+          title2: "持仓成本",
+        },
+        percentage: {
+          key1: "percentage",
+          title1: "持仓占比",
+        },
+      },
+      titles: [],
+    };
   },
 
   props: {
@@ -58,12 +98,26 @@ export default {
   computed: {
     ...mapState({
       simpleMode: (state) => state.userInfo.config.simpleMode,
-      userInfo: "userInfo",
+      columnOrder: (state) => state.userInfo.config.columnOrder,
     }),
   },
 
   mounted() {
-    console.log(this.funds, "11");
+    console.log(this.funds, "11", this.columnOrder);
+    // let count = 0;
+    // this.funds.forEach((item) => {
+    //   const x = [
+    //     item.Expansion.FSRQ.substr(5, 5),
+    //     item.Expansion.GZTIME.substr(5, 5),
+    //   ];
+    //   const isUpdate = item.PDATE.substr(5, 5) === x[1];
+    //   if (isUpdate) {
+    //     count++;
+    //   }
+    // });
+    this.titles = this.columnOrder.map((item) => {
+      return this.sample[item];
+    });
   },
 
   methods: {},
