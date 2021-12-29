@@ -15,42 +15,12 @@
       </div>
     </div>
     <div class="right">
-      <div class="item">
-        <div :class="isUp(fund.GSZZL)">{{ fund.GSZZL | format }}%</div>
-        <div class="item-last" v-if="!simpleMode">{{ fund.GSZ }}</div>
-      </div>
-      <div class="item">
-        <div :class="isUp(fund.NAVCHGRT)">{{ fund.NAVCHGRT | format }}%</div>
-        <div class="item-last" v-if="!simpleMode">{{ fund.NAV }}</div>
-      </div>
-      <div class="item">
-        <div :class="isUp(dailyIncome)">{{ dailyIncome | format }}</div>
-        <div class="item-last" v-if="!simpleMode"></div>
-      </div>
-      <div class="item">
-        <div :class="isUp(holdIncome)">{{ holdIncome | format }}</div>
-        <div class="item-last" v-if="!simpleMode"></div>
-      </div>
-      <div class="item">
-        <div :class="isUp(holdIncomeRate)">{{ holdIncomeRate | format }}%</div>
-        <div class="item-last" v-if="!simpleMode"></div>
-      </div>
-      <div class="item">
-        <div class="item-first">
-          {{ positionAmount > 0 ? positionAmount : 0 }}
+      <template v-for="(item, index) in datas">
+        <div class="item" :key="index">
+          <div :class="item.color">{{ item.title1 }}</div>
+          <div class="item-last" v-if="!simpleMode">{{ item.title2 }}</div>
         </div>
-        <div class="item-last" v-if="!simpleMode">{{ fund.fundCost }}</div>
-      </div>
-      <div class="item">
-        <div class="item-first">
-          {{
-            positionAmount > 0
-              ? ((positionAmount / fund.totalAmount) * 100).toFixed(1)
-              : 0
-          }}%
-        </div>
-        <div class="item-last" v-if="!simpleMode"></div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
@@ -61,7 +31,9 @@ export default {
   name: "MyVueAppHomeContentItem",
 
   data() {
-    return {};
+    return {
+      datas: [],
+    };
   },
 
   props: {
@@ -85,10 +57,15 @@ export default {
     dailyIncome() {
       const fund = this.fund;
       if (!fund.fundCost || !fund.fundAmount) return "--";
-      let dailyIncome =
-        ((this.isUpdated ? fund.NAVCHGRT : fund.GSZZL) * this.positionAmount) /
-        100;
-      console.log(dailyIncome);
+      let dailyIncome = 0;
+      if (this.isUpdated) {
+        // -fund.NAV / (1 + fund.NAVCHGRT / 100)) 求出昨天的净值
+        dailyIncome =
+          (fund.NAV - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
+      } else {
+        dailyIncome =
+          (fund.GSZ - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
+      }
       dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;
     },
@@ -125,13 +102,8 @@ export default {
 
     ...mapState({
       simpleMode: (state) => state.userInfo.config.simpleMode,
+      columnOrder: (state) => state.userInfo.config.columnOrder,
     }),
-  },
-
-  filters: {
-    format(value) {
-      return value > 0 ? `+${value}` : value;
-    },
   },
 
   mounted() {
@@ -141,11 +113,73 @@ export default {
     //   positionAmount: this.positionAmount,
     // });
     // console.log((this.positionAmount/this.$store.state.totalPositionAmount).toFixed(2))
+    const holdIncomeRate = this.format(this.holdIncomeRate);
+    let sample = {
+      jz: {
+        key1: "jzL",
+        title1: this.format(this.fund.NAVCHGRT) + "%",
+        key2: "jz",
+        title2: this.fund.NAV,
+        keyTip: "jzDate",
+        color: this.isUp(this.fund.NAVCHGRT),
+      },
+      gz: {
+        key1: "gzL",
+        title1: this.format(this.fund.GSZZL) + "%",
+        key2: "gz",
+        title2: this.fund.GSZ,
+        keyTip: "gzDate",
+        color: this.isUp(this.fund.GSZZL),
+      },
+      sy: {
+        key1: "sy",
+        title1: this.format(this.dailyIncome),
+        color: this.isUp(this.dailyIncome),
+      },
+      syAll: {
+        key1: "syAll",
+        title1: this.format(this.holdIncome),
+        color: this.isUp(this.holdIncome),
+      },
+      syAllL: {
+        key1: "syAllL",
+        title1: holdIncomeRate == "--" ? holdIncomeRate : holdIncomeRate + "%",
+        color: this.isUp(this.holdIncomeRate),
+      },
+      moneyAfter: {
+        key1: "moneyAfter",
+        title1: this.positionAmount > 0 ? this.positionAmount : 0,
+        key2: "cost",
+        title2: this.fund.fundCost,
+      },
+      percentage: {
+        key1: "percentage",
+        title1:
+          this.positionAmount > 0
+            ? ((this.positionAmount / this.fund.totalAmount) * 100).toFixed(1) +
+              "%"
+            : "0%",
+      },
+    };
+    this.datas = this.columnOrder.map((item) => {
+      return sample[item];
+    });
   },
 
   methods: {
-    isUp(key) {
-      return [key > 0 ? "item-first-up" : "item-first-down"];
+    format(value) {
+      return value > 0 ? `+${value}` : value;
+    },
+
+    isUp(value) {
+      if (value == "--") return ["item-first-eq0"];
+      return [
+        value > 0
+          ? "item-first-up"
+          : value == 0
+          ? "item-first-eq0"
+          : "item-first-down",
+      ];
     },
   },
 };
@@ -224,6 +258,9 @@ export default {
       }
       .item-first-down {
         color: #008800;
+      }
+      .item-first-eq0 {
+        color: #696970;
       }
       .item-last {
         color: #696970;

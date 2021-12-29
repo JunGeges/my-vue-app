@@ -101,6 +101,12 @@ export default {
     },
 
     move(index, flag) {
+      // 第一个不能向上移动，最后一个不能向下移动
+      if (
+        (index === this.columns.length - 1 && flag === "down") ||
+        (index === 0 && flag === "up")
+      )
+        return;
       if (flag === "up") return this.frontMove(this.columns, index);
       this.backMove(this.columns, index);
     },
@@ -120,6 +126,8 @@ export default {
 
     // 隐藏/显示列
     handleColumn(index, type) {
+      if (type === "show" && this.columns.length === 1)
+        return this.$toast("大兄弟,最少留一个吧~");
       const types = {
         show: this.columns,
         hide: this.hideColumns,

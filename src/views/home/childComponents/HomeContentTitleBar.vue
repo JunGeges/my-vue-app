@@ -128,7 +128,7 @@ export default {
 .title-bar-container {
   display: flex;
   // width: 100vw;
-  padding: 6px 0;
+  padding: 6px 0 15px;
   box-sizing: border-box;
   color: #000000;
   // border-bottom: 1px solid #efefef;

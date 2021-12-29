@@ -41,7 +41,7 @@
           <div>持有收益</div>
         </div>
         <div class="id-item">
-          <div>{{ totalHoldIncomeRate }}%</div>
+          <div>{{ totalHoldIncomeRate.toFixed(2) }}%</div>
           <div>持有收益率</div>
         </div>
         <div class="id-item">
@@ -49,7 +49,7 @@
           <div>当日收益</div>
         </div>
         <div class="id-item">
-          <div>{{ totalDailyIncomeRate }}%</div>
+          <div>{{ totalDailyIncomeRate.toFixed(2) }}%</div>
           <div>当日收益率</div>
         </div>
         <div class="id-item">
@@ -95,13 +95,6 @@ export default {
 
   computed: {
     ...mapState(["groupIndex"]),
-  },
-
-  filters: {
-    format(v) {
-      console.log(v.toFixed(2));
-      return `${v > 0 ? "+" : ""}${v.toFixed(2)}`;
-    },
   },
 
   mounted() {
@@ -203,7 +196,7 @@ export default {
     // 计算分组当日收益
     calcTotalDailyIncome(funds) {
       const totalDailyIncome = funds.reduce((acc, cur) => {
-        return acc + this.dailyIncome(cur);
+        return acc + parseFloat(this.dailyIncome(cur));
       }, 0);
       this.totalDailyIncome =
         totalDailyIncome && totalDailyIncome.toFixed(3).slice(0, -1);
@@ -213,8 +206,7 @@ export default {
     // 计算分组当日收益率 = 分组当日收益/ 当前持仓金额
     calcTotalDailyIncomeRate(funds) {
       return (
-        (this.calcTotalDailyIncome(funds) / this.calcTotalAmount(funds)) *
-        (100).toFixed(2)
+        (this.calcTotalDailyIncome(funds) / this.calcTotalAmount(funds)) * 100
       );
     },
 
@@ -228,10 +220,7 @@ export default {
 
     // 计算分组持有收益率 = 分组持有收益 / 分组初始持仓总金额
     calcTotalHoldIncomeRate(funds) {
-      return (
-        (this.calcTotalHoldIncome(funds) / this.positionCost(funds)) *
-        (100).toFixed(2)
-      );
+      return (this.calcTotalHoldIncome(funds) / this.positionCost(funds)) * 100;
     },
 
     //  已更新收益 /待更新收益
@@ -240,21 +229,26 @@ export default {
       let y = 0;
       funds.forEach((i) => {
         if (this.isUpdated(i)) {
-          x += this.dailyIncome(i);
-        } else y += this.dailyIncome(i);
+          x += parseFloat(this.dailyIncome(i));
+        } else y += parseFloat(this.dailyIncome(i));
       });
-      return [x, y];
+      return [x.toFixed(2), y.toFixed(2)];
     },
 
     //  单个基金的收益情况
     // 当日收益
     dailyIncome(fund) {
       if (!fund.fundCost || !fund.fundAmount) return 0;
-      let dailyIncome =
-        ((this.isUpdated(fund) ? fund.NAVCHGRT : fund.GSZZL) *
-          this.positionAmount(fund)) /
-        100;
-      // dailyIncome = dailyIncome.toFixed(2);
+      let dailyIncome = 0;
+      if (this.isUpdated) {
+        // -fund.NAV / (1 + fund.NAVCHGRT / 100)) 求出昨天的净值
+        dailyIncome =
+          (fund.NAV - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
+      } else {
+        dailyIncome =
+          (fund.GSZ - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
+      }
+      dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;
     },
 

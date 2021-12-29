@@ -197,7 +197,8 @@ export default {
     // 计算分组当日收益
     calcTotalDailyIncome(funds) {
       const totalDailyIncome = funds.reduce((acc, cur) => {
-        return acc + this.dailyIncome(cur);
+        console.log(acc, this.dailyIncome(cur));
+        return acc + parseFloat(this.dailyIncome(cur));
       }, 0);
       this.totalDailyIncome =
         totalDailyIncome && totalDailyIncome.toFixed(3).slice(0, -1);
@@ -244,11 +245,16 @@ export default {
     // 当日收益
     dailyIncome(fund) {
       if (!fund.fundCost || !fund.fundAmount) return 0;
-      let dailyIncome =
-        ((this.isUpdated(fund) ? fund.NAVCHGRT : fund.GSZZL) *
-          this.positionAmount(fund)) /
-        100;
-      // dailyIncome = dailyIncome.toFixed(2);
+      let dailyIncome = 0;
+      if (this.isUpdated) {
+        // -fund.NAV / (1 + fund.NAVCHGRT / 100)) 求出昨天的净值
+        dailyIncome =
+          (fund.NAV - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
+      } else {
+        dailyIncome =
+          (fund.GSZ - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
+      }
+      dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;
     },
 
@@ -271,8 +277,7 @@ export default {
     // 当前持仓金额
     positionAmount(fund) {
       if (!fund.fundCost || !fund.fundAmount) return 0;
-      let positionAmount =
-        fund.fundCost * fund.fundAmount + parseFloat(this.holdIncome(fund));
+      let positionAmount = fund.fundCost * fund.fundAmount;
       // positionAmount = positionAmount.toFixed(2);
       return positionAmount;
     },
