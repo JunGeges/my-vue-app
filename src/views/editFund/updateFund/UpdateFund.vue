@@ -8,17 +8,21 @@
         value-class="value-css"
       />
     </div>
-    <van-cell-group title="持有份额" :border="false">
-      <van-field v-model="fundAmount" type="number" />
-    </van-cell-group>
-    <van-cell-group title="成本单价" :border="false">
-      <van-field v-model="fundCost" type="number" />
-    </van-cell-group>
-    <van-button block color="#2895fc">保存</van-button>
+    <van-form @submit="saveUpdated">
+      <van-cell-group title="持有份额" :border="false">
+        <van-field v-model="fundAmount" type="number" name="amount" />
+      </van-cell-group>
+      <van-cell-group title="成本单价" :border="false">
+        <van-field v-model="fundCost" type="number" name="cost" />
+      </van-cell-group>
+      <van-button block color="#2895fc" native-type="submit">保存</van-button>
+    </van-form>
   </div>
 </template>
 
 <script>
+import { updateFundCostOrAmount } from "network/cloudApi";
+import { mapState } from "vuex";
 export default {
   name: "MyVueAppUpdateFund",
 
@@ -37,9 +41,38 @@ export default {
     this.fundCost = this.fund.fundCost;
   },
 
+  computed: {
+    ...mapState(["groupIndex"]),
+  },
+
   methods: {
     back() {
       this.$router.go(-1);
+    },
+
+    saveUpdated(e) {
+      console.log(e);
+      const params = Object.assign(
+        {
+          groupIndex: this.groupIndex,
+          Fcode: this.fund.FCODE,
+        },
+        e
+      );
+      // return console.log({params});
+      updateFundCostOrAmount(params)
+        .then((res) => {
+          console.log(res);
+          this.$toast.success({
+            message: "保存成功",
+            onClose: () => {
+              this.back();
+            },
+          });
+        })
+        .catch((err) => {
+          this.$toast.fail("保存失败" + err);
+        });
     },
   },
 };

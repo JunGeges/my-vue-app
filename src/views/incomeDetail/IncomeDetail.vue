@@ -209,7 +209,8 @@ export default {
     // 计算分组当日收益率 = 分组当日收益/ 当前持仓金额
     calcTotalDailyIncomeRate(funds) {
       return (
-        (this.calcTotalDailyIncome(funds) / this.calcTotalAmount(funds)) * 100 || 0
+        (this.calcTotalDailyIncome(funds) / this.calcTotalAmount(funds)) *
+          100 || 0
       );
     },
 
@@ -225,7 +226,9 @@ export default {
     // 计算分组持有收益率 = 分组持有收益 / 分组初始持仓总金额
     calcTotalHoldIncomeRate(funds) {
       // 0 /0
-      return (this.calcTotalHoldIncome(funds) / this.positionCost(funds)) * 100 || 0;
+      return (
+        (this.calcTotalHoldIncome(funds) / this.positionCost(funds)) * 100 || 0
+      );
     },
 
     //  已更新收益 /待更新收益
@@ -245,13 +248,12 @@ export default {
     dailyIncome(fund) {
       if (!fund.fundCost || !fund.fundAmount) return 0;
       let dailyIncome = 0;
-      if (this.isUpdated) {
+      if (this.isUpdated(fund)) {
         // -fund.NAV / (1 + fund.NAVCHGRT / 100)) 求出昨天的净值
         dailyIncome =
           (fund.NAV - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
       } else {
-        dailyIncome =
-          (fund.GSZ - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
+        dailyIncome = (fund.GSZ - fund.NAV) * fund.fundAmount;
       }
       dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;

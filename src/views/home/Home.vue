@@ -57,29 +57,21 @@ export default {
   },
 
   mounted() {
-    this.getFundDetail().then((res) => {
-      if (res === "err") return this.$toast("该组内无基金~");
-      this.funds = this.getFunds(res);
-      this.funds && this.calcTotalDailyIncome(this.funds);
-      console.log(
-        "总持仓",
-        this.calcTotalAmount(this.funds),
-        "当日收益",
-        this.calcTotalDailyIncome(this.funds),
-        "当日收益率",
-        this.calcTotalDailyIncomeRate(this.funds),
-        "持有收益",
-        this.calcTotalHoldIncome(this.funds),
-        "持有收益率",
-        this.calcTotalHoldIncomeRate(this.funds),
-        "已更新收益/待更新收益",
-        this.isUpdatedIncome(this.funds)
-      );
+    this.initDatas();
+
+    // 监听事件
+    this.$bus.$on("deleteFund", (fCode) => {
+      const index = this.funds.findIndex((item) => {
+        return item.FCODE === fCode;
+      });
+      this.funds.splice(index, 1);
+      this.calcTotalDailyIncome(this.funds);
+      // this.initDatas();
     });
+
     // this.timeout = setInterval(() => {
     //   getFundDetail("011103,011102");
     // }, 5000);
-    console.log(echarts);
     // this.initChart();
   },
 
@@ -120,6 +112,29 @@ export default {
         ],
       };
       myChart.setOption(options);
+    },
+
+    initDatas() {
+      this.getFundDetail().then((res) => {
+        if (res === "err") return this.$toast("该组内无基金~");
+        this.funds = this.getFunds(res);
+        console.log(this.funds);
+        this.funds && this.calcTotalDailyIncome(this.funds);
+        console.log(
+          "总持仓",
+          this.calcTotalAmount(this.funds),
+          "当日收益",
+          this.calcTotalDailyIncome(this.funds),
+          "当日收益率",
+          this.calcTotalDailyIncomeRate(this.funds),
+          "持有收益",
+          this.calcTotalHoldIncome(this.funds),
+          "持有收益率",
+          this.calcTotalHoldIncomeRate(this.funds),
+          "已更新收益/待更新收益",
+          this.isUpdatedIncome(this.funds)
+        );
+      });
     },
 
     onClickLeft() {
@@ -175,6 +190,7 @@ export default {
       });
       // 给每只基金绑定总持仓 方便计算持仓占比
       const totalAmount = this.calcTotalAmount(funds);
+      console.log({ totalAmount });
       return funds.map((item) => {
         item["totalAmount"] = totalAmount;
         return item;
@@ -246,13 +262,12 @@ export default {
     dailyIncome(fund) {
       if (!fund.fundCost || !fund.fundAmount) return 0;
       let dailyIncome = 0;
-      if (this.isUpdated) {
+      if (this.isUpdated(fund)) {
         // -fund.NAV / (1 + fund.NAVCHGRT / 100)) 求出昨天的净值
         dailyIncome =
           (fund.NAV - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
       } else {
-        dailyIncome =
-          (fund.GSZ - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
+        dailyIncome = (fund.GSZ - fund.NAV) * fund.fundAmount;
       }
       dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;
@@ -277,7 +292,8 @@ export default {
     // 当前持仓金额
     positionAmount(fund) {
       if (!fund.fundCost || !fund.fundAmount) return 0;
-      let positionAmount = fund.fundCost * fund.fundAmount;
+      let positionAmount =
+        fund.fundCost * fund.fundAmount + this.holdIncome(fund);
       // positionAmount = positionAmount.toFixed(2);
       return positionAmount;
     },

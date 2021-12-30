@@ -12,7 +12,7 @@
       >
         <div class="left">{{ item.name }}</div>
         <div class="right">
-          包含基金<span>{{ item.fundCode.length }}{{ item.id }}</span
+          包含基金<span>{{ item.fundCode.length }}</span
           >支
         </div>
       </div>
@@ -92,6 +92,7 @@ export default {
     this.activeIndex = this.groupIndex;
     getUserInfo().then((res) => {
       this.tempFundGroup = this.fundGroup = res.result.fundGroups;
+      console.log("----", this.tempFundGroup);
     });
   },
 
@@ -130,7 +131,7 @@ export default {
         type: SET_GROUP_INDEX,
         groupIndex: index,
       });
-      this.back()
+      this.back();
     },
 
     addGroupItem() {

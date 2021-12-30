@@ -1,16 +1,18 @@
 <template>
   <div class="content-item-container">
     <div
-      v-if="simpleMode"
+      v-if="simpleMode && isHold && showTag"
       class="updated-tip"
       :class="[isUpdated ? 'updated-sel' : '']"
     ></div>
     <div class="left">
       <div class="left-first">{{ fund.SHORTNAME }}</div>
       <div class="left-last" v-if="!simpleMode">
-        <span :class="[isUpdated ? 'updated' : '']">{{
-          isUpdated ? "已更新" : "估算"
-        }}</span>
+        <span
+          v-if="isHold && showTag"
+          :class="[isUpdated ? 'updated' : 'no-updated']"
+          >{{ isUpdated ? "已更新" : "估算" }}</span
+        >
         {{ fund.FCODE }}
       </div>
     </div>
@@ -46,11 +48,18 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      showTag: (state) => state.userInfo.config.showTag,
+    }),
     // 基金已更新
     isUpdated() {
       return (
         this.fund.PDATE.substr(5, 5) === this.fund.Expansion.GZTIME.substr(5, 5)
       );
+    },
+
+    isHold() {
+      return this.fund.fundCost && this.fund.fundAmount ? true : false;
     },
 
     // 当日收益
@@ -63,8 +72,7 @@ export default {
         dailyIncome =
           (fund.NAV - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
       } else {
-        dailyIncome =
-          (fund.GSZ - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
+        dailyIncome = (fund.GSZ - fund.NAV) * fund.fundAmount;
       }
       dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;
@@ -226,8 +234,13 @@ export default {
     }
     .left-last {
       color: #b3b3b3;
-      font-size: 12px;
+      font-size: 10px;
       margin-top: 5px;
+      .no-updated {
+        border: 1px solid #b3b3b3;
+        border-radius: 3px;
+        padding: 1px 2px;
+      }
       .updated {
         color: #2895fc;
         border: 1px solid #2895fc;

@@ -97,10 +97,10 @@ export default {
         let result = await addFundToGroup(groupIndex, values);
         console.log("++++++++++", result);
         if (result.result?.updated === 1) {
-          return this.$toast({
-            message: "添加成功~",
+          return this.$toast.success({
+            message: "添加成功",
             onClose: () => {
-              this.$router.go(-1);
+              this.back();
             },
           });
         }

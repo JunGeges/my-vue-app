@@ -25,6 +25,8 @@ Vue.prototype.$cloudbase = Cloudbase.init({
   env: 'jun-9gidxtgo5a18dce9'
 })
 
+Vue.prototype.$bus = new Vue()
+
 Vue.config.productionTip = false
 
 // Vue.config.devtools = process.env.NODE_ENV == 'development'

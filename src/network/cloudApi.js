@@ -168,3 +168,35 @@ export async function upBaseConfig(configName, bool) {
     bool
   })
 }
+
+
+/**
+ * 删除分组的某个基金
+ * @param {Number} groupIndex 分组索引
+ * @param {String} Fcode 删除的基金编码
+ */
+export async function deleteFund(groupIndex, Fcode) {
+  return await cloudRequest('fund', {
+    funName: 'deleteFund',
+    groupIndex,
+    Fcode
+  })
+}
+
+/**
+ * 修改基金持仓
+ * @param {Number} groupIndex 分组索引
+ * @param {String} Fcode 删除的基金编码
+ * @param {String} cost 
+ * @param {String} amount 
+ * @returns 
+ */
+export async function updateFundCostOrAmount({ groupIndex, Fcode, cost = 0, amount = 0 }) {
+  return await cloudRequest('fund', {
+    funName: 'updateFundCostOrAmount',
+    groupIndex,
+    Fcode,
+    cost,
+    amount,
+  })
+}

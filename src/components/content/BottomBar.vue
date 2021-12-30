@@ -45,7 +45,9 @@ export default {
   },
 
   methods: {
-    edit() {},
+    edit() {
+       this.$router.push("/operationfund");
+    },
 
     toSetting() {
       this.$router.push("/setting");

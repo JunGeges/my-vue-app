@@ -1,8 +1,8 @@
 <template>
   <div>
     <home-content-item
-      v-for="(item, index) in funds"
-      :key="index"
+      v-for="item in funds"
+      :key="item.FCODE"
       :fund="item"
       @click.native="itemClick(item)"
     />
@@ -17,7 +17,10 @@
 </template>
 
 <script>
+import { deleteFund } from "network/cloudApi";
+
 import HomeContentItem from "./HomeContentItem";
+import { mapState } from "vuex";
 export default {
   name: "MyVueAppHomeContentList",
 
@@ -44,6 +47,10 @@ export default {
     },
   },
 
+  computed: {
+    ...mapState(["groupIndex"]),
+  },
+
   components: {
     HomeContentItem,
   },
@@ -68,12 +75,29 @@ export default {
             params: this.clickFund,
           });
           break;
+        case 4: //删除
+          this.deleteFund();
+          break;
       }
     },
 
     itemClick(item) {
       this.showActionSheet = true;
       this.clickFund = item;
+      console.log(item);
+    },
+
+    async deleteFund() {
+      deleteFund(this.groupIndex, this.clickFund.FCODE)
+        .then((res) => {
+          console.log(res);
+          this.$bus.$emit("deleteFund", this.clickFund.FCODE);
+          this.$toast.success("删除成功");
+        })
+        .catch((err) => {
+          console.warn(err);
+          this.$toast.fail("删除失败");
+        });
     },
   },
 };

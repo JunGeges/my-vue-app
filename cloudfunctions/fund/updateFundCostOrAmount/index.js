@@ -8,7 +8,7 @@ exports.main = async (event, context) => {
   const db = app.database()
   const _ = db.command
 
-  const { uid, groupIndex, Fcode } = event
+  const { uid, groupIndex, Fcode, cost, amount } = event
 
 
 
@@ -17,8 +17,7 @@ exports.main = async (event, context) => {
       uid: _.eq(uid)
     })
     .update({
-      [`fundGroups.${groupIndex}.fundCode`]: _.pull(Fcode),
-      [`fundGroups.${groupIndex}.fundCost.${Fcode}`]: _.remove(),
-      [`fundGroups.${groupIndex}.fundAmount.${Fcode}`]: _.remove()
+      [`fundGroups.${groupIndex}.fundCost.${Fcode}`]: cost,
+      [`fundGroups.${groupIndex}.fundAmount.${Fcode}`]: amount
     })
 };
