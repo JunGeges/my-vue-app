@@ -16,14 +16,17 @@
 
 .my-icon-xuanxiang:before {
   content: "\e611";
+  /* color: #808080; */
 }
 
 .my-icon-yuanxingweixuanzhong:before {
   content: "\e72f";
+  color: #ececec;
 }
 
 .my-icon-yuanxingxuanzhong:before {
   content: "\e731";
+  color: #2895fc;
 }
 
 .my-icon-jia:before {

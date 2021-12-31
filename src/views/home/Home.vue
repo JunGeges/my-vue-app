@@ -267,7 +267,7 @@ export default {
         dailyIncome =
           (fund.NAV - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
       } else {
-        dailyIncome = (fund.GSZ - fund.NAV) * fund.fundAmount;
+        dailyIncome = (fund.GSZZL / 100) * this.positionAmount(fund);
       }
       dailyIncome = dailyIncome.toFixed(2);
       return dailyIncome;
@@ -293,7 +293,7 @@ export default {
     positionAmount(fund) {
       if (!fund.fundCost || !fund.fundAmount) return 0;
       let positionAmount =
-        fund.fundCost * fund.fundAmount + this.holdIncome(fund);
+        fund.fundCost * fund.fundAmount + parseFloat(this.holdIncome(fund));
       // positionAmount = positionAmount.toFixed(2);
       return positionAmount;
     },

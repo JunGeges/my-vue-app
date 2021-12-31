@@ -3,6 +3,7 @@
     "addfund",
     "axios",
     "browserslist",
+    "btns",
     "caidan",
     "cloudbase",
     "datas",
@@ -28,6 +29,9 @@
     "updatefund",
     "updatelog",
     "vant",
-    "yanjing"
+    "xuanxiang",
+    "yanjing",
+    "yuanxingweixuanzhong",
+    "yuanxingxuanzhong"
   ]
 }

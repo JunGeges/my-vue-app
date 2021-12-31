@@ -72,9 +72,10 @@ export default {
         dailyIncome =
           (fund.NAV - -fund.NAV / -(1 + fund.NAVCHGRT / 100)) * fund.fundAmount;
       } else {
-        dailyIncome = (fund.GSZ - fund.NAV) * fund.fundAmount;
+        dailyIncome = (fund.GSZZL / 100) * this.positionAmount;
       }
       dailyIncome = dailyIncome.toFixed(2);
+      console.log({ dailyIncome });
       return dailyIncome;
     },
 
