@@ -3,9 +3,12 @@ const insertUser = require('./insertUser/index')
 const getUserInfo = require('./getUserInfo/index')
 const upColumnConfig = require('./upColumnConfig/index')
 const upBaseConfig = require('./upBaseConfig/index')
+const updateFundGroups = require('./updateFundGroups/index')
 
 exports.main = async (event, context) => {
-  const { funName } = event
+  const {
+    funName
+  } = event
   cloud.init({
     env: cloud.SYMBOL_CURRENT_ENV,
   });
@@ -14,7 +17,8 @@ exports.main = async (event, context) => {
     insertUser,
     getUserInfo,
     upColumnConfig,
-    upBaseConfig
+    upBaseConfig,
+    updateFundGroups
   }
 
   // 入口

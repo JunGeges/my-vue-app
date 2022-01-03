@@ -102,7 +102,7 @@ export default {
       if (index === 0) return;
       this.$dialog
         .confirm({
-          title: "确认删除?",
+          title: "提示",
           confirmButtonColor: "#2895fc",
           message: "删除分组将删除分组内基金,确认删除?",
         })

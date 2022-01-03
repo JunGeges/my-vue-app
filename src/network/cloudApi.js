@@ -191,12 +191,28 @@ export async function deleteFund(groupIndex, Fcode) {
  * @param {String} amount 
  * @returns 
  */
-export async function updateFundCostOrAmount({ groupIndex, Fcode, cost = 0, amount = 0 }) {
+export async function updateFundCostOrAmount({
+  groupIndex,
+  Fcode,
+  cost = 0,
+  amount = 0
+}) {
   return await cloudRequest('fund', {
     funName: 'updateFundCostOrAmount',
     groupIndex,
     Fcode,
     cost,
     amount,
+  })
+}
+
+/**
+ * 编辑基金和移动啥的
+ * @param {Array} fundGroups 编辑后的分组
+ */
+export async function updateFundGroups(fundGroups) {
+  return await cloudRequest('user', {
+    funName: 'updateFundGroups',
+    fundGroups
   })
 }

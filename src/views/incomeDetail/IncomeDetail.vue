@@ -109,13 +109,15 @@ export default {
 
     selectGroup(index) {
       this.showActionSheet = false;
+      if (!this.userInfo.fundGroups[index].fundCode.length)
+        return this.$toast("该组内无基金~");
       this.curIndex = index;
       this.initData();
     },
 
     initData() {
       this.getFundDetail().then((res) => {
-        if (res === "err") return this.$toast("该组内无基金~");
+        if (res === "err") return;
         this.funds = this.getFunds(res);
         console.log("11222", this.calcTotalHoldIncomeRate(this.funds));
         // "总持仓",

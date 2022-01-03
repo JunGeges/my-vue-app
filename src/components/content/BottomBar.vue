@@ -2,6 +2,7 @@
   <div class="bottom-bar-container">
     <van-icon @click="edit" class-prefix="my-icon" name="caidan" />
     <van-icon @click="toSetting" class-prefix="my-icon" name="shezhi" />
+    <van-icon @click="toLove" class-prefix="my-icon" name="aixin" />
     <div class="right" @click="toIncomeDetail">
       <div class="income">
         <div :style="{ color: isHong }">
@@ -46,7 +47,7 @@ export default {
 
   methods: {
     edit() {
-       this.$router.push("/operationfund");
+      this.$router.push("/operationfund");
     },
 
     toSetting() {
@@ -56,6 +57,12 @@ export default {
     toIncomeDetail() {
       this.$router.push({
         name: "incomedetail",
+      });
+    },
+
+    toLove() {
+      this.$router.push({
+        name: "love",
       });
     },
   },
@@ -74,6 +81,10 @@ export default {
   width: 100vw;
   padding: 0 8px 0 15px;
   box-sizing: border-box;
+  .my-icon-aixin {
+    animation: heartbeat 1s infinite;
+    transform-origin: center;
+  }
   .right {
     display: flex;
     align-items: center;
@@ -92,6 +103,32 @@ export default {
         font-size: 14px;
       }
     }
+  }
+}
+
+@keyframes heartbeat {
+  0%,
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  25% {
+    transform: scale(1.4);
+    opacity: 0.6;
+  }
+}
+
+@-webkit-keyframes heartbeat {
+  0%,
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  25% {
+    transform: scale(1.4);
+    opacity: 0.6;
   }
 }
 </style>

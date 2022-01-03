@@ -88,16 +88,25 @@ export default {
     },
 
     async deleteFund() {
-      deleteFund(this.groupIndex, this.clickFund.FCODE)
-        .then((res) => {
-          console.log(res);
-          this.$bus.$emit("deleteFund", this.clickFund.FCODE);
-          this.$toast.success("删除成功");
+      this.$dialog
+        .confirm({
+          title: "提示",
+          message: `确认删除 ${this.clickFund.SHORTNAME} 吗?`,
+          confirmButtonColor: "#2895fc",
         })
-        .catch((err) => {
-          console.warn(err);
-          this.$toast.fail("删除失败");
-        });
+        .then(() => {
+          deleteFund(this.groupIndex, this.clickFund.FCODE)
+            .then((res) => {
+              console.log(res);
+              this.$bus.$emit("deleteFund", this.clickFund.FCODE);
+              this.$toast.success("删除成功");
+            })
+            .catch((err) => {
+              console.warn(err);
+              this.$toast.fail("删除失败");
+            });
+        })
+        .catch(() => {});
     },
   },
 };

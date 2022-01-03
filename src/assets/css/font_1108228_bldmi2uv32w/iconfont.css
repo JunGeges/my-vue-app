@@ -1,9 +1,9 @@
 @font-face {
   font-family: "my-icon";
   /* Project id 1108228 */
-  src: url('iconfont.woff2?t=1640880276409') format('woff2'),
-    url('iconfont.woff?t=1640880276409') format('woff'),
-    url('iconfont.ttf?t=1640880276409') format('truetype');
+  src: url('iconfont.woff2?t=1641213557763') format('woff2'),
+    url('iconfont.woff?t=1641213557763') format('woff'),
+    url('iconfont.ttf?t=1641213557763') format('truetype');
 }
 
 .my-icon {
@@ -12,6 +12,13 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.my-icon-aixin:before {
+  content: "\e61a";
+  margin-left: 10px;
+  color: #ff7672;
+  font-size: 28px;
 }
 
 .my-icon-xuanxiang:before {

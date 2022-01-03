@@ -92,6 +92,13 @@
     />
     <van-cell-group>
       <van-cell
+        to="/love"
+        title="赞赏小基❤️"
+        :border="false"
+        size="large"
+        is-link
+      />
+      <van-cell
         to="/updatelog"
         title="更新日志"
         :border="false"
@@ -157,7 +164,7 @@ export default {
 
   methods: {
     switchChange(e) {
-      upBaseConfig(Object.keys(e)[0], Object.values(e)[0])
+      upBaseConfig(Object.keys(e)[0], Object.values(e)[0]);
     },
     back() {
       this.$router.go(-1);

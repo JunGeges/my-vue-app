@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5203226",
+      "name": "爱心",
+      "font_class": "aixin",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
       "icon_id": "9509967",
       "name": "选项",
       "font_class": "xuanxiang",

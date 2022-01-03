@@ -10,8 +10,7 @@ VueRouter.prototype.push = function push(location) {
 }
 
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     redirect: {
       name: 'home'
@@ -81,6 +80,11 @@ const routes = [
     path: '/operationfund',
     component: () => import('views/editFund/operationFund/OperationFund'),
     name: 'operationfund'
+  },
+  {
+    path: '/love',
+    component: () => import('views/love/Love'),
+    name: 'love'
   }
 ]
 
