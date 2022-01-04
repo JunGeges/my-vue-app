@@ -36,6 +36,7 @@ export default {
 .love-container {
   background: #f5f7fb;
   text-align: center;
+  height: 100vh;
   /deep/ .van-nav-bar {
     background: #f5f7fb;
     .van-icon {

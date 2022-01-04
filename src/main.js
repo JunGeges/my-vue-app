@@ -12,10 +12,11 @@ import {
   Button,
   Cell,
   CellGroup,
-  Switch
+  Switch,
+  PullRefresh
 } from "vant"
 Vue.use(NavBar).use(Toast).use(Dialog).use(ActionSheet)
-  .use(Icon).use(Form).use(Field).use(Button).use(CellGroup).use(Cell).use(Switch)
+  .use(Icon).use(Form).use(Field).use(Button).use(CellGroup).use(Cell).use(Switch).use(PullRefresh)
 
 import router from './router/index'
 import store from './store/index'

@@ -110,8 +110,10 @@ export default {
     //     item.Expansion.FSRQ.substr(5, 5),
     //     item.Expansion.GZTIME.substr(5, 5),
     //   ];
-    //   const isUpdate = item.PDATE.substr(5, 5) === x[1];
-    //   if (isUpdate) {
+    //   const isUpdated = item.PDATE.substr(5, 5) === x[1];
+    //   if (isUpdated) {
+    //     this.sample.jz.title2 = item.PDATE.substr(5, 5) === x[0] ? "" : item.PDATE.substr(5, 5),
+    //     this.sample.gz.title2 = item.GZTIME.substr(5, 5) === x[0] ? "" : item.GZTIME.substr(5, 5),
     //     count++;
     //   }
     // });

@@ -157,7 +157,7 @@ export default {
 
   data() {
     return {
-      isOpreaton: false, //是否是复制或者移动状态
+      isOperation: false, //是否是复制或者移动状态
       isMove: false, // 批量操作时，区分移动还是复制
       isSave: false, //是否保存中
       edited: false, // 是否有过操作动作
@@ -239,7 +239,7 @@ export default {
     },
 
     closeGroupAction() {
-      this.isOpreaton = false;
+      this.isOperation = false;
       this.isMove = false;
     },
 
@@ -252,7 +252,7 @@ export default {
     // 选择分组
     async selectGroup(index) {
       // 复制移动基金
-      if (this.isOpreaton) {
+      if (this.isOperation) {
         // this.$toast("复制或者移动中");
         // toIndex=>index fromIndex=> curGroupIndex funds => [] 1 or 多个
 
@@ -301,7 +301,7 @@ export default {
             );
           this.isMove = false;
         }
-        this.isOpreaton = false;
+        this.isOperation = false;
         this.showGroupSheet = false;
         // 批量复制完修改状态
         this.funds = this.funds.map((item) => {
@@ -441,7 +441,7 @@ export default {
     // 复制基金到分组
     copyFund(index) {
       this.showGroupSheet = true;
-      this.isOpreaton = true;
+      this.isOperation = true;
       this.edited = true;
       // 复制一个
       if (Object.prototype.toString.call(index) === "[object Number]")

@@ -109,7 +109,7 @@
         size="large"
         :border="false"
         title="关于 / 建议反馈"
-        value="v1.8.3"
+        :value="curVersion"
         is-link
         to="/about"
       />
@@ -119,12 +119,14 @@
 
 <script>
 import { mapState } from "vuex";
+import versionLogs from "common/versionLog";
 import { singOut, getUserInfo, upBaseConfig } from "network/cloudApi";
 export default {
   name: "MyVueAppSetting",
 
   data() {
     return {
+      curVersion: "",
       simpleMode: false,
       upIsRed: false,
       downIsSafe: false,
@@ -141,6 +143,8 @@ export default {
   },
 
   mounted() {
+    // 当前版本
+    this.curVersion = versionLogs[0].versionNumber.split("_")[0];
     this.hasLoginState = this.$cloudbase.auth().hasLoginState();
     // 获取userInfo
     getUserInfo().then((res) => {

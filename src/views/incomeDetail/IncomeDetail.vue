@@ -36,11 +36,11 @@
         <div>总持仓</div>
       </div>
       <div class="income-detail">
-        <div class="id-item">
-          <div>{{ totalHoldIncome }}</div>
-          <div>持有收益</div>
+        <div class="id-item" v-for="(item, index) in incomeDatas" :key="index">
+          <div :style="{ color: item.color }">{{ item.value2 }}</div>
+          <div>{{ item.value1 }}</div>
         </div>
-        <div class="id-item">
+        <!-- <div class="id-item">
           <div>{{ totalHoldIncomeRate.toFixed(2) }}%</div>
           <div>持有收益率</div>
         </div>
@@ -59,7 +59,7 @@
         <div class="id-item">
           <div>{{ updatedIncome[1] }}</div>
           <div>待更新收益</div>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -85,26 +85,36 @@ export default {
       curIndex: 0,
       userInfo: null,
       totalAmount: 0,
-      totalDailyIncome: 0,
-      totalDailyIncomeRate: 0,
-      totalHoldIncome: 0,
-      totalHoldIncomeRate: 0,
-      updatedIncome: [],
+      incomeDatas: [],
     };
   },
 
   computed: {
-    ...mapState(["groupIndex"]),
+    ...mapState({
+      groupIndex: (state) => state.groupIndex,
+      downIsSafe: (state) => state.userInfo.config.downIsSafe,
+    }),
   },
 
   mounted() {
     this.curIndex = this.groupIndex;
+    console.log(this.incomeDatas);
     this.initData();
   },
 
   methods: {
     back() {
       this.$router.go(-1);
+    },
+
+    isHong(value) {
+      if (this.downIsSafe)
+        return [value > 0 ? "#48a1ad" : value == 0 ? "#808080" : "#008800"];
+      return value > 0 ? "#ff0000" : value == 0 ? "#808080" : "#008800";
+    },
+
+    format(value) {
+      return value > 0 ? "+" + value : value;
     },
 
     selectGroup(index) {
@@ -119,19 +129,51 @@ export default {
       this.getFundDetail().then((res) => {
         if (res === "err") return;
         this.funds = this.getFunds(res);
-        console.log("11222", this.calcTotalHoldIncomeRate(this.funds));
         // "总持仓",
         this.totalAmount = this.calcTotalAmount(this.funds);
-        // "当日收益",
-        this.totalDailyIncome = this.calcTotalDailyIncome(this.funds);
-        // "当日收益率",
-        this.totalDailyIncomeRate = this.calcTotalDailyIncomeRate(this.funds);
-        // "持有收益",
-        this.totalHoldIncome = this.calcTotalHoldIncome(this.funds);
-        // "持有收益率",
-        this.totalHoldIncomeRate = this.calcTotalHoldIncomeRate(this.funds);
-        // "已更新收益/待更新收益",
-        this.updatedIncome = this.isUpdatedIncome(this.funds);
+        this.incomeDatas = [
+          {
+            key: "totalHoldIncome",
+            value1: "持有收益",
+            color: this.isHong(this.calcTotalHoldIncome(this.funds)),
+            value2: this.format(this.calcTotalHoldIncome(this.funds)),
+          },
+          {
+            key: "totalHoldIncomeRate",
+            value1: "持有收益率",
+            color: this.isHong(this.calcTotalHoldIncomeRate(this.funds)),
+            value2:
+              this.format(this.calcTotalHoldIncomeRate(this.funds).toFixed(2)) +
+              "%",
+          },
+          {
+            key: "totalDailyIncome",
+            value1: "当日收益",
+            color: this.isHong(this.calcTotalDailyIncome(this.funds)),
+            value2: this.format(this.calcTotalDailyIncome(this.funds)),
+          },
+          {
+            key: "totalDailyIncomeRate",
+            value1: "当日收益率",
+            color: this.isHong(this.calcTotalDailyIncomeRate(this.funds)),
+            value2:
+              this.format(
+                this.calcTotalDailyIncomeRate(this.funds).toFixed(2)
+              ) + "%",
+          },
+          {
+            key: "updatedIncome",
+            value1: "已更新收益",
+            color: this.isHong(this.isUpdatedIncome(this.funds)[0]),
+            value2: this.format(this.isUpdatedIncome(this.funds)[0]),
+          },
+          {
+            key: "waitUpdatedIncome",
+            value1: "待更新收益",
+            color: this.isHong(this.isUpdatedIncome(this.funds)[1]),
+            value2: this.format(this.isUpdatedIncome(this.funds)[1]),
+          },
+        ];
       });
     },
 

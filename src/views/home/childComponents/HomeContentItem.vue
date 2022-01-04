@@ -50,6 +50,9 @@ export default {
   computed: {
     ...mapState({
       showTag: (state) => state.userInfo.config.showTag,
+      simpleMode: (state) => state.userInfo.config.simpleMode,
+      columnOrder: (state) => state.userInfo.config.columnOrder,
+      downIsSafe: (state) => state.userInfo.config.downIsSafe,
     }),
     // 基金已更新
     isUpdated() {
@@ -75,7 +78,7 @@ export default {
         dailyIncome = (fund.GSZZL / 100) * this.positionAmount;
       }
       dailyIncome = dailyIncome.toFixed(2);
-      console.log({ dailyIncome });
+      // console.log({ dailyIncome });
       return dailyIncome;
     },
 
@@ -108,15 +111,10 @@ export default {
       positionAmount = positionAmount.toFixed(2);
       return positionAmount;
     },
-
-    ...mapState({
-      simpleMode: (state) => state.userInfo.config.simpleMode,
-      columnOrder: (state) => state.userInfo.config.columnOrder,
-    }),
   },
 
   mounted() {
-    // console.log(this.positionAmount);
+    // console.log(this.downIsSafe);
     // this.$store.commit({
     //   type: CALC_POSITION_AMOUNT,
     //   positionAmount: this.positionAmount,
@@ -182,6 +180,14 @@ export default {
 
     isUp(value) {
       if (value == "--") return ["item-first-eq0"];
+      if (this.downIsSafe)
+        return [
+          value > 0
+            ? "item-first-down-safe"
+            : value == 0
+            ? "item-first-eq0"
+            : "item-first-down",
+        ];
       return [
         value > 0
           ? "item-first-up"
@@ -269,6 +275,9 @@ export default {
       color: #000000;
       .item-first-up {
         color: #ff0000;
+      }
+      .item-first-down-safe {
+        color: #48a1ad;
       }
       .item-first-down {
         color: #008800;

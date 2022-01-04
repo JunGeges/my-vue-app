@@ -60,6 +60,7 @@ export default {
 
   data() {
     return {
+      edited: false,
       columns: [],
       hideColumns: [],
     };
@@ -97,6 +98,19 @@ export default {
 
   methods: {
     back() {
+      if (this.edited) {
+        // 提醒是否保存
+        return this.$dialog
+          .confirm({
+            title: "提示",
+            message: "未保存修改将不会生效，确认返回?",
+          })
+          .then(() => {
+            this.edited = false;
+            this.$router.go(-1);
+          })
+          .catch(() => {});
+      }
       this.$router.go(-1);
     },
 
@@ -107,6 +121,7 @@ export default {
         (index === 0 && flag === "up")
       )
         return;
+      this.edited = true;
       if (flag === "up") return this.frontMove(this.columns, index);
       this.backMove(this.columns, index);
     },
@@ -128,6 +143,7 @@ export default {
     handleColumn(index, type) {
       if (type === "show" && this.columns.length === 1)
         return this.$toast("大兄弟,最少留一个吧~");
+      this.edited = true;
       const types = {
         show: this.columns,
         hide: this.hideColumns,
@@ -139,12 +155,16 @@ export default {
       (type === "show" ? this.hideColumns : this.columns).push(handleColumnObj);
     },
 
-    saveEdit() {
+    async saveEdit() {
       const upConfig = this.columns.map((item) => {
         return Object.keys(item)[0];
       });
-      upColumnConfig(upConfig);
-      console.log(upConfig);
+      if (!this.edited) return this.$router.go(-1);
+      upColumnConfig(upConfig).then((res) => {
+        if (res.result.updated) {
+          this.$router.go(-1);
+        }
+      });
     },
   },
 };

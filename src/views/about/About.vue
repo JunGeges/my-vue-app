@@ -3,7 +3,7 @@
     <van-nav-bar title="小基助手·关于" left-arrow @click-left="back" />
     <div class="about-content">
       <img src="~assets/img/logo.png" alt="" srcset="" />
-      <div>v1.8.3_20201128</div>
+      <div>{{ versionNumber }}</div>
       <div>Design & Code by Gao.</div>
       <div>Email: g_aojun_01@163.com</div>
       <div>Data from 天天基金.</div>
@@ -12,14 +12,20 @@
 </template>
 
 <script>
+import versionLogs from "common/versionLog";
 export default {
   name: "MyVueAppAbout",
 
   data() {
-    return {};
+    return {
+      versionNumber: "",
+    };
   },
 
-  mounted() {},
+  mounted() {
+    // 当前版本
+    this.versionNumber = versionLogs[0].versionNumber;
+  },
 
   methods: {
     back() {

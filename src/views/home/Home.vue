@@ -8,9 +8,16 @@
         </div>
       </template>
     </van-nav-bar>
-    <home-content v-if="funds.length" :funds="funds"></home-content>
-    <no-content v-else></no-content>
+    <van-pull-refresh
+      v-model="isLoading"
+      success-text="刷新成功"
+      @refresh="onRefresh"
+    >
+      <home-content v-if="funds.length" :funds="funds"></home-content>
+      <no-content v-else></no-content>
+    </van-pull-refresh>
     <bottom-bar :daily-income="totalDailyIncome"></bottom-bar>
+
     <van-icon
       class="add-btn"
       class-prefix="my-icon"
@@ -43,6 +50,7 @@ export default {
       funds: [],
       userInfo: null,
       totalDailyIncome: 0,
+      isLoading: false,
     };
   },
   components: {
@@ -68,10 +76,9 @@ export default {
       this.calcTotalDailyIncome(this.funds);
       // this.initDatas();
     });
-
-    // this.timeout = setInterval(() => {
-    //   getFundDetail("011103,011102");
-    // }, 5000);
+    if (process.env.NODE_ENV == "production") {
+      this.poll();
+    }
     // this.initChart();
   },
 
@@ -80,6 +87,39 @@ export default {
   },
 
   methods: {
+    async onRefresh() {
+      // 有缓存
+      if (this.funds.length) {
+        const fCodes = this.funds.map((item) => {
+          return item.FCODE;
+        });
+        const res = await getFundDetail(fCodes.join(","));
+        this.funds = await this.getFunds(res.data);
+        this.isLoading = false;
+        return;
+      }
+      // 没缓存
+      this.initDatas();
+      this.isLoading = false;
+    },
+
+    poll() {
+      this.timeout = setTimeout(async () => {
+        // 有缓存
+        if (this.funds.length) {
+          const fCodes = this.funds.map((item) => {
+            return item.FCODE;
+          });
+          const res = await getFundDetail(fCodes.join(","));
+          this.funds = await this.getFunds(res.data);
+          this.poll();
+          return;
+        }
+        // 没缓存
+        await this.initDatas();
+      }, 1000 * 60);
+    },
+
     initChart() {
       let myChart = echarts.init(document.getElementById(`tree-map`));
       let options = {
@@ -114,7 +154,7 @@ export default {
       myChart.setOption(options);
     },
 
-    initDatas() {
+    async initDatas() {
       this.getFundDetail().then((res) => {
         if (res === "err") return this.$toast("该组内无基金~");
         this.funds = this.getFunds(res);

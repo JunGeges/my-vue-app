@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { getVersionLog } from "network/cloudApi";
+import versionLogs from "common/versionLog";
 export default {
   name: "MyVueAppUpdateLog",
 
@@ -26,23 +26,12 @@ export default {
   },
 
   mounted() {
-    this.getData();
+    this.logs = versionLogs;
   },
 
   methods: {
     back() {
       this.$router.go(-1);
-    },
-
-    getData() {
-      getVersionLog
-        .call(this)
-        .then((res) => {
-          this.logs = res.result.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
   },
 };
@@ -59,7 +48,7 @@ export default {
   .log-ul {
     margin: 0 16px;
     .log-li {
-      margin-top: 16px;
+      margin-top: 30px;
       .li-title {
         color: #333333;
         font-weight: 600;
@@ -74,7 +63,7 @@ export default {
         box-sizing: border-box;
         border-radius: 8px;
         line-height: 30px;
-        font-size: 16px;
+        font-size: 14px;
         div {
           display: flex;
           align-items: center;

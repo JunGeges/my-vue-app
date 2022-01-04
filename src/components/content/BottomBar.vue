@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "MyVueAppBottomBar",
 
@@ -33,12 +34,24 @@ export default {
   computed: {
     isHong() {
       const dailyIncome = this.dailyIncome;
+      if (this.downIsSafe)
+        return [
+          dailyIncome > 0
+            ? "#48a1ad"
+            : dailyIncome == 0
+            ? "#808080"
+            : "#008800",
+        ];
       return dailyIncome > 0
         ? "#ff0000"
         : dailyIncome == 0
-        ? "#424453"
+        ? "#808080"
         : "#008800";
     },
+
+    ...mapState({
+      downIsSafe: (state) => state.userInfo.config.downIsSafe,
+    }),
   },
 
   mounted() {

@@ -34,3 +34,9 @@ https://fundmobapi.eastmoney.com/FundMNewApi/FundMNFInfo?pageIndex=1&pageSize=50
 
 <!-- 获取近20天净值 -->
 https://fundmobapi.eastmoney.com/FundMApi/FundNetDiagram.ashx?FCODE=011103&RANGE="y"&deviceid=Wap&plat=Wap&product=EFund&version=2.0.0&_=1640078754203
+
+<!-- 获取历史净值 -->
+https://uni-fundts.1234567.com.cn/dataapi/fund/FundNetDiagram2?CODE=001880&FCODE=001880&RANGE=n&CustomerNo=&UserId=&Uid=&CToken=&UToken=&MobileKey=&zone=&DATES=&POINTCOUNT=&deviceid=5C1164BA-3D4A-4953-A488-00E47222D4BB&plat=Iphone&AppType=Iphone&product=EFund&version=6.2.5&Serverversion=6.2.5&appversion=6.2.5
+
+<!-- 获取实时净值 -->
+https://fundmobapi.eastmoney.com/FundMApi/FundVarietieValuationDetail.ashx?FCODE=003095&CustomerNo=&UserId=&Uid=&CToken=&UToken=&MobileKey=&zone=&DATES=&POINTCOUNT=&deviceid=5C1164BA-3D4A-4953-A488-00E47222D4BB&plat=Iphone&AppType=Iphone&product=EFund&version=6.2.5&Serverversion=6.2.5&appversion=6.2.5&_=1641284859361&callback=axiosJsonpCallback1
