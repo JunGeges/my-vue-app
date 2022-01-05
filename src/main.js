@@ -13,9 +13,10 @@ import {
   Cell,
   CellGroup,
   Switch,
-  PullRefresh
+  PullRefresh,
+  Calendar
 } from "vant"
-Vue.use(NavBar).use(Toast).use(Dialog).use(ActionSheet)
+Vue.use(NavBar).use(Toast).use(Dialog).use(ActionSheet).use(Calendar)
   .use(Icon).use(Form).use(Field).use(Button).use(CellGroup).use(Cell).use(Switch).use(PullRefresh)
 
 import router from './router/index'

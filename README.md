@@ -29,6 +29,8 @@ npm i -g @cloudbase/cli
 
 `持仓占比 = 持仓金额/持仓总金额`
 
+`加仓后持仓成本＝（第一次买入基金的价格×第一次持仓基金数量＋加仓时的基金价格×加仓的基金数量）／（第一次持仓基金份额＋加仓的基金份额）`
+
 <!-- 批量获取基金 -->
 https://fundmobapi.eastmoney.com/FundMNewApi/FundMNFInfo?pageIndex=1&pageSize=50&plat=Android&appType=ttjj&product=EFund&Version=1&deviceid=Wap&Fcodes=011103%2C011102%2C161032
 

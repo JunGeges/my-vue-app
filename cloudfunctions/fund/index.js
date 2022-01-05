@@ -11,7 +11,7 @@ exports.main = async (event, context) => {
 
   const funs = {
     deleteFund, //删除基金
-    updateFundCostOrAmount, //修改持仓
+    updateFundCostOrAmount, //修改持仓 加仓
     sellFundAmount //减仓
   }
 

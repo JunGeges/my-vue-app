@@ -34,11 +34,11 @@
       </van-cell-group>
       <van-button
         block
-        :color="jcje > 0 ? '#2895fc' : '#c6c6cc'"
+        :color="disable ? '#c6c6cc' : '#2895fc'"
         :loading="isSave"
         type="info"
         native-type="submit"
-        :disabled="!jcje > 0"
+        :disabled="disable"
         loading-size="10px"
         loading-text="保存中"
         text="保存"
@@ -56,6 +56,8 @@
 
 <script>
 import { getJzList } from "network/api";
+import { updateFundCostOrAmount } from "network/cloudApi";
+import { mapState } from "vuex";
 export default {
   name: "MyVueAppAddFund",
 
@@ -64,12 +66,19 @@ export default {
       showActionSheet: false,
       jcje: "",
       sxf: 0.15,
-      jcrq: '',
+      jcrq: "",
       actions: [],
       fund: null,
       isSave: false,
       jcrqIndex: 0,
     };
+  },
+
+  computed: {
+    ...mapState(["groupIndex"]),
+    disable() {
+      return !(this.jcje > 0 && this.sxf >= 0);
+    },
   },
 
   async mounted() {
@@ -93,11 +102,38 @@ export default {
     back() {
       this.$router.go(-1);
     },
-
-    save(e) {
-      console.log(e);
-      const formData = Object.assign(e, { DWJZ: this.actions[this.jcrqIndex].DWJZ })
-      
+    // `加仓后持仓成本＝（第一次买入基金的价格×第一次持仓基金份额＋加仓时的基金价格×加仓的基金份额）／（第一次持仓基金份额＋加仓的基金份额）`
+    async save(e) {
+      let actualJcje = e.jcje;
+      this.sxf = this.sxf > 0 ? this.sxf : 0;
+      // 减去手续费
+      if (this.sxf) {
+        actualJcje = e.jcje - (e.jcje * this.sxf) / 100;
+      }
+      // 除去手续费后的加仓份额
+      const n = actualJcje / this.actions[this.jcrqIndex].DWJZ;
+      // 第一次买入基金的价格×第一次持仓基金数量
+      const x = (this.fund.fundCost - 0 || 0) * (this.fund.fundAmount - 0 || 0);
+      // 加仓时的基金价格×加仓的基金份额
+      const y = this.actions[this.jcrqIndex].DWJZ * n;
+      // 第一次持仓基金份额＋加仓的基金份额
+      const addAfterFundAmount = (this.fund.fundAmount - 0 || 0) + n;
+      // 加仓后持仓成本 cost
+      const addAfterFundCost = (x + y) / (addAfterFundAmount - 0);
+      const params = {
+        groupIndex: this.groupIndex,
+        Fcode: this.fund.FCODE,
+        cost: addAfterFundCost.toFixed(4).slice(0, -1),
+        amount: addAfterFundAmount.toFixed(4).slice(0, -2),
+      };
+      updateFundCostOrAmount(params).then((res) => {
+        if (res.result.updated) {
+          this.$toast({
+            message: "加仓成功~",
+            onClose: this.back(),
+          });
+        }
+      });
     },
 
     onSelect(action, index) {

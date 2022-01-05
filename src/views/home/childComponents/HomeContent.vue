@@ -1,6 +1,6 @@
 <template>
   <div class="content-container">
-    <home-content-title-bar :funds="funds" />
+    <home-content-title-bar :funds="funds" :expansion="expansion" />
     <home-content-list :funds="funds" />
   </div>
 </template>
@@ -20,6 +20,12 @@ export default {
       type: Array,
       default: () => {
         return [];
+      },
+    },
+    expansion: {
+      type: Object,
+      default: () => {
+        return {};
       },
     },
   },

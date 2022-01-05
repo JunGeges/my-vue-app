@@ -93,6 +93,12 @@ export default {
         return [];
       },
     },
+    expansion: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
 
   computed: {
@@ -103,23 +109,11 @@ export default {
   },
 
   mounted() {
-    console.log(this.funds, "11", this.columnOrder);
-    // let count = 0;
-    // this.funds.forEach((item) => {
-    //   const x = [
-    //     item.Expansion.FSRQ.substr(5, 5),
-    //     item.Expansion.GZTIME.substr(5, 5),
-    //   ];
-    //   const isUpdated = item.PDATE.substr(5, 5) === x[1];
-    //   if (isUpdated) {
-    //     this.sample.jz.title2 = item.PDATE.substr(5, 5) === x[0] ? "" : item.PDATE.substr(5, 5),
-    //     this.sample.gz.title2 = item.GZTIME.substr(5, 5) === x[0] ? "" : item.GZTIME.substr(5, 5),
-    //     count++;
-    //   }
-    // });
     this.titles = this.columnOrder.map((item) => {
       return this.sample[item];
     });
+    this.sample.jz.title2 = this.expansion.FSRQ.substr(5,5);
+    this.sample.gz.title2 = this.expansion.GZTIME.substr(5,5);
   },
 
   methods: {},

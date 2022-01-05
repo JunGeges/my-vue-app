@@ -14,17 +14,15 @@ exports.main = async (event, context) => {
     Fcode,
     remainAmount
   } = event
-
-
-
+  
   return await db.collection('fund_user')
     .where({
       uid: _.eq(uid)
     })
     .update({
-      [`fundGroups.${groupIndex}.fundAmount.${Fcode}`]: remainAmount*1 ? remainAmount : "",
+      [`fundGroups.${groupIndex}.fundAmount.${Fcode}`]: remainAmount * 1 ? remainAmount : "",
       // 全部卖出
-      ...(!remainAmount*1 && {
+      ...(!(remainAmount * 1) && {
         [`fundGroups.${groupIndex}.fundCost.${Fcode}`]: ""
       })
     })

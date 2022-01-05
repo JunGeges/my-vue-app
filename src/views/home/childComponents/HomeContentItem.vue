@@ -114,7 +114,7 @@ export default {
   },
 
   mounted() {
-    // console.log(this.downIsSafe);
+    console.log(this.downIsSafe);
     // this.$store.commit({
     //   type: CALC_POSITION_AMOUNT,
     //   positionAmount: this.positionAmount,

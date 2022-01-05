@@ -8,15 +8,21 @@
         </div>
       </template>
     </van-nav-bar>
+
     <van-pull-refresh
       v-model="isLoading"
       success-text="刷新成功"
       @refresh="onRefresh"
     >
-      <home-content v-if="funds.length" :funds="funds"></home-content>
-      <no-content v-else></no-content>
+      <home-content
+        v-if="funds.length"
+        :funds="funds"
+        :expansion="Expansion"
+      ></home-content>
+      <no-content v-else />
     </van-pull-refresh>
-    <bottom-bar :daily-income="totalDailyIncome"></bottom-bar>
+
+    <bottom-bar :daily-income="totalDailyIncome" />
 
     <van-icon
       class="add-btn"
@@ -51,6 +57,7 @@ export default {
       userInfo: null,
       totalDailyIncome: 0,
       isLoading: false,
+      Expansion: null,
     };
   },
   components: {
@@ -95,7 +102,7 @@ export default {
         });
         const res = await getFundDetail(fCodes.join(","));
         this.funds = await this.getFunds(res.data);
-        this.calcTotalDailyIncome(this.funds)
+        this.calcTotalDailyIncome(this.funds);
         this.isLoading = false;
         return;
       }
@@ -113,7 +120,7 @@ export default {
           });
           const res = await getFundDetail(fCodes.join(","));
           this.funds = await this.getFunds(res.data);
-          this.calcTotalDailyIncome(this.funds)
+          this.calcTotalDailyIncome(this.funds);
           this.poll();
           return;
         }
@@ -194,6 +201,7 @@ export default {
       try {
         const Fcode = await this.getUserInfo();
         const res = await getFundDetail(Fcode);
+        this.Expansion = res.data.Expansion;
         return res.data;
       } catch (error) {
         return error;
