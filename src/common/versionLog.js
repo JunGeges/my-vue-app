@@ -1,4 +1,9 @@
-export default [
+export default [{
+    versionNumber: 'v1.1.1_20211230',
+    log: [
+      '新增加仓减仓,修改持仓等功能',
+    ]
+  },
   {
     versionNumber: 'v1.1.0_20211229',
     log: [

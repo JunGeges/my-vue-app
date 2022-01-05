@@ -17,21 +17,24 @@
     </van-cell-group>
     <!-- 卖出份数选择 -->
     <div class="sell-count-box">
-      <div>1/2</div>
-      <div>1/3</div>
-      <div>1/4</div>
-      <div>全部</div>
+      <div @click="selectSellAmount(0)">1/2</div>
+      <div @click="selectSellAmount(1)">1/3</div>
+      <div @click="selectSellAmount(2)">1/4</div>
+      <div @click="selectSellAmount(3)">全部</div>
     </div>
     <van-button
       block
       :color="mcfe.length ? '#2895fc' : '#c6c6cc'"
       :disabled="mcfe.length <= 0"
-      >保存减仓</van-button
-    >
+      text="保存减仓"
+      @click="save"
+    />
   </div>
 </template>
 
 <script>
+import { sellFundAmount } from "network/cloudApi";
+import { mapState } from "vuex";
 export default {
   name: "MyVueAppSellFund",
 
@@ -39,17 +42,58 @@ export default {
     return {
       mcfe: "",
       fund: null,
+      remainAmount: 0,
     };
   },
 
   mounted() {
-    console.log(this.$route.params,this.$store.state.groupIndex);
+    console.log(this.$route.params, this.groupIndex);
     this.fund = this.$route.params;
+  },
+
+  computed: {
+    ...mapState(["groupIndex"]),
   },
 
   methods: {
     back() {
       this.$router.go(-1);
+    },
+
+    selectSellAmount(flag) {
+      const tempMcfe = this.fund.fundAmount;
+      const sellAmounts = [tempMcfe / 2, tempMcfe / 3, tempMcfe / 4, tempMcfe];
+      // 卖出份额
+      this.mcfe = parseFloat(sellAmounts[flag]).toFixed(2);
+      // 剩余份额
+      this.remainAmount = (this.fund.fundAmount - sellAmounts[flag]).toFixed(2);
+    },
+
+    save() {
+      const params = {
+        groupIndex: this.groupIndex,
+        remainAmount: this.remainAmount,
+        Fcode: this.fund.FCODE,
+      };
+      this.$dialog
+        .confirm({
+          title: "提示",
+          message: `确认卖出 ${this.mcfe} 份吗?`,
+          confirmButtonColor: "#2895fc",
+        })
+        .then(() => {
+          sellFundAmount(params).then((res) => {
+            if (res.result.updated) {
+              this.$toast({
+                message: "保存成功~",
+                onClose: () => {
+                  this.back();
+                },
+              });
+            }
+          });
+        })
+        .catch(() => {});
     },
   },
 };

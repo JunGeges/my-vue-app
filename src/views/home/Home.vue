@@ -95,6 +95,7 @@ export default {
         });
         const res = await getFundDetail(fCodes.join(","));
         this.funds = await this.getFunds(res.data);
+        this.calcTotalDailyIncome(this.funds)
         this.isLoading = false;
         return;
       }
@@ -112,6 +113,7 @@ export default {
           });
           const res = await getFundDetail(fCodes.join(","));
           this.funds = await this.getFunds(res.data);
+          this.calcTotalDailyIncome(this.funds)
           this.poll();
           return;
         }

@@ -4,6 +4,7 @@ import {
 } from "./request";
 import axios from 'axios'
 
+// 批量或者单个获取基金实时数据详情
 export async function getFundDetail(Fcodes) {
   return await axios({
     url: 'https://fundmobapi.eastmoney.com/FundMNewApi/FundMNFInfo',
@@ -18,6 +19,22 @@ export async function getFundDetail(Fcodes) {
       Fcodes
     }
   })
+}
+
+// 获取历史净值
+export async function getJzList(fCode) {
+  return await axios.get(
+    '/FundMApi/FundNetDiagram.ashx', {
+      params: {
+        FCODE: fCode,
+        RANGE: 'y',
+        deviceid: 'Wap',
+        plat: 'Wap',
+        product: 'EFund',
+        version: '2.0.0',
+        _: new Date().getTime()
+      }
+    })
 }
 
 // 获取基金详细信息

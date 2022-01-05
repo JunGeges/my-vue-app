@@ -34,7 +34,17 @@ module.exports = {
         pathRewrite: {
           '^/bpi': ''
         }
+      },
+      '/FundMApi': {
+        target: 'https://fundmobapi.eastmoney.com',
+        ws: true,
+        changeOrigin: true,
+        secure: true,
+        pathRewrite: {
+          '^/FundMApi': '/FundMApi'
+        }
       }
+      // https://fundmobapi.eastmoney.com/FundMApi/FundNetDiagram.ashx?FCODE=161725&RANGE=y&deviceid=Wap&plat=Wap&product=EFund&version=2.0.0&_=1641349674144
     }
   }
 };

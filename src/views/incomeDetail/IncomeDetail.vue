@@ -150,7 +150,7 @@ export default {
             key: "totalDailyIncome",
             value1: "当日收益",
             color: this.isHong(this.calcTotalDailyIncome(this.funds)),
-            value2: this.format(this.calcTotalDailyIncome(this.funds)),
+            value2: this.format(this.calcTotalDailyIncome(this.funds).toFixed(2)),
           },
           {
             key: "totalDailyIncomeRate",

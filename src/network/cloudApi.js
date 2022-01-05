@@ -207,6 +207,22 @@ export async function updateFundCostOrAmount({
 }
 
 /**
+ * 减仓
+ * @param {Number} groupIndex 分组索引
+ * @param {String} Fcode 删除的基金编码
+ * @param {*} amount 卖出份额
+ * @returns 
+ */
+export async function sellFundAmount({groupIndex, Fcode, remainAmount}) {
+  return await cloudRequest('fund', {
+    funName: 'sellFundAmount',
+    groupIndex,
+    Fcode,
+    remainAmount,
+  })
+}
+
+/**
  * 编辑基金和移动啥的
  * @param {Array} fundGroups 编辑后的分组
  */
