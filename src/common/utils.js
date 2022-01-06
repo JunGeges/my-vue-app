@@ -8,11 +8,11 @@ export class User {
     this.crateTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
 
     this.config = {
-      simpleMode: true, // 简洁模式
+      simpleMode: false, // 简洁模式
       showTag: true, // 显示估算标签
       showHP: true, //显示横屏
-      upIsRed: true, // 绿涨红跌
-      downIsSafe: true, // 无障碍模式
+      upIsRed: false, // 绿涨红跌
+      downIsSafe: false, // 无障碍模式
       columnOrder: [
         "gz", // 估算净值
         "sy", // 当日收益

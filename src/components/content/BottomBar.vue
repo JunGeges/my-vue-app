@@ -36,26 +36,39 @@ export default {
       const dailyIncome = this.dailyIncome;
       if (this.downIsSafe)
         return [
-          dailyIncome > 0
-            ? "#48a1ad"
+          this.upIsRed
+            ? dailyIncome > 0
+              ? "#48a1ad"
+              : dailyIncome == 0
+              ? "#808080"
+              : "#ff605c"
+            : dailyIncome > 0
+            ? "#ff605c"
             : dailyIncome == 0
             ? "#808080"
-            : "#008800",
+            : "#48a1ad",
         ];
-      return dailyIncome > 0
-        ? "#ff0000"
+      return this.upIsRed
+        ? dailyIncome > 0
+          ? "#00ca4e"
+          : dailyIncome == 0
+          ? "#808080"
+          : "#ff605c"
+        : dailyIncome > 0
+        ? "#ff605c"
         : dailyIncome == 0
         ? "#808080"
-        : "#008800";
+        : "#00ca4e";
     },
 
     ...mapState({
       downIsSafe: (state) => state.userInfo.config.downIsSafe,
+      upIsRed: (state) => state.userInfo.config.upIsRed,
     }),
   },
 
   mounted() {
-    console.log(this.dailyIncome, this.funds);
+    // console.log(this.dailyIncome, this.funds);
   },
 
   methods: {

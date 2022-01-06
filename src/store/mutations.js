@@ -16,7 +16,7 @@ export default {
   },
 
   [SET_UID](state, payload) {
-    console.log(payload.uid)
+    // console.log(payload.uid)
     state.uid = payload.uid;
     updateStorage(payload.uid)
   },

@@ -59,7 +59,7 @@ export default {
 
   methods: {
     selectAction(e, index) {
-      console.log(index);
+      // console.log(index);
       const path = { 1: "updatefund", 2: "addfund", 3: "sellfund" };
       switch (index) {
         case 0:
@@ -84,7 +84,7 @@ export default {
     itemClick(item) {
       this.showActionSheet = true;
       this.clickFund = item;
-      console.log(item);
+      // console.log(item);
     },
 
     async deleteFund() {
@@ -96,8 +96,8 @@ export default {
         })
         .then(() => {
           deleteFund(this.groupIndex, this.clickFund.FCODE)
-            .then((res) => {
-              console.log(res);
+            .then(() => {
+              // console.log(res);
               this.$bus.$emit("deleteFund", this.clickFund.FCODE);
               this.$toast.success("删除成功");
             })

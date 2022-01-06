@@ -73,7 +73,7 @@
         />
       </template>
     </van-cell>
-    <van-cell size="large" title="显示横屏切换按钮" :border="false">
+    <!-- <van-cell size="large" title="显示横屏切换按钮" :border="false">
       <template #right-icon>
         <van-switch
           active-color="#2895fc"
@@ -82,7 +82,14 @@
           @change="switchChange({ showHP })"
         />
       </template>
-    </van-cell>
+    </van-cell> -->
+    <van-cell
+      size="large"
+      :border="false"
+      title="收益日历"
+      is-link
+      to="/incomecalendar"
+    />
     <van-cell
       size="large"
       :border="false"
@@ -90,6 +97,7 @@
       is-link
       to="/setcustomcloumn"
     />
+
     <van-cell-group>
       <van-cell
         to="/love"
@@ -149,7 +157,7 @@ export default {
     // 获取userInfo
     getUserInfo().then((res) => {
       this.userInfo = res.result;
-      console.log(this.userInfo);
+      // console.log(this.userInfo);
       const { simpleMode, upIsRed, downIsSafe, showTag, showHP } =
         this.userInfo.config;
       this.simpleMode = simpleMode;
@@ -180,8 +188,8 @@ export default {
     },
 
     // 退出登录
-    select(item, index) {
-      console.log(item, index);
+    select() {
+      // console.log(item, index);
       singOut
         .call(this)
         .then(() => {

@@ -35,7 +35,7 @@ export default {
   },
 
   mounted() {
-    console.log(this.$route.params, "--------");
+    // console.log(this.$route.params, "--------");
     this.fund = this.$route.params;
     this.fundAmount = this.fund.fundAmount;
     this.fundCost = this.fund.fundCost;
@@ -51,7 +51,7 @@ export default {
     },
 
     saveUpdated(e) {
-      console.log(e);
+      // console.log(e);
       const params = Object.assign(
         {
           groupIndex: this.groupIndex,

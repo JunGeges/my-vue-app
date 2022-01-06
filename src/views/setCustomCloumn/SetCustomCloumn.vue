@@ -128,7 +128,7 @@ export default {
 
     // splice 会更新数组 不用返回
     frontMove: (arr, index) => {
-      console.log("0", arr[index]);
+      // console.log("0", arr[index]);
       arr[index] = arr.splice(index - 1, 1, arr[index])[0];
       return arr;
     },

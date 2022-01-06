@@ -92,7 +92,7 @@ export default {
     this.activeIndex = this.groupIndex;
     getUserInfo().then((res) => {
       this.tempFundGroup = this.fundGroup = res.result.fundGroups;
-      console.log("----", this.tempFundGroup);
+      // console.log("----", this.tempFundGroup);
     });
   },
 
@@ -119,7 +119,7 @@ export default {
       this.isEditing = this.isEditing === 0 ? 1 : 0;
       // 保存分组
       if (this.isEditing === 0) {
-        addFundGroup(this.tempFundGroup).then(console.log);
+        addFundGroup(this.tempFundGroup);
       }
     },
 
@@ -145,7 +145,7 @@ export default {
         fundCost: {},
       });
       //
-      console.log(this.tempFundGroup);
+      // console.log(this.tempFundGroup);
     },
 
     move(index, flag) {
@@ -157,7 +157,7 @@ export default {
         (index === 1 && flag === "up")
       )
         return;
-      console.log("move");
+      // console.log("move");
       if (flag === "up") return this.frontMove(fundGroup, index);
       this.backMove(fundGroup, index);
     },

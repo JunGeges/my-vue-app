@@ -53,6 +53,7 @@ export default {
       simpleMode: (state) => state.userInfo.config.simpleMode,
       columnOrder: (state) => state.userInfo.config.columnOrder,
       downIsSafe: (state) => state.userInfo.config.downIsSafe,
+      upIsRed: (state) => state.userInfo.config.upIsRed,
     }),
     // 基金已更新
     isUpdated() {
@@ -114,7 +115,7 @@ export default {
   },
 
   mounted() {
-    console.log(this.downIsSafe);
+    // console.log(this.upIsRed);
     // this.$store.commit({
     //   type: CALC_POSITION_AMOUNT,
     //   positionAmount: this.positionAmount,
@@ -179,21 +180,33 @@ export default {
     },
 
     isUp(value) {
-      if (value == "--") return ["item-first-eq0"];
+      if (value == "--") return ["eq0"];
       if (this.downIsSafe)
         return [
-          value > 0
-            ? "item-first-down-safe"
+          this.upIsRed
+            ? value > 0
+              ? "down-safe"
+              : value == 0
+              ? "eq0"
+              : "up"
+            : value > 0
+            ? "up"
             : value == 0
-            ? "item-first-eq0"
-            : "item-first-down",
+            ? "eq0"
+            : "down-safe",
         ];
       return [
-        value > 0
-          ? "item-first-up"
+        this.upIsRed
+          ? value > 0
+            ? "down"
+            : value == 0
+            ? "eq0"
+            : "up"
+          : value > 0
+          ? "up"
           : value == 0
-          ? "item-first-eq0"
-          : "item-first-down",
+          ? "eq0"
+          : "down",
       ];
     },
   },
@@ -273,16 +286,16 @@ export default {
       flex-shrink: 0;
       position: relative;
       color: #000000;
-      .item-first-up {
-        color: #ff0000;
+      .up {
+        color: #ff605c;
       }
-      .item-first-down-safe {
+      .down-safe {
         color: #48a1ad;
       }
-      .item-first-down {
-        color: #008800;
+      .down {
+        color: #00ca4e;
       }
-      .item-first-eq0 {
+      .eq0 {
         color: #696970;
       }
       .item-last {

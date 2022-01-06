@@ -85,6 +85,11 @@ const routes = [{
     path: '/love',
     component: () => import('views/love/Love'),
     name: 'love'
+  },
+  {
+    path: '/incomecalendar',
+    component: () => import('views/setting/incomeCalendar/IncomeCalendar'),
+    name: 'incomecalendar'
   }
 ]
 

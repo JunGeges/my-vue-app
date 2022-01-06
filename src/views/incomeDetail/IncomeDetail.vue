@@ -93,12 +93,13 @@ export default {
     ...mapState({
       groupIndex: (state) => state.groupIndex,
       downIsSafe: (state) => state.userInfo.config.downIsSafe,
+      upIsRed: (state) => state.userInfo.config.upIsRed,
     }),
   },
 
   mounted() {
     this.curIndex = this.groupIndex;
-    console.log(this.incomeDatas);
+    // console.log(this.incomeDatas);
     this.initData();
   },
 
@@ -109,8 +110,30 @@ export default {
 
     isHong(value) {
       if (this.downIsSafe)
-        return [value > 0 ? "#48a1ad" : value == 0 ? "#808080" : "#008800"];
-      return value > 0 ? "#ff0000" : value == 0 ? "#808080" : "#008800";
+        return [
+          this.upIsRed
+            ? value > 0
+              ? "#48a1ad"
+              : value == 0
+              ? "#808080"
+              : "#ff605c"
+            : value > 0
+            ? "#ff605c"
+            : value == 0
+            ? "#808080"
+            : "#48a1ad",
+        ];
+      return this.upIsRed
+        ? value > 0
+          ? "#00ca4e"
+          : value == 0
+          ? "#808080"
+          : "#ff605c"
+        : value > 0
+        ? "#ff605c"
+        : value == 0
+        ? "#808080"
+        : "#00ca4e";
     },
 
     format(value) {
@@ -150,7 +173,9 @@ export default {
             key: "totalDailyIncome",
             value1: "当日收益",
             color: this.isHong(this.calcTotalDailyIncome(this.funds)),
-            value2: this.format(this.calcTotalDailyIncome(this.funds).toFixed(2)),
+            value2: this.format(
+              this.calcTotalDailyIncome(this.funds).toFixed(2)
+            ),
           },
           {
             key: "totalDailyIncomeRate",

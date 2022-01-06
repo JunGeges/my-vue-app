@@ -69,7 +69,7 @@ export async function getFundDetailByJR(code) {
  * @param {Date} endDate 结束日期 可选
  */
 export async function getFundBaseInfoByJR(code, startDate, endDate) {
-  console.log(code, startDate, endDate)
+  // console.log(code, startDate, endDate)
   return await requestJR({
     url: `/detail/list?code=${code}&startDate=${startDate}&endDate=${endDate}`
   })

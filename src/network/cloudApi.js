@@ -103,9 +103,9 @@ export async function addFundGroup(fundGroup) {
  */
 export async function addFundToGroup(groupIndex, fund) {
   if (!fund) return Promise.reject('参数错误~')
-  console.log({
-    groupIndex
-  })
+  // console.log({
+  //   groupIndex
+  // })
   return await cloudRequest('fundGroup', {
     funName: 'addFundToGroup',
     groupIndex,

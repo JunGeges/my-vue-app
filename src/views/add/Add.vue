@@ -88,14 +88,14 @@ export default {
     },
 
     async onSubmit(values) {
-      console.log("submit", values);
+      // console.log("submit", values);
       try {
         const groupIndex = this.groupIndex;
         // 先查出来是否有该基金
         await getFundDetailByTT(values.fundCode);
         // 插入分组中 需要参数 分组id
         let result = await addFundToGroup(groupIndex, values);
-        console.log("++++++++++", result);
+        // console.log("++++++++++", result);
         if (result.result?.updated === 1) {
           return this.$toast.success({
             message: "添加成功",

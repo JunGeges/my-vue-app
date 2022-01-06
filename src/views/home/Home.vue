@@ -32,7 +32,6 @@
       color="#2895fc"
       @click="toAddFund"
     />
-    <!-- <div id="tree-map"></div> -->
   </div>
 </template>
 
@@ -47,7 +46,6 @@ import { getFundDetail } from "network/api";
 import { mapState } from "vuex";
 import { SET_USER_INFO } from "store/mutations-type";
 
-import * as echarts from "echarts";
 
 export default {
   name: "home",
@@ -57,7 +55,7 @@ export default {
       userInfo: null,
       totalDailyIncome: 0,
       isLoading: false,
-      Expansion: null,
+      Expansion: null
     };
   },
   components: {
@@ -86,7 +84,6 @@ export default {
     if (process.env.NODE_ENV == "production") {
       this.poll();
     }
-    // this.initChart();
   },
 
   beforeDestroy() {
@@ -129,60 +126,26 @@ export default {
       }, 1000 * 60);
     },
 
-    initChart() {
-      let myChart = echarts.init(document.getElementById(`tree-map`));
-      let options = {
-        series: [
-          {
-            type: "treemap",
-            data: [
-              {
-                name: "nodeA",
-                value: 10,
-                itemStyle: {
-                  // 这里配置每个块的颜色
-                  color: "blue",
-                },
-              },
-              {
-                name: "nodeAa",
-                value: 4,
-              },
-              {
-                name: "nodeAb",
-                value: 6,
-              },
-              {
-                name: "nodeB",
-                value: 20,
-              },
-            ],
-          },
-        ],
-      };
-      myChart.setOption(options);
-    },
-
     async initDatas() {
       this.getFundDetail().then((res) => {
         if (res === "err") return this.$toast("该组内无基金~");
         this.funds = this.getFunds(res);
-        console.log(this.funds);
+        // console.log(this.funds);
         this.funds && this.calcTotalDailyIncome(this.funds);
-        console.log(
-          "总持仓",
-          this.calcTotalAmount(this.funds),
-          "当日收益",
-          this.calcTotalDailyIncome(this.funds),
-          "当日收益率",
-          this.calcTotalDailyIncomeRate(this.funds),
-          "持有收益",
-          this.calcTotalHoldIncome(this.funds),
-          "持有收益率",
-          this.calcTotalHoldIncomeRate(this.funds),
-          "已更新收益/待更新收益",
-          this.isUpdatedIncome(this.funds)
-        );
+        // console.log(
+        //   "总持仓",
+        //   this.calcTotalAmount(this.funds),
+        //   "当日收益",
+        //   this.calcTotalDailyIncome(this.funds),
+        //   "当日收益率",
+        //   this.calcTotalDailyIncomeRate(this.funds),
+        //   "持有收益",
+        //   this.calcTotalHoldIncome(this.funds),
+        //   "持有收益率",
+        //   this.calcTotalHoldIncomeRate(this.funds),
+        //   "已更新收益/待更新收益",
+        //   this.isUpdatedIncome(this.funds)
+        // );
       });
     },
 
@@ -240,7 +203,7 @@ export default {
       });
       // 给每只基金绑定总持仓 方便计算持仓占比
       const totalAmount = this.calcTotalAmount(funds);
-      console.log({ totalAmount });
+      // console.log({ totalAmount });
       return funds.map((item) => {
         item["totalAmount"] = totalAmount;
         return item;

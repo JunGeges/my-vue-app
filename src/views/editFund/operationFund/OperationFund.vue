@@ -509,7 +509,7 @@ export default {
       if (!this.edited) return this.back();
       // 接口请求，保存配置
       updateFundGroups(this.userInfo.fundGroups).then((res) => {
-        console.log(res);
+        // console.log(res);
         this.isSave = false;
         this.edited = false;
         this.back();

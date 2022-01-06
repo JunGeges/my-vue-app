@@ -36,7 +36,7 @@ export default {
   },
 
   mounted() {
-    console.log(this.funds);
+    // console.log(this.funds);
   },
 
   methods: {},

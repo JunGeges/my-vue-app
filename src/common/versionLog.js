@@ -1,4 +1,10 @@
 export default [{
+    versionNumber: 'v1.1.2_20210104',
+    log: [
+      '新增收益日历',
+    ]
+  },
+  {
     versionNumber: 'v1.1.1_20211230',
     log: [
       '新增加仓减仓,修改持仓等功能',
